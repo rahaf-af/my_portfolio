@@ -1,6 +1,6 @@
 import React from 'react'
 import { default as Lottie } from 'lottie-react';
-import butterflyData from "/Users/rahaf./my-projects/my-portfolio/src/assets/Butterfly(1).json"; 
+import butterflyData from "../../../assets/Butterfly(1).json"; 
 
 export default function Butterfly({size}) {
     const LottieComponent = Lottie.default || Lottie;
