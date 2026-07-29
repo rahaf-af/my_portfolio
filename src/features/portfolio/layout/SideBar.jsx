@@ -3,7 +3,7 @@ import Lottie from 'lottie-react';
 import { Layout, Menu, ConfigProvider, Grid, Button, Drawer, Switch } from 'antd';
 import { MenuOutlined, SunOutlined } from '@ant-design/icons';
 import { Outlet } from 'react-router-dom';
-import Butterfly from '../components/Butterfly(1).json'
+import Butterfly from '../components/Butterfly'
 import './navbar.css';
 import { getThemeConfig } from './themeConfig';
 
