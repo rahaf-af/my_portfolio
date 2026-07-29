@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Grid, Image, theme } from 'antd';
 import { SafetyCertificateOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import Certificate1 from '../../../assets/Certificate1.PNG'
+import Certificate1 from '../../../assets/Certificate1.png'
 import Certificate2 from '../../../assets/Certificate2.PNG'
-import Certificate3 from '../../../assets/Certificate3.PNG'
+import Certificate3 from '../../../assets/Certificate3.png'
 import Certificate4 from '../../../assets/Certificate4.jpg'
 
 const { useBreakpoint } = Grid;
