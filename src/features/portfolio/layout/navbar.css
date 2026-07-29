@@ -1,0 +1,126 @@
+/* navbar.css */
+
+/* إزالة أي حدود سفليّة أو خلفيات افتراضية */
+.custom-nav-menu {
+    border-bottom: none !important;
+    border-inline-end: none !important;
+    /* لإزالة الخط الجانبي الافتراضي في الـ Drawer */
+}
+
+/* تنسيق العناصر الافتراضية */
+.custom-nav-menu .ant-menu-item {
+    position: relative;
+    transition: all 0.3s ease !important;
+    font-weight: 500;
+    padding: 0 18px !important;
+    color: #9ca3af !important;
+}
+
+/* عند تمرير الماوس (Hover) */
+.custom-nav-menu .ant-menu-item:hover {
+    color: #c084fc !important;
+    background: transparent !important;
+}
+
+/* العنصر النشط المضلل (Active / Selected) */
+.custom-nav-menu .ant-menu-item-selected {
+    color: #ffffff !important;
+    background: transparent !important;
+    font-weight: 600;
+}
+
+/* الخط السفلي للشاشات الكبيرة (Desktop) */
+.custom-nav-menu .ant-menu-item-selected::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 10px !important;
+    left: 25% !important;
+    width: 50% !important;
+    height: 2px !important;
+    background: #a855f7 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 10px #a855f7, 0 0 5px #a855f7 !important;
+    border-bottom: none !important;
+}
+
+/* تعديل موضع الخط للشاشات الصغيرة والتابلت (أقل من 1024px) */
+@media (max-width: 1023px) {
+    .custom-nav-menu .ant-menu-item {
+        display: flex !important;
+        align-items: center !important;
+        height: 48px !important;
+    }
+
+    .custom-nav-menu .ant-menu-item-selected::after {
+        top: auto !important;
+        bottom: 0px !important;
+        left: 15% !important;
+        width: 70% !important;
+        height: 2px !important;
+    }
+}
+
+/* Custom theme switch with precise icon placement */
+.fancy-theme-switch {
+    width: 52px !important;
+    height: 26px !important;
+    border: 1.5px solid rgba(168, 85, 247, 0.4) !important;
+    box-shadow: 0 2px 6px rgba(168, 85, 247, 0.15) !important;
+    position: relative !important;
+}
+
+.fancy-theme-switch .ant-switch-handle {
+    width: 20px !important;
+    height: 20px !important;
+    top: 1.5px !important;
+    inset-inline-start: 2px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    z-index: 2 !important;
+}
+
+.fancy-theme-switch.ant-switch-checked .ant-switch-handle {
+    inset-inline-start: calc(100% - 22px) !important;
+}
+
+/* Perfectly positioned moon icon using CSS */
+.fancy-theme-switch:not(.ant-switch-checked)::after {
+    content: "";
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a855f7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.fancy-theme-switch .ant-switch-inner {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 6px !important;
+    height: 100% !important;
+}
+
+.nav-butterfly {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* ظل قوي وواضح جداً يطابق ظل الهيدر */
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7))
+}
+
+/* استخدام متغير اللون لتلوين الفراشة وربطها بثيم الموقع تماماً */
+.nav-butterfly svg, 
+.nav-butterfly path, 
+.nav-butterfly * {
+    fill: var(--butterfly-color, #a855f7) !important;
+    stroke: var(--butterfly-color, #a855f7) !important;
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}

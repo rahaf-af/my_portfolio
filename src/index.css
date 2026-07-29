@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* لحل مشكلة المساحة البيضاء وتأثير الارتداد في المتصفحات */
+html, body {
+    margin: 0;
+    padding: 0;
+    overscroll-behavior-y: none;
+    /* تمنع ظهور المساحة البيضاء عند سحب الصفحة لأقصى الأعلى أو الأسفل */
+}
+
+/* في حالة الوضع الفاتح (Light Mode) */
+body {
+    background-color: #f4eefb;
+}
+
+/* في حالة الوضع الداكن (Dark Mode) - إذا كنتِ تستخدمين كلاس معين أو تفضيلات النظام */
+.dark body,
+[data-theme='dark'] body {
+    background-color: #07040d;
+}
+
+/* لضمان أن كل قسم يظهر من بدايته تماماً تحت الهيدر الثابت */
+section, div[id] {
+    scroll-margin-top: 90px;
+}
+/* تطبيق انتقال سلس لجميع العناصر عند تغيير الثيم */
+body, 
+.ant-layout, 
+.ant-layout-header, 
+.ant-layout-footer, 
+.ant-drawer, 
+.ant-drawer-content,
+div[style*="background"], 
+section {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
