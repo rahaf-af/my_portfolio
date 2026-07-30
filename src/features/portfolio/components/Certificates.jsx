@@ -176,7 +176,6 @@ export default function Certificates() {
                                     alt="Certificate Preview"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                     styles={{ root: { width: '100%', height: '100%', display: 'block' } }}
-                                    loading='lazy'
                                 />
                             </div>
 

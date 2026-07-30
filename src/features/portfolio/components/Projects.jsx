@@ -272,7 +272,6 @@ export default function Projects() {
                                                             objectFit: 'cover',
                                                             transition: 'transform 0.6s ease'
                                                         }}
-                                                        loading='lazy'
                                                     />
                                                 </div>
                                             }
