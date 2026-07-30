@@ -56,7 +56,7 @@ export default function About() {
         <section
             id="about"
             style={{
-                padding: isDesktop ? '100px 32px' : '50px 16px',
+                padding: isDesktop ? '100px 32px' : '50px 0px',
                 position: 'relative',
                 maxWidth: '1300px',
                 margin: '0 auto',
@@ -105,7 +105,7 @@ export default function About() {
                 <h2
                     style={{
                         color: token.colorText,
-                        fontSize: 'clamp(2rem, 3.5vw, 2.6rem)',
+                        fontSize: 'clamp(1.6rem, 3.2vw, 2.6rem)',
                         fontWeight: '800',
                         margin: 0,
                     }}
@@ -124,6 +124,8 @@ export default function About() {
                     autoplay={{ delay: 4500, disableOnInteraction: false }}
                     style={{
                         paddingBottom: '45px',
+                        paddingLeft: '16px',
+                        paddingRight: '16px',
                         width: '100%',
                     }}
                 >
@@ -152,7 +154,7 @@ export default function About() {
                                         <h3
                                             style={{
                                                 color: token.colorText,
-                                                fontSize: '1.3rem',
+                                                fontSize: 'clamp(1.1rem, 4vw, 1.3rem)',
                                                 fontWeight: '700',
                                                 lineHeight: '1.3',
                                                 marginBottom: '12px',
