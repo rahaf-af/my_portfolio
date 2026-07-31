@@ -169,13 +169,13 @@ export default function Certificates() {
                                 marginBottom: '18px',
                                 background: isDarkMode ? '#160b2e' : '#f8fafc',
                                 width: '100%',
-                                aspectRatio: '16 / 10'
+                                boxShadow: isDarkMode ? 'inset 0 2px 4px rgba(0,0,0,0.4)' : 'inset 0 2px 4px rgba(0,0,0,0.02)'
                             }}>
                                 <Image
                                     src={credentials[selectedCert].certificateImage}
                                     alt="Certificate Preview"
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                                    styles={{ root: { width: '100%', height: '100%', display: 'block' } }}
+                                    style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
+                                    styles={{ root: { width: '100%', display: 'block' } }}
                                 />
                             </div>
 
