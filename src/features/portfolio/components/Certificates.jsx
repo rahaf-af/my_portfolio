@@ -70,6 +70,7 @@ export default function Certificates() {
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
+                    viewport={{once:true}}
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
                         <SafetyCertificateOutlined /> Verification
@@ -91,6 +92,7 @@ export default function Certificates() {
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
+                                viewport={{once:true}}
                                 onClick={() => setSelectedCert(index)}
                                 style={{
                                     flex: 1,
@@ -157,6 +159,7 @@ export default function Certificates() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.3 }}
+                            viewport={{once:true}}
                             style={{ width: '100%' }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>

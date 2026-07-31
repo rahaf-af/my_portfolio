@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Card, Space, Grid, theme } from 'antd';
-import { DownloadOutlined, EyeOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EyeOutlined, FilePdfOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
 
@@ -10,7 +10,6 @@ import fullstackCvPdf from '../../../assets/Rahaf_Fallatah_Full_Stack_Developer.
 
 const { useBreakpoint } = Grid;
 
-// دوال مساعدة ثابتة خارج المكون لمنع إعادة إنشائها مع كل Render
 const handleScrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
     projectsSection?.scrollIntoView({ behavior: 'smooth' });
@@ -33,6 +32,7 @@ export default function Hero() {
             id="home"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             style={{
                 position: 'relative',
@@ -149,51 +149,72 @@ export default function Hero() {
                     />
                 </div>
 
+                {/* الأزرار المحدثة لتتطابق تماماً مع هويّة أزرار قسم المشاريع */}
                 <div
                     style={{
                         display: 'flex',
-                        gap: '12px',
+                        gap: '14px',
                         justifyContent: isDesktop ? 'flex-start' : 'center',
                         flexWrap: 'wrap',
                         width: '100%',
                     }}
                 >
-                    <Button
-                        type="primary"
-                        size="large"
-                        style={{
-                            background: mainPurple,
-                            borderColor: mainPurple,
-                            borderRadius: '12px',
-                            height: '55px',
-                            padding: '0 40px',
-                            fontWeight: '600',
-                            fontSize: '14px',
-                            boxShadow: `0 0 14px ${mainPurple}44`,
-                        }}
-                        onClick={handleScrollToProjects}
+                    {/* زر View My Work */}
+                    <motion.div
+                        whileHover={{ scale: 1.06, y: -3 }}
+                        whileTap={{ scale: 0.94 }}
+                        style={{ display: 'inline-block' }}
                     >
-                        View My Work →
-                    </Button>
+                        <Button
+                            type="primary"
+                            style={{
+                                background: `linear-gradient(135deg, ${mainPurple} 0%, ${mainPurple}CC 100%)`,
+                                border: '1.5px solid transparent',
+                                borderRadius: '50px',
+                                height: '48px',
+                                padding: '0 28px',
+                                color: '#ffffff',
+                                fontWeight: '700',
+                                fontSize: '13.5px',
+                                boxShadow: `0 8px 25px ${mainPurple}40`,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}
+                            onClick={handleScrollToProjects}
+                        >
+                            <span>View My Work</span>
+                            <ArrowRightOutlined style={{ fontSize: '12px' }} />
+                        </Button>
+                    </motion.div>
 
-                    <Button
-                        size="large"
-                        icon={<DownloadOutlined style={{ color: mainPurple }} />}
-                        style={{
-                            borderRadius: '12px',
-                            height: '55px',
-                            padding: '0 40px',
-                            borderColor: mainPurple,
-                            color: token.colorText,
-                            background: `${token.colorBgLayout}99`,
-                            backdropFilter: 'blur(5px)',
-                            fontWeight: '600',
-                            fontSize: '14px',
-                        }}
-                        onClick={() => setIsModalOpen(true)}
+                    {/* زر Download CV */}
+                    <motion.div
+                        whileHover={{ scale: 1.06, y: -3 }}
+                        whileTap={{ scale: 0.94 }}
+                        style={{ display: 'inline-block' }}
                     >
-                        Download CV
-                    </Button>
+                        <Button
+                            style={{
+                                borderRadius: '50px',
+                                height: '48px',
+                                padding: '0 28px',
+                                background: `${mainPurple}0D`,
+                                border: `1.5px solid ${mainPurple}40`,
+                                color: mainPurple,
+                                fontWeight: '700',
+                                fontSize: '13.5px',
+                                boxShadow: `0 4px 15px rgba(0,0,0,0.02)`,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}
+                            onClick={() => setIsModalOpen(true)}
+                        >
+                            <DownloadOutlined style={{ fontSize: '16px' }} />
+                            <span>Download CV</span>
+                        </Button>
+                    </motion.div>
                 </div>
             </div>
 

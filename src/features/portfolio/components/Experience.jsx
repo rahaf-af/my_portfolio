@@ -64,6 +64,7 @@ export default function Experience() {
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
+                    viewport={{once:true}}
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
                         <CodeOutlined /> Career & Education
@@ -104,7 +105,7 @@ export default function Experience() {
                             key={index}
                             initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            // تم إزالة viewport={{ once: true }} لجعل الحركة تتكرر عند التمرير
+                            viewport={{once:true}}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                             style={{
                                 position: 'relative',

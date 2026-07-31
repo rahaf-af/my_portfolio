@@ -23,10 +23,10 @@ export default function Projects() {
     const baseProjects = [
         {
             id: 1,
-            title: 'Lavendra - Salon Management System',
-            description: 'A comprehensive production-level salon management system designed to streamline business operations, service tracking, and appointments.',
-            image: Lavendra,
-            tags: ['Next.js', 'TypeScript', 'Ant Design', 'Tailwind CSS', 'PostgreSQL', 'Prisma', 'Neon'],
+            title: 'Lafesta - Dress Rental Platform',
+            description: 'A full-stack dress rental web application integrated with secure checkout workflows and payment gateway redirection handling.',
+            image: Lafesta,
+            tags: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Django', 'Moyasar API'],
         },
         {
             id: 2,
@@ -37,52 +37,52 @@ export default function Projects() {
         },
         {
             id: 3,
-            title: 'Lafesta - Dress Rental Platform',
-            description: 'A full-stack dress rental web application integrated with secure checkout workflows and payment gateway redirection handling.',
-            image: Lafesta,
-            tags: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Django', 'Moyasar API'],
-        },
-        {
-            id: 4,
             title: 'Maqas - Tailoring Management Platform',
             description: 'A responsive web application engineered with multiple operational screens, custom form validations, and a clean user interface tailored for management.',
             image: Maqas,
             tags: ['React.js', 'Ant Design', 'Tailwind CSS'],
-        }
+        },
+        {
+            id: 4,
+            title: 'Lavendra - Salon Management System',
+            description: 'A comprehensive production-level salon management system designed to streamline business operations, service tracking, and appointments.',
+            image: Lavendra,
+            tags: ['Next.js', 'TypeScript', 'Ant Design', 'Tailwind CSS', 'PostgreSQL', 'Prisma', 'Neon'],
+        },
     ];
-
-    // مصفوفة مضاعفة فقط للشاشات الكبيرة (لأن السلايدر يحتاج تكرار)
-    const desktopProjectsData = [...baseProjects, ...baseProjects, ...baseProjects];
 
     return (
         <section
             id="projects"
             style={{
-                padding: isDesktop ? '80px 20px' : '40px 12px',
+                padding: isDesktop ? '80px 20px' : '40px 12px 80px 12px',
                 position: 'relative',
                 maxWidth: '1400px',
                 margin: '0 auto',
-                // تم إزالة overflow: 'hidden' من هنا تماماً لكي يعمل الـ Sticky لكل بطاقة بسلاسة
             }}
         >
-            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <FolderOutlined /> My Portfolio
-                    </div>
-                    <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: '800', margin: 0 }}>
-                        Featured Projects
-                    </h2>
-                </motion.div>
-            </div>
+            {/* يظهر العنوان فقط في الشاشات الكبيرة لمنع التكرار على الموبايل */}
+            {isDesktop && (
+                <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        viewport={{once:true}}
+                    >
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
+                            <FolderOutlined /> My Portfolio
+                        </div>
+                        <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: '800', margin: 0 }}>
+                            Featured Projects
+                        </h2>
+                    </motion.div>
+                </div>
+            )}
 
-            {/* الفصل التام: السلايدر للديسكفري، والتراص العمودي (Sticky Stack) للموبايل */}
+            {/* تم إزالة desktopProjectsData المكررة واستخدام baseProjects الأصلية للجميع بأمان تام */}
             {isDesktop ? (
-                <DesktopProjects projects={desktopProjectsData} mainPurple={mainPurple} />
+                <DesktopProjects projects={baseProjects} mainPurple={mainPurple} />
             ) : (
                 <MobileProjects projects={baseProjects} mainPurple={mainPurple} />
             )}
