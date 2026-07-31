@@ -199,7 +199,7 @@ export default function Certificates() {
                                         objectFit: 'contain',
                                         opacity: imageLoaded ? 1 : 0,
                                         transition: 'opacity 0.3s ease',
-                                        minHeight: isDesktop ? '260px' : (screens.md ? '220px' : '180px'),
+                                        minHeight: isDesktop ? '260px' : (screens.md ? '220px' : '140px'),
                                     }}
                                     styles={{ root: { width: '100%', display: 'block' } }}
                                 />
