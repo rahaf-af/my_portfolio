@@ -16,7 +16,7 @@ export default function Experience() {
     const timelineData = [
         {
             type: 'work',
-            role: 'Front-End Developer - Internship',
+            role: 'Front-End Developer',
             company: 'TechWin',
             period: 'Nov 2025 - Jul 2026',
             location: 'Makkah, Saudi Arabia • Hybrid',
@@ -24,7 +24,7 @@ export default function Experience() {
         },
         {
             type: 'work',
-            role: 'Software Engineer - Internship',
+            role: 'Software Engineer',
             company: 'Saudi Digital Academy',
             period: 'Aug 2025 - Nov 2025',
             location: 'Riyadh, Saudi Arabia • Remote',
@@ -32,7 +32,7 @@ export default function Experience() {
         },
         {
             type: 'work',
-            role: 'Full-stack Developer - Internship',
+            role: 'Full-stack Developer',
             company: 'Tuwaiq Academy',
             period: 'Feb 2025 - May 2025',
             location: 'Riyadh, Saudi Arabia • On-site',
