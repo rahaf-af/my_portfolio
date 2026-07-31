@@ -17,7 +17,6 @@ export default function Certificates() {
     const isDarkMode = token.colorBgLayout === '#07040d' || token.colorBgLayout.startsWith('#0');
 
     const [selectedCert, setSelectedCert] = useState(0);
-    // حالة لتتبع ما إذا كانت الصورة قد تحسنت/تم تحميلها بالكامل
     const [imageLoaded, setImageLoaded] = useState(false);
 
     // إعادة تعيين حالة التحميل عند تغيير الشهادة المختارة
@@ -169,7 +168,6 @@ export default function Certificates() {
                                 </span>
                             </div>
 
-                            {/* الحاوية الخاصة بالصورة مع أبعاد ثابتة لمنع الانكماش */}
                             <div style={{
                                 borderRadius: '16px',
                                 overflow: 'hidden',
@@ -177,17 +175,16 @@ export default function Certificates() {
                                 marginBottom: '18px',
                                 background: isDarkMode ? '#160b2e' : '#f8fafc',
                                 width: '100%',
-                                minHeight: '260px', // يمنع انكماش البطاقة أثناء التحميل
+                                minHeight: isDesktop ? '260px' : '180px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 position: 'relative',
                                 boxShadow: isDarkMode ? 'inset 0 2px 4px rgba(0,0,0,0.4)' : 'inset 0 2px 4px rgba(0,0,0,0.02)'
                             }}>
-                                {/* مؤشر التحميل يظهر في المنتصف حتى تنتهي الصورة من التحميل */}
-                               {!imageLoaded && (
+                                {!imageLoaded && (
                                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                                        <Spin indicator={<LoadingOutlined style={{ fontSize: 32, color: mainPurple }} spin />} />
+                                        <Spin indicator={<LoadingOutlined style={{ fontSize: 28, color: mainPurple }} spin />} />
                                     </div>
                                 )}
 
@@ -200,8 +197,9 @@ export default function Certificates() {
                                         height: 'auto', 
                                         display: 'block', 
                                         objectFit: 'contain',
-                                        opacity: imageLoaded ? 1 : 0, // إخفاء الصورة تدريجياً حتى تجهز
-                                        transition: 'opacity 0.3s ease'
+                                        opacity: imageLoaded ? 1 : 0,
+                                        transition: 'opacity 0.3s ease',
+                                        minHeight: isDesktop ? '260px' : (screens.md ? '220px' : '180px'),
                                     }}
                                     styles={{ root: { width: '100%', display: 'block' } }}
                                 />
@@ -212,7 +210,7 @@ export default function Certificates() {
                             </h3>
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                {credentials[selectedCert].skills.link ? null : credentials[selectedCert].skills.map((skill, sIdx) => (
+                                {credentials[selectedCert].skills.map((skill, sIdx) => (
                                     <span key={sIdx} style={{ background: `${mainPurple}1F`, color: mainPurple, border: `1px solid ${mainPurple}59`, padding: '4px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: '500' }}>
                                         {skill}
                                     </span>
