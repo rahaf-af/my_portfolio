@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from 'antd';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
     CodeOutlined,
     RocketOutlined,
@@ -11,17 +11,17 @@ import {
     CheckCircleOutlined
 } from '@ant-design/icons';
 
-export default function Loader() {
+export default function Loader({ onFinished }) {
     const { token } = theme.useToken();
     const mainPurple = '#9303C5';
-    // استخدام طريقة آمنة جداً للتحقق من الثيم الداكن لتجنب أي قيم فارغة أو غير متوقعة
+
     const isDarkMode = Boolean(
         token?.colorBgLayout &&
         (token.colorBgLayout === '#02060E' || token.colorBgLayout.toLowerCase().includes('0') || token.colorBgLayout.startsWith('#0'))
     );
 
     const layoutBackground = isDarkMode ? '#02060E' : '#f4eefb';
-    const cardBackground = isDarkMode ? '#0a0f1d' : '#ffffff'; // خلفية آمنة وصريحة للبطاقة
+    const cardBackground = isDarkMode ? '#0a0f1d' : '#ffffff';
 
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
@@ -53,11 +53,24 @@ export default function Loader() {
     const currentLog = getDevLogs();
 
     return (
-        <AnimatePresence>
-            <motion.div
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0, scale: 1.05, filter: 'blur(12px)' }}
-                transition={{ duration: 1, ease: 'easeInOut' }}
+        <>
+            {/* أنيميشن CSS بحت: يشتغل عالـ GPU/compositor، ما يعتمد على JS timers إطلاقاً.
+                حتى لو الجهاز جمّد كل مؤقتات الجافاسكريبت، هذا الأنيميشن يكمل ويختفي بوقته. */}
+            <style>{`
+                @keyframes loaderFadeOut {
+                    0% { opacity: 1; visibility: visible; }
+                    85% { opacity: 0; visibility: visible; }
+                    100% { opacity: 0; visibility: hidden; pointer-events: none; }
+                }
+                .loader-overlay {
+                    animation: loaderFadeOut 3.2s ease forwards;
+                    animation-delay: 0s;
+                }
+            `}</style>
+
+            <div
+                className="loader-overlay"
+                onAnimationEnd={() => onFinished && onFinished()}
                 style={{
                     position: 'fixed',
                     top: 0,
@@ -92,7 +105,7 @@ export default function Loader() {
                     }}
                 />
 
-                {/* الحاوية الرئيسية (تمت تأمين خلفيتها لضمان ظهورها وعدم اندماجها مع الخلفية) */}
+                {/* الحاوية الرئيسية */}
                 <motion.div
                     initial={{ opacity: 0.001, y: 40, scale: 0.85 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -265,7 +278,7 @@ export default function Loader() {
                     </motion.div>
 
                 </motion.div>
-            </motion.div>
-        </AnimatePresence>
+            </div>
+        </>
     );
 }
