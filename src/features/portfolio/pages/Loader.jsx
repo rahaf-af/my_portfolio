@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from 'antd';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     CodeOutlined,
     RocketOutlined,
@@ -24,22 +24,27 @@ export default function Loader({ onFinished }) {
     const cardBackground = isDarkMode ? '#0a0f1d' : '#ffffff';
 
     const [progress, setProgress] = useState(0);
-    const [isComplete, setIsComplete] = useState(false);
 
+    // عداد النسبة المئوية بثبات وبسرعة واضحة للمستخدم
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setIsComplete(true);
+                    // فور وصول العداد 100، ننتظر نصف ثانية ثم ننادي onFinished للإخفاء
+                    setTimeout(() => {
+                        if (onFinished) onFinished();
+                    }, 500);
                     return 100;
                 }
                 return prev + 1;
             });
-        }, 12);
+        }, 15); // سرعة ممتازة تجعل العداد مرئياً وواضحاً أمام العين
 
         return () => clearInterval(interval);
-    }, []);
+    }, [onFinished]);
+
+    const isComplete = progress >= 100;
 
     const getDevLogs = () => {
         if (progress < 20) return { text: 'git init & cloning modules...', icon: <CodeOutlined /> };
@@ -53,24 +58,11 @@ export default function Loader({ onFinished }) {
     const currentLog = getDevLogs();
 
     return (
-        <>
-            {/* أنيميشن CSS بحت: يشتغل عالـ GPU/compositor، ما يعتمد على JS timers إطلاقاً.
-                حتى لو الجهاز جمّد كل مؤقتات الجافاسكريبت، هذا الأنيميشن يكمل ويختفي بوقته. */}
-            <style>{`
-                @keyframes loaderFadeOut {
-                    0% { opacity: 1; visibility: visible; }
-                    85% { opacity: 0; visibility: visible; }
-                    100% { opacity: 0; visibility: hidden; pointer-events: none; }
-                }
-                .loader-overlay {
-                    animation: loaderFadeOut 3.2s ease forwards;
-                    animation-delay: 0s;
-                }
-            `}</style>
-
-            <div
-                className="loader-overlay"
-                onAnimationEnd={() => onFinished && onFinished()}
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 1.02, filter: 'blur(8px)' }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
                 style={{
                     position: 'fixed',
                     top: 0,
@@ -107,16 +99,15 @@ export default function Loader({ onFinished }) {
 
                 {/* الحاوية الرئيسية */}
                 <motion.div
-                    initial={{ opacity: 0.001, y: 40, scale: 0.85 }}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}
+                    transition={{ duration: 0.5, type: 'spring', stiffness: 120 }}
                     style={{
                         width: '100%',
                         maxWidth: '540px',
                         background: cardBackground,
                         backdropFilter: 'blur(35px)',
                         WebkitBackdropFilter: 'blur(35px)',
-                        willChange: 'transform, opacity',
                         border: `1.5px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.5)' : 'rgba(147, 3, 197, 0.3)'}`,
                         borderRadius: '28px',
                         padding: '32px',
@@ -125,7 +116,6 @@ export default function Loader({ onFinished }) {
                             : `0 40px 100px rgba(147, 3, 197, 0.25), inset 0 0 35px rgba(147, 3, 197, 0.06)`,
                         position: 'relative',
                         zIndex: 1,
-                        transform: 'translateZ(0)',
                     }}
                 >
                     {/* شريط الـ IDE الاحترافي */}
@@ -232,7 +222,6 @@ export default function Loader({ onFinished }) {
                                 borderRadius: '8px',
                                 boxShadow: `0 0 16px ${mainPurple}`,
                             }}
-                            transition={{ ease: 'linear', duration: 0.05 }}
                         />
                     </div>
 
@@ -278,7 +267,7 @@ export default function Loader({ onFinished }) {
                     </motion.div>
 
                 </motion.div>
-            </div>
-        </>
+            </motion.div>
+        </AnimatePresence>
     );
 }
