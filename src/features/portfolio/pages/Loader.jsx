@@ -17,7 +17,7 @@ export default function Loader() {
 
     // استخدام طريقة آمنة جداً للتحقق من الثيم الداكن لتجنب أي قيم فارغة أو غير متوقعة
     const isDarkMode = Boolean(
-        token?.colorBgLayout && 
+        token?.colorBgLayout &&
         (token.colorBgLayout === '#02060E' || token.colorBgLayout.toLowerCase().includes('0') || token.colorBgLayout.startsWith('#0'))
     );
 
@@ -95,7 +95,7 @@ export default function Loader() {
 
                 {/* الحاوية الرئيسية (تمت تأمين خلفيتها لضمان ظهورها وعدم اندماجها مع الخلفية) */}
                 <motion.div
-                    initial={{ opacity: 0, y: 40, scale: 0.85 }}
+                    initial={{ opacity: 0.001, y: 40, scale: 0.85 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}
                     style={{
@@ -103,6 +103,8 @@ export default function Loader() {
                         maxWidth: '540px',
                         background: cardBackground,
                         backdropFilter: 'blur(35px)',
+                        WebkitBackdropFilter: 'blur(35px)',
+                        willChange: 'transform, opacity',
                         border: `1.5px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.5)' : 'rgba(147, 3, 197, 0.3)'}`,
                         borderRadius: '28px',
                         padding: '32px',
@@ -111,6 +113,7 @@ export default function Loader() {
                             : `0 40px 100px rgba(147, 3, 197, 0.25), inset 0 0 35px rgba(147, 3, 197, 0.06)`,
                         position: 'relative',
                         zIndex: 1,
+                        transform: 'translateZ(0)',
                     }}
                 >
                     {/* شريط الـ IDE الاحترافي */}
