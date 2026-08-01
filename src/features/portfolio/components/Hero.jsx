@@ -278,7 +278,7 @@ export default function Hero() {
                             <Button
                                 type="text"
                                 icon={<EyeOutlined style={{ fontSize: '16px' }} />}
-                                onClick={() => handleDownloadCv(frontendCvPdf , 'Rahaf_Fallatah_Frontend_developer.pdf')}
+                                onClick={() => handleOpenCv(frontendCvPdf )}
                                 style={{ color: mainPurple }}
                             />
                             <Button
@@ -314,7 +314,7 @@ export default function Hero() {
                             <Button
                                 type="primary"
                                 icon={<DownloadOutlined />}
-                                onClick={() => handleOpenCv(fullstackCvPdf)}
+                                onClick={() => handleDownloadCv(fullstackCvPdf, 'Rahaf_Fallatah_Fullstack_developer.pdf')}
                                 style={{ background: mainPurple, borderColor: mainPurple, borderRadius: '8px' }}
                             >
                                 Download
