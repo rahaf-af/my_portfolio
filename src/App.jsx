@@ -7,35 +7,49 @@ import Loader from './features/portfolio/pages/Loader';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log('[APP] render, isLoading =', isLoading, 'time =', performance.now());
-
   useEffect(() => {
-    console.log('[APP] useEffect mounted, readyState =', document.readyState, 'time =', performance.now());
+    // بدل الاعتماد على setTimeout بمدة ثابتة (اللي ينجمد على iOS Safari
+    // لما الصفحة تكون بالخلفية أو غير نشطة)، نراقب حالة الصفحة الفعلية
+    // ونستخدم مؤقت قصير جداً كـ "شبكة أمان" فقط، مع مستمع visibilitychange
+    // يضمن إننا ما نضل عالقين لو صار تجميد.
+
+    let finished = false;
+
+    const finish = () => {
+      if (!finished) {
+        finished = true;
+        setIsLoading(false);
+      }
+    };
 
     const handleLoaded = () => {
-      console.log('[APP] load event fired, time =', performance.now());
-      setTimeout(() => {
-        console.log('[APP] 2300ms timeout done -> setIsLoading(false), time =', performance.now());
-        setIsLoading(false);
-      }, 2300);
+      // مهلة قصيرة بس (مو 2300ms) عشان الأنيميشن يوصل لنهايته بشكل مريح
+      setTimeout(finish, 900);
     };
 
     if (document.readyState === 'complete') {
-      console.log('[APP] readyState already complete, time =', performance.now());
       handleLoaded();
     } else {
       window.addEventListener('load', handleLoaded);
-
-      const fallbackTimer = setTimeout(() => {
-        console.log('[APP] FALLBACK 3500ms timeout fired -> setIsLoading(false), time =', performance.now());
-        setIsLoading(false);
-      }, 3500);
-
-      return () => {
-        window.removeEventListener('load', handleLoaded);
-        clearTimeout(fallbackTimer);
-      };
     }
+
+    // شبكة أمان: لو رجعت الصفحة نشطة (visible) وكانت لسا عالقة بالتحميل
+    // لأي سبب (تجميد مؤقتات، تبديل تطبيقات، إلخ)، أنهي التحميل فوراً
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        finish();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // شبكة أمان مطلقة: مهما صار، لا تعلقي أكثر من 4 ثواني
+    const hardFallback = setTimeout(finish, 4000);
+
+    return () => {
+      window.removeEventListener('load', handleLoaded);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      clearTimeout(hardFallback);
+    };
   }, []);
 
   return (
