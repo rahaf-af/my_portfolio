@@ -106,8 +106,7 @@ export default function Skills() {
             id="skills"
             style={{
                 padding: isDesktop ? '70px 0' : '45px 0',
-                position: 'relative',
-                overflow: 'hidden'
+                position: 'relative'
             }}
         >
             <div style={{ textAlign: 'center', marginBottom: '50px' }}>
@@ -137,15 +136,15 @@ export default function Skills() {
                     speed={8000}
                     autoplay={{ delay: 0, disableOnInteraction: false, reverseDirection: false }}
                     allowTouchMove={false}
-                    style={{ padding: '10px 0' }}
+                    style={{ padding: '15px 0' }}
                 >
                     {row1Skills.map((skill, index) => (
-                        <SwiperSlide key={index} style={{ width: 'auto', background: token.colorBgContainer }}>
+                        <SwiperSlide key={index} style={{ width: 'auto', padding: '0 4px' }}>
                             {renderSkillCard(skill, index)}
                         </SwiperSlide>
                     ))}
                     {row1Skills.map((skill, index) => (
-                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', background: token.colorBgContainer }}>
+                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', padding: '0 4px' }}>
                             {renderSkillCard(skill, `dup-${index}`)}
                         </SwiperSlide>
                     ))}
@@ -162,15 +161,15 @@ export default function Skills() {
                     speed={8000}
                     autoplay={{ delay: 0, disableOnInteraction: false, reverseDirection: true }}
                     allowTouchMove={false}
-                    style={{ padding: '10px 0' }}
+                    style={{ padding: '15px 0' }}
                 >
                     {row2Skills.map((skill, index) => (
-                        <SwiperSlide key={index} style={{ width: 'auto', background: token.colorBgContainer }}>
+                        <SwiperSlide key={index} style={{ width: 'auto', padding: '0 4px' }}>
                             {renderSkillCard(skill, index)}
                         </SwiperSlide>
                     ))}
                     {row2Skills.map((skill, index) => (
-                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', background: token.colorBgContainer }}>
+                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', padding: '0 4px' }}>
                             {renderSkillCard(skill, `dup-${index}`)}
                         </SwiperSlide>
                     ))}

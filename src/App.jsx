@@ -9,11 +9,12 @@ function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-        setIsLoading(false);
-    }, 1900); 
+      setIsLoading(false);
+    }, 2200);
 
     return () => clearTimeout(timer);
   }, []);
+
 
   return (
     <>
@@ -21,7 +22,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SideBar />}>
-            {/* جعل Main يظهر مباشرة في الصفحة الرئيسية مع تضمين Outlet في الـ SideBar لاحقاً إن وجد */}
             <Route index element={<Main />} />
             <Route path="portfolio" element={<Main />} />
           </Route>

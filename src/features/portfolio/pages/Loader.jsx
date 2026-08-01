@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { theme } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  CodeOutlined, 
-  RocketOutlined, 
-  TrophyOutlined, 
-  ApiOutlined, 
-  BugOutlined, 
-  LaptopOutlined, 
-  CheckCircleOutlined 
+import {
+    CodeOutlined,
+    RocketOutlined,
+    TrophyOutlined,
+    ApiOutlined,
+    BugOutlined,
+    LaptopOutlined,
+    CheckCircleOutlined
 } from '@ant-design/icons';
 
 export default function Loader() {
     const { token } = theme.useToken();
     const mainPurple = '#9303C5';
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
-    
+
     // استخدام خلفية الوضع الداكن المطلوبة `#02060E`
     const layoutBackground = isDarkMode ? '#02060E' : '#f4eefb';
-    
+
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
 
-    // التحكم في العداد بدقة وراحة للعين
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => {
@@ -31,12 +30,13 @@ export default function Loader() {
                     setIsComplete(true);
                     return 100;
                 }
-                return prev + 1; 
+                return prev + 1;
             });
-        }, 15); 
+        }, 12); // سرعة متوازنة وثابتة على كل الأجهزة
 
         return () => clearInterval(interval);
-    }, []);
+    }, []); // <-- تم إزالة المتغير المفقود من هنا لئلا يسبب أي خطأ مراجع
+
 
     const getDevLogs = () => {
         if (progress < 20) return { text: 'git init & cloning modules...', icon: <CodeOutlined /> };
@@ -71,11 +71,11 @@ export default function Loader() {
                 }}
             >
                 {/* خلفية ضوئية متحركة ومتعرجة (Shape of Movement) */}
-                <motion.div 
-                    animate={{ 
-                        scale: [1, 1.4, 1.1, 1], 
+                <motion.div
+                    animate={{
+                        scale: [1, 1.4, 1.1, 1],
                         rotate: [0, 90, 180, 360],
-                        opacity: [0.2, 0.45, 0.25, 0.2] 
+                        opacity: [0.2, 0.45, 0.25, 0.2]
                     }}
                     transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut' }}
                     style={{
@@ -102,20 +102,20 @@ export default function Loader() {
                         border: `1.5px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.5)' : 'rgba(147, 3, 197, 0.3)'}`,
                         borderRadius: '28px',
                         padding: '32px',
-                        boxShadow: isDarkMode 
-                            ? `0 40px 100px rgba(2, 6, 14, 0.9), inset 0 0 35px rgba(147, 3, 197, 0.15)` 
+                        boxShadow: isDarkMode
+                            ? `0 40px 100px rgba(2, 6, 14, 0.9), inset 0 0 35px rgba(147, 3, 197, 0.15)`
                             : `0 40px 100px rgba(147, 3, 197, 0.25), inset 0 0 35px rgba(147, 3, 197, 0.06)`,
                         position: 'relative',
                         zIndex: 1,
                     }}
                 >
                     {/* شريط الـ IDE الاحترافي */}
-                    <div style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center', 
-                        marginBottom: '26px', 
-                        borderBottom: `1px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.25)' : '#e2e8f0'}`, 
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '26px',
+                        borderBottom: `1px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.25)' : '#e2e8f0'}`,
                         paddingBottom: '12px',
                         flexWrap: 'wrap',
                         gap: '8px'
@@ -126,14 +126,14 @@ export default function Loader() {
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />
                             <span style={{ color: token.colorTextSecondary, fontSize: '11px', marginLeft: '6px', fontFamily: 'monospace' }}>bash</span>
                         </div>
-                        
-                        <div style={{ 
-                            color: mainPurple, 
-                            fontSize: '11px', 
-                            fontWeight: '700', 
-                            fontFamily: 'monospace', 
-                            background: `${mainPurple}15`, 
-                            padding: '3px 10px', 
+
+                        <div style={{
+                            color: mainPurple,
+                            fontSize: '11px',
+                            fontWeight: '700',
+                            fontFamily: 'monospace',
+                            background: `${mainPurple}15`,
+                            padding: '3px 10px',
                             borderRadius: '6px',
                             border: `1px solid ${mainPurple}30`
                         }}>
@@ -143,7 +143,7 @@ export default function Loader() {
 
                     {/* الأيقونات الحركية */}
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginBottom: '24px' }}>
-                        <motion.div 
+                        <motion.div
                             animate={{ y: [0, -8, 0], rotate: [0, 10, -10, 0] }}
                             transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
                             style={{
@@ -156,7 +156,7 @@ export default function Loader() {
                             <CodeOutlined />
                         </motion.div>
 
-                        <motion.div 
+                        <motion.div
                             animate={{ y: [0, -10, 0], scale: [1, 1.18, 1] }}
                             transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
                             style={{
@@ -169,7 +169,7 @@ export default function Loader() {
                             <RocketOutlined />
                         </motion.div>
 
-                        <motion.div 
+                        <motion.div
                             animate={{ y: [0, -8, 0], rotate: [0, -10, 10, 0] }}
                             transition={{ repeat: Infinity, duration: 3.1, ease: 'easeInOut' }}
                             style={{
@@ -218,16 +218,16 @@ export default function Loader() {
                     </div>
 
                     {/* نافذة السجلات مع تأثير النبض عند اكتمال 100% */}
-                    <motion.div 
+                    <motion.div
                         animate={isComplete ? { scale: [1, 1.02, 1], borderColor: '#10b981' } : {}}
                         transition={{ duration: 0.4 }}
-                        style={{ 
-                            background: isDarkMode ? 'rgba(2, 6, 14, 0.85)' : 'rgba(240, 230, 255, 0.6)', 
-                            border: `1px solid ${isComplete ? '#10b981' : `${mainPurple}35`}`, 
-                            borderRadius: '14px', 
-                            padding: '14px 18px', 
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
+                        style={{
+                            background: isDarkMode ? 'rgba(2, 6, 14, 0.85)' : 'rgba(240, 230, 255, 0.6)',
+                            border: `1px solid ${isComplete ? '#10b981' : `${mainPurple}35`}`,
+                            borderRadius: '14px',
+                            padding: '14px 18px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
                             fontFamily: 'monospace'
                         }}
@@ -241,10 +241,10 @@ export default function Loader() {
                             </span>
                         </div>
 
-                        <div style={{ 
-                            color: isComplete ? '#10b981' : mainPurple, 
-                            fontSize: '15px', 
-                            fontWeight: '950', 
+                        <div style={{
+                            color: isComplete ? '#10b981' : mainPurple,
+                            fontSize: '15px',
+                            fontWeight: '950',
                             fontVariantNumeric: 'tabular-nums',
                             background: isComplete ? 'rgba(16, 185, 129, 0.2)' : `${mainPurple}20`,
                             padding: '4px 12px',

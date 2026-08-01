@@ -44,19 +44,50 @@
 
 /* تعديل موضع الخط للشاشات الصغيرة والتابلت (أقل من 1024px) */
 @media (max-width: 1023px) {
-    .custom-nav-menu .ant-menu-item {
-        display: flex !important;
-        align-items: center !important;
-        height: 48px !important;
+
+    /* تنسيق هادئ ونظيف للـ Drawer باستخدام الـ class الأصلي */
+    .ant-drawer .custom-nav-menu {
+        background: transparent !important;
+        border-inline-end: none !important;
+        padding: 10px 0 !important;
     }
 
-    .custom-nav-menu .ant-menu-item-selected::after {
+    .ant-drawer .custom-nav-menu .ant-menu-item {
+        margin: 4px 12px !important;
+        border-radius: 8px !important;
+        height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    /* تأثير مرور الماوس الناعم */
+    .ant-drawer .custom-nav-menu .ant-menu-item:hover {
+        background: rgba(168, 85, 247, 0.06) !important;
+    }
+
+    /* العنصر النشط مع الخط السفلي الأنيق والمتوهج بلون الثيم */
+    .ant-drawer .custom-nav-menu .ant-menu-item-selected {
+        background: transparent !important;
+    }
+
+    .ant-drawer .custom-nav-menu .ant-menu-item-selected::after {
+        content: '' !important;
+        position: absolute !important;
         top: auto !important;
         bottom: 0px !important;
-        left: 15% !important;
-        width: 70% !important;
+        left: 16px !important;
+        right: 16px !important;
+        width: auto !important;
         height: 2px !important;
+        background: var(--theme-primary, #a855f7) !important;
+        border-radius: 4px !important;
+        box-shadow: 0 0 10px var(--theme-primary, #a855f7) !important;
+        display: block !important;
     }
+
+
 }
 
 /* Custom theme switch with precise icon placement */
@@ -85,11 +116,14 @@
 .fancy-theme-switch:not(.ant-switch-checked)::after {
     content: "";
     position: absolute;
-    right: 7px; /* ضبط الموضع ليتناسب مع الحجم الجديد */
+    right: 7px;
+    /* ضبط الموضع ليتناسب مع الحجم الجديد */
     top: 50%;
     transform: translateY(-50%);
-    width: 18px;  /* تم تكبير العرض من 15px إلى 18px */
-    height: 18px; /* تم تكبير الارتفاع من 15px إلى 18px */
+    width: 18px;
+    /* تم تكبير العرض من 15px إلى 18px */
+    height: 18px;
+    /* تم تكبير الارتفاع من 15px إلى 18px */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239303C5' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'%3E%3C/path%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
@@ -121,8 +155,8 @@
     filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
 }
 
-.nav-butterfly svg, 
-.nav-butterfly path, 
+.nav-butterfly svg,
+.nav-butterfly path,
 .nav-butterfly * {
     fill: var(--butterfly-color, #a855f7) !important;
     stroke: var(--butterfly-color, #a855f7) !important;

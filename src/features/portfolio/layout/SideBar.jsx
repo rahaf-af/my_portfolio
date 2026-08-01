@@ -186,10 +186,11 @@ export default function SideBar() {
                     placement="right"
                     onClose={() => setOpenDrawer(false)}
                     open={openDrawer}
-                    size={230}
+                    size={260}
+                    style={{ '--theme-primary': mainPurple }} // تمرير متغير الثيم هنا مباشرة
                     styles={{
-                        body: { background: currentTheme.token.colorBgContainer, padding: '12px 0' },
-                        header: { background: currentTheme.token.colorBgContainer, borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.2)' : '#e2e8f0'}` }
+                        body: { background: currentTheme.token.colorBgContainer, padding: '16px 8px' },
+                        header: { background: currentTheme.token.colorBgContainer, borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}` }
                     }}
                 >
                     <Menu
@@ -199,7 +200,7 @@ export default function SideBar() {
                         items={items}
                         className="custom-nav-menu"
                         onClick={() => setOpenDrawer(false)}
-                        style={{ background: 'transparent' }}
+                        style={{ background: 'transparent', border: 'none' }}
                     />
                 </Drawer>
 
