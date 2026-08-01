@@ -13,7 +13,7 @@ export default function Certificates() {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
     const { token } = theme.useToken();
-    const mainPurple = '#a855f7';
+    const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#07040d' || token.colorBgLayout.startsWith('#0');
 
     const [selectedCert, setSelectedCert] = useState(0);
@@ -83,6 +83,7 @@ export default function Certificates() {
 
             <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1.1fr 1.1fr' : '1fr', gap: '20px', alignItems: 'stretch' }}>
 
+                {/* القائمة الجانبية للشهادات مع minHeight لتوحيد المساحات */}
                 <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '12px' }}>
                     {credentials.map((item, index) => {
                         const isSelected = selectedCert === index;
@@ -96,10 +97,11 @@ export default function Certificates() {
                                 onClick={() => setSelectedCert(index)}
                                 style={{
                                     flex: 1,
+                                    minHeight: isDesktop ? '95px' : 'auto',
                                     background: isSelected
-                                        ? (isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.08)')
-                                        : (isDarkMode ? '#0d0718' : '#ffffff'),
-                                    border: `1.5px solid ${isSelected ? mainPurple : (isDarkMode ? 'rgba(168, 85, 247, 0.2)' : '#e2e8f0')}`,
+                                        ? `${mainPurple}26`
+                                        : token.colorBgContainer,
+                                    border: `1.5px solid ${isSelected ? mainPurple : (isDarkMode ? 'rgba(147, 3, 197, 0.2)' : '#e2e8f0')}`,
                                     borderRadius: '18px',
                                     padding: '16px 24px',
                                     cursor: 'pointer',
@@ -107,7 +109,7 @@ export default function Certificates() {
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    boxShadow: isSelected ? `0 12px 30px rgba(168, 85, 247, 0.2)` : (isDarkMode ? 'none' : '0 4px 12px rgba(0,0,0,0.03)')
+                                    boxShadow: isSelected ? `0 12px 30px ${mainPurple}33` : (isDarkMode ? 'none' : '0 4px 12px rgba(0,0,0,0.03)')
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -127,19 +129,20 @@ export default function Certificates() {
                                     </div>
                                     <div>
                                         <div style={{ color: mainPurple, fontSize: '13px', fontWeight: '700', marginBottom: '3px' }}>
-                                            {item.institution} • <span style={{ color: isDarkMode ? '#9ca3af' : '#64748b', fontWeight: '400' }}>{item.period}</span>
+                                            {item.institution} • <span style={{ color: token.colorTextSecondary, fontWeight: '400' }}>{item.period}</span>
                                         </div>
-                                        <h4 style={{ color: isDarkMode ? '#fff' : '#0f172a', fontSize: '16px', fontWeight: '600', margin: 0 }}>
+                                        <h4 style={{ color: token.colorText, fontSize: '16px', fontWeight: '600', margin: 0 }}>
                                             {item.title}
                                         </h4>
                                     </div>
                                 </div>
-                                <ArrowRightOutlined style={{ color: isSelected ? mainPurple : (isDarkMode ? '#4b5563' : '#cbd5e1'), transition: 'transform 0.3s', transform: isSelected ? 'translateX(4px)' : 'none', fontSize: '16px' }} />
+                                <ArrowRightOutlined style={{ color: isSelected ? mainPurple : token.colorTextSecondary, transition: 'transform 0.3s', transform: isSelected ? 'translateX(4px)' : 'none', fontSize: '16px' }} />
                             </motion.div>
                         );
                     })}
                 </div>
 
+                {/* كارد عرض الصورة الرئيسي المحدث بلون الثيم الجديد */}
                 <div style={{
                     background: token.colorBgContainer,
                     borderRadius: '26px',
@@ -150,7 +153,7 @@ export default function Certificates() {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     border: `1.5px solid ${mainPurple}80`,
-                    boxShadow: `0 10px 30px ${mainPurple}40`,
+                    boxShadow: isDarkMode ? `0 8px 32px ${mainPurple}33, inset 0 0 16px ${mainPurple}15` : `0 10px 30px ${mainPurple}1a`,
                 }}>
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -176,7 +179,7 @@ export default function Certificates() {
                                 overflow: 'hidden',
                                 border: isDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid #e2e8f0',
                                 marginBottom: '18px',
-                                background: isDarkMode ? '#160b2e' : '#f8fafc',
+                                background: token.colorBgContainer,
                                 width: '100%',
                                 minHeight: isDesktop ? '260px' : '180px',
                                 display: 'flex',
@@ -208,7 +211,7 @@ export default function Certificates() {
                                 />
                             </div>
 
-                            <h3 style={{ color: isDarkMode ? '#fff' : '#0f172a', fontSize: '18px', fontWeight: '700', marginBottom: '14px' }}>
+                            <h3 style={{ color: token.colorText, fontSize: '18px', fontWeight: '700', marginBottom: '14px' }}>
                                 {credentials[selectedCert].title}
                             </h3>
 

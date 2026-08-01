@@ -41,7 +41,7 @@ export default function SideBar() {
         const element = document.getElementById(sectionId);
         if (element) {
             // حساب مكان العنصر بدقة مع مراعاة ارتفاع الهيدر (لتجنب تغطية الجزء العلوي من السكشن)
-            const headerOffset = 70;
+            const headerOffset = 50;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -51,21 +51,23 @@ export default function SideBar() {
             });
         }
     };
-
-    // عند حدوث Refresh، نقوم بإجبار المتصفح على العودة لأعلى الصفحة (Home) فوراً
     useEffect(() => {
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
 
-        window.scrollTo(0, 0);
-        setActiveKey('1');
+        // إجبار الصفحة على العودة لأقصى قمة الشاشة تماماً (النقطة 0)
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant' // الانتقال يكون فورياً بدون حركة تمرير
+        });
 
-        const homeElement = document.getElementById('home');
-        if (homeElement) {
-            homeElement.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }
+        // إعادة تعيين القائمة النشطة لتكون 'Home' دائماً عند التحديث
+        setActiveKey('1');
     }, []);
+    // =================================================================================
+
 
     // مراقبة التمرير لتحديث القائمة أثناء تصفح المستخدم العادي
     useEffect(() => {
@@ -119,10 +121,12 @@ export default function SideBar() {
                         top: 0,
                         zIndex: 100,
                         background: currentTheme.token.colorBgContainer,
-                        boxShadow: '0 10px 30px rgba(168, 85, 247, 0.2)',
+                        boxShadow: `0 10px 30px ${mainPurple}33`,
+                        '--theme-primary': mainPurple, // تمرير لون الثيم كمتغير CSS لاستخدامه في ملف الـ CSS
                     }}
                 >
-                    <div style={{ fontSize: '20px', fontWeight: 'bold' , display:'flex', alignItems:'center' }}>
+
+                    <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
                         <div
                             className="nav-butterfly"

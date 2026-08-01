@@ -34,8 +34,8 @@ export default function Skills() {
     const isDesktop = screens.lg;
 
     const { token } = theme.useToken();
-    const mainPurple = '#a855f7';
-    const isDarkMode = token.colorBgLayout === '#07040d' || token.colorBgLayout.startsWith('#0');
+    const mainPurple = token.colorPrimary; // يتم سحبه مباشرة من الثيم الجديد (#9303C5)
+    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
     // توزيع المهارات على صفين مع الحفاظ على الحجم الأكبر والأنيق والخلو من النصوص الإضافية
     const row1Skills = [
@@ -51,7 +51,7 @@ export default function Skills() {
     const row2Skills = [
         { name: 'Django', icon: <SiDjango style={{ color: '#092E20' }} />, glow: '#22c55e' },
         { name: 'PostgreSQL', icon: <SiPostgresql style={{ color: '#4169E1' }} />, glow: '#4169E1' },
-        { name: 'Prisma ORM', icon: <SiPrisma style={{ color: '#a855f7' }} />, glow: '#a855f7' },
+        { name: 'Prisma ORM', icon: <SiPrisma style={{ color: mainPurple }} />, glow: mainPurple },
         { name: 'Git & GitHub', icon: <SiGit style={{ color: '#F05032' }} />, glow: '#F05032' },
         { name: 'Postman', icon: <SiPostman style={{ color: '#FF6C37' }} />, glow: '#FF6C37' },
         { name: 'HTML5', icon: <SiHtml5 style={{ color: '#E34F26' }} />, glow: '#E34F26' },
@@ -62,11 +62,11 @@ export default function Skills() {
         <div
             key={index}
             style={{
-                background: isDarkMode ? 'rgba(20, 10, 40, 0.7)' : '#ffffff',
+                background: isDarkMode ? 'rgba(20, 10, 40, 0.7)' : token.colorBgContainer,
                 backdropFilter: 'blur(16px)',
                 WebkitBackdropFilter: 'blur(16px)',
-                border: isDarkMode ? `1.5px solid ${skill.glow}88` : '1.5px solid rgba(168, 85, 247, 0.35)',
-                boxShadow: isDarkMode ? `0 8px 32px ${skill.glow}25, inset 0 0 16px ${skill.glow}15` : '0 10px 30px rgba(168, 85, 247, 0.1)',
+                border: isDarkMode ? `1.5px solid ${skill.glow}88` : `1.5px solid ${mainPurple}59`,
+                boxShadow: isDarkMode ? `0 8px 32px ${skill.glow}25, inset 0 0 16px ${skill.glow}15` : `0 10px 30px ${mainPurple}1a`,
                 borderRadius: '24px',
                 padding: '24px 32px',
                 display: 'flex',
@@ -79,22 +79,22 @@ export default function Skills() {
             }}
             onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-6px) scale(1.03)';
-                e.currentTarget.style.borderColor = '#a855f7';
-                e.currentTarget.style.boxShadow = isDarkMode ? `0 12px 40px ${skill.glow}55, inset 0 0 20px ${skill.glow}33` : '0 15px 35px rgba(168, 85, 247, 0.25)';
-                e.currentTarget.style.background = isDarkMode ? 'rgba(30, 15, 60, 0.9)' : '#fcf5ff';
+                e.currentTarget.style.borderColor = mainPurple;
+                e.currentTarget.style.boxShadow = isDarkMode ? `0 12px 40px ${skill.glow}55, inset 0 0 20px ${skill.glow}33` : `0 15px 35px ${mainPurple}40`;
+                e.currentTarget.style.background = isDarkMode ? 'rgba(30, 15, 60, 0.9)' : `${mainPurple}0D`;
             }}
             onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.borderColor = isDarkMode ? `${skill.glow}88` : '1.5px solid rgba(168, 85, 247, 0.35)';
-                e.currentTarget.style.boxShadow = isDarkMode ? `0 8px 32px ${skill.glow}25, inset 0 0 16px ${skill.glow}15` : '0 10px 30px rgba(168, 85, 247, 0.1)';
-                e.currentTarget.style.background = isDarkMode ? 'rgba(20, 10, 40, 0.7)' : '#ffffff';
+                e.currentTarget.style.borderColor = isDarkMode ? `${skill.glow}88` : `${mainPurple}59`;
+                e.currentTarget.style.boxShadow = isDarkMode ? `0 8px 32px ${skill.glow}25, inset 0 0 16px ${skill.glow}15` : `0 10px 30px ${mainPurple}1a`;
+                e.currentTarget.style.background = isDarkMode ? 'rgba(20, 10, 40, 0.7)' : token.colorBgContainer;
             }}
         >
             <div style={{ fontSize: '42px', display: 'flex', alignItems: 'center', flexShrink: 0, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.35))' }}>
                 {skill.icon}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <span style={{ color: isDarkMode ? '#f3e8ff' : '#0f172a', fontSize: '17px', fontWeight: '700', whiteSpace: 'nowrap', letterSpacing: '0.3px' }}>
+                <span style={{ color: isDarkMode ? '#f3e8ff' : token.colorText, fontSize: '17px', fontWeight: '700', whiteSpace: 'nowrap', letterSpacing: '0.3px' }}>
                     {skill.name}
                 </span>
             </div>
@@ -115,10 +115,11 @@ export default function Skills() {
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    viewport={{once:true}}
+                    viewport={{ once: true }}
                 >
+                    {/* العنوان والـ Icon متصلان الآن باللون الجديد للثيم mainPurple مباشرة */}
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <CodeOutlined /> Expertise
+                        <CodeOutlined style={{ color: mainPurple }} /> Expertise
                     </div>
                     <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: '800', margin: 0 }}>
                         Skills & Technologies
@@ -139,12 +140,12 @@ export default function Skills() {
                     style={{ padding: '10px 0' }}
                 >
                     {row1Skills.map((skill, index) => (
-                        <SwiperSlide key={index} style={{ width: 'auto' }}>
+                        <SwiperSlide key={index} style={{ width: 'auto', background: token.colorBgContainer }}>
                             {renderSkillCard(skill, index)}
                         </SwiperSlide>
                     ))}
                     {row1Skills.map((skill, index) => (
-                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto' }}>
+                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', background: token.colorBgContainer }}>
                             {renderSkillCard(skill, `dup-${index}`)}
                         </SwiperSlide>
                     ))}
@@ -164,12 +165,12 @@ export default function Skills() {
                     style={{ padding: '10px 0' }}
                 >
                     {row2Skills.map((skill, index) => (
-                        <SwiperSlide key={index} style={{ width: 'auto' }}>
+                        <SwiperSlide key={index} style={{ width: 'auto', background: token.colorBgContainer }}>
                             {renderSkillCard(skill, index)}
                         </SwiperSlide>
                     ))}
                     {row2Skills.map((skill, index) => (
-                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto' }}>
+                        <SwiperSlide key={`dup-${index}`} style={{ width: 'auto', background: token.colorBgContainer }}>
                             {renderSkillCard(skill, `dup-${index}`)}
                         </SwiperSlide>
                     ))}

@@ -26,14 +26,11 @@ export default function Hero() {
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDesktop = screens.lg;
+    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
     return (
-        <motion.div
+        <div
             id="home"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
             style={{
                 position: 'relative',
                 minHeight: isDesktop ? '45vh' : 'auto',
@@ -49,12 +46,16 @@ export default function Hero() {
                 margin: '15px auto',
                 background: token.colorBgContainer,
                 border: `1.5px solid ${mainPurple}80`,
-                boxShadow: `0 8px 24px ${mainPurple}20`,
+                boxShadow: isDarkMode ? `0 8px 32px ${mainPurple}33, inset 0 0 16px ${mainPurple}15` : `0 10px 30px ${mainPurple}1a`,
             }}
         >
-            {/* 1. تصميم الشاشات الكبيرة */}
+            {/* 1. تصميم وصورة الشاشات الكبيرة مع حركة مستقلة */}
             {isDesktop && (
-                <div
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95, x: 20 }}
+                    whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
                     style={{
                         position: 'absolute',
                         right: 0,
@@ -66,14 +67,18 @@ export default function Hero() {
                         backgroundPosition: 'center right',
                         backgroundRepeat: 'no-repeat',
                         zIndex: 1,
-                        filter: `drop-shadow(0 30px 80px rgba(168, 85, 247, 0.35))`,
+                        filter: `drop-shadow(0 30px 80px ${mainPurple}59)`,
                     }}
                 />
             )}
 
-            {/* للشاشات الصغيرة والمتوسطة */}
+            {/* للشاشات الصغيرة والمتوسطة مع حركة مستقلة */}
             {!isDesktop && (
-                <div
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
                     style={{
                         position: 'relative',
                         width: '100%',
@@ -95,14 +100,18 @@ export default function Hero() {
                             height: '100%',
                             objectFit: 'contain',
                             display: 'block',
-                            filter: `drop-shadow(0 20px 50px rgba(168, 85, 247, 0.35))`,
+                            filter: `drop-shadow(0 20px 50px ${mainPurple}59)`,
                         }}
                     />
-                </div>
+                </motion.div>
             )}
 
-            {/* 2. قسم النصوص والأزرار */}
-            <div
+            {/* 2. قسم النصوص والأزرار كحزمة واحدة تتحرك معاً */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
                 style={{
                     maxWidth: isDesktop ? '450px' : '100%',
                     width: '100%',
@@ -149,7 +158,7 @@ export default function Hero() {
                     />
                 </div>
 
-                {/* الأزرار المحدثة لتتطابق تماماً مع هويّة أزرار قسم المشاريع */}
+                {/* الأزرار */}
                 <div
                     style={{
                         display: 'flex',
@@ -170,7 +179,7 @@ export default function Hero() {
                             style={{
                                 background: `linear-gradient(135deg, ${mainPurple} 0%, ${mainPurple}CC 100%)`,
                                 border: '1.5px solid transparent',
-                                borderRadius: '50px',
+                                borderRadius: '15px',
                                 height: '48px',
                                 padding: '0 28px',
                                 color: '#ffffff',
@@ -196,7 +205,7 @@ export default function Hero() {
                     >
                         <Button
                             style={{
-                                borderRadius: '50px',
+                                borderRadius: '15px',
                                 height: '48px',
                                 padding: '0 28px',
                                 background: `${mainPurple}0D`,
@@ -216,7 +225,7 @@ export default function Hero() {
                         </Button>
                     </motion.div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Modal الخاص بالسي في */}
             <Modal
@@ -304,6 +313,6 @@ export default function Hero() {
                     </Card>
                 </Space>
             </Modal>
-        </motion.div>
+        </div>
     );
 }

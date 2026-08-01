@@ -13,9 +13,11 @@ import {
 
 export default function Loader() {
     const { token } = theme.useToken();
-    const mainPurple = '#a855f7';
-    const isDarkMode = token.colorBgLayout === '#07040d' || token.colorBgLayout.startsWith('#0');
-    const layoutBackground = isDarkMode ? '#05020a' : '#f2ebfb';
+    const mainPurple = '#9303C5';
+    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
+    
+    // استخدام خلفية الوضع الداكن المطلوبة `#02060E`
+    const layoutBackground = isDarkMode ? '#02060E' : '#f4eefb';
     
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
@@ -95,14 +97,14 @@ export default function Loader() {
                     style={{
                         width: '100%',
                         maxWidth: '540px',
-                        background: isDarkMode ? 'rgba(12, 5, 26, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+                        background: token.colorBgContainer,
                         backdropFilter: 'blur(35px)',
-                        border: `1.5px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.5)' : 'rgba(168, 85, 247, 0.3)'}`,
+                        border: `1.5px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.5)' : 'rgba(147, 3, 197, 0.3)'}`,
                         borderRadius: '28px',
                         padding: '32px',
                         boxShadow: isDarkMode 
-                            ? `0 40px 100px rgba(168, 85, 247, 0.4), inset 0 0 35px rgba(168, 85, 247, 0.12)` 
-                            : `0 40px 100px rgba(168, 85, 247, 0.25), inset 0 0 35px rgba(168, 85, 247, 0.06)`,
+                            ? `0 40px 100px rgba(2, 6, 14, 0.9), inset 0 0 35px rgba(147, 3, 197, 0.15)` 
+                            : `0 40px 100px rgba(147, 3, 197, 0.25), inset 0 0 35px rgba(147, 3, 197, 0.06)`,
                         position: 'relative',
                         zIndex: 1,
                     }}
@@ -113,7 +115,7 @@ export default function Loader() {
                         justifyContent: 'space-between', 
                         alignItems: 'center', 
                         marginBottom: '26px', 
-                        borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.25)' : '#e2e8f0'}`, 
+                        borderBottom: `1px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.25)' : '#e2e8f0'}`, 
                         paddingBottom: '12px',
                         flexWrap: 'wrap',
                         gap: '8px'
@@ -122,7 +124,7 @@ export default function Loader() {
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }} />
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }} />
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />
-                            <span style={{ color: isDarkMode ? '#9ca3af' : '#64748b', fontSize: '11px', marginLeft: '6px', fontFamily: 'monospace' }}>bash</span>
+                            <span style={{ color: token.colorTextSecondary, fontSize: '11px', marginLeft: '6px', fontFamily: 'monospace' }}>bash</span>
                         </div>
                         
                         <div style={{ 
@@ -186,7 +188,7 @@ export default function Loader() {
                         <div style={{ color: mainPurple, fontSize: '12px', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'monospace' }}>
                             Rahaf Fallatah
                         </div>
-                        <h2 style={{ color: isDarkMode ? '#ffffff' : '#0f172a', fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>
+                        <h2 style={{ color: token.colorText, fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>
                             Compiling Workspace...
                         </h2>
                     </div>
@@ -196,7 +198,7 @@ export default function Loader() {
                         style={{
                             width: '100%',
                             height: '10px',
-                            background: isDarkMode ? 'rgba(168, 85, 247, 0.15)' : '#e2e8f0',
+                            background: isDarkMode ? 'rgba(147, 3, 197, 0.15)' : '#e2e8f0',
                             borderRadius: '8px',
                             overflow: 'hidden',
                             position: 'relative',
@@ -220,7 +222,7 @@ export default function Loader() {
                         animate={isComplete ? { scale: [1, 1.02, 1], borderColor: '#10b981' } : {}}
                         transition={{ duration: 0.4 }}
                         style={{ 
-                            background: isDarkMode ? 'rgba(5, 2, 12, 0.75)' : 'rgba(240, 230, 255, 0.6)', 
+                            background: isDarkMode ? 'rgba(2, 6, 14, 0.85)' : 'rgba(240, 230, 255, 0.6)', 
                             border: `1px solid ${isComplete ? '#10b981' : `${mainPurple}35`}`, 
                             borderRadius: '14px', 
                             padding: '14px 18px', 

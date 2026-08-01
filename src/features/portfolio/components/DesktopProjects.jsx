@@ -127,7 +127,7 @@ export default function DesktopProjects({ projects, mainPurple }) {
                                         alignItems: 'center',
                                         gap: '9px',
                                         padding: '12px 12px',
-                                        borderRadius: '50px', // شكل كبسولي أنيق جداً يكسر حدة المربعات
+                                        borderRadius: '15px',
                                         background: `${mainPurple}0D`,
                                         border: `1.5px solid ${mainPurple}40`,
                                         color: mainPurple,
@@ -161,7 +161,7 @@ export default function DesktopProjects({ projects, mainPurple }) {
                                         alignItems: 'center',
                                         gap: '10px',
                                         padding: '12px 26px',
-                                        borderRadius: '50px', // شكل كبسولي متناسق
+                                        borderRadius: '15px',
                                         background: `linear-gradient(135deg, ${mainPurple} 0%, ${mainPurple}CC 100%)`,
                                         border: '1.5px solid transparent',
                                         color: '#ffffff',
