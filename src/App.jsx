@@ -7,24 +7,30 @@ import Loader from './features/portfolio/pages/Loader';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log('[APP] render, isLoading =', isLoading, 'time =', performance.now());
+
   useEffect(() => {
+    console.log('[APP] useEffect mounted, readyState =', document.readyState, 'time =', performance.now());
+
     const handleLoaded = () => {
-      // إعطاء مهلة قصيرة لضمان استقرار رسم عناصر الـ DOM بالكامل على كافة المتصفحات ومنها Safari
+      console.log('[APP] load event fired, time =', performance.now());
       setTimeout(() => {
+        console.log('[APP] 2300ms timeout done -> setIsLoading(false), time =', performance.now());
         setIsLoading(false);
       }, 2300);
     };
 
     if (document.readyState === 'complete') {
+      console.log('[APP] readyState already complete, time =', performance.now());
       handleLoaded();
     } else {
       window.addEventListener('load', handleLoaded);
-      
-      // مؤقت احتياطي لضمان عمل الـ Loader وعدم تعليقه في حال تأخر حدث الـ load
+
       const fallbackTimer = setTimeout(() => {
+        console.log('[APP] FALLBACK 3500ms timeout fired -> setIsLoading(false), time =', performance.now());
         setIsLoading(false);
       }, 3500);
-      
+
       return () => {
         window.removeEventListener('load', handleLoaded);
         clearTimeout(fallbackTimer);

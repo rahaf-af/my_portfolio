@@ -12,7 +12,9 @@ import {
 } from '@ant-design/icons';
 
 export default function Loader() {
+    console.log('[LOADER] rendering, time =', performance.now());
     const { token } = theme.useToken();
+
     const mainPurple = '#9303C5';
 
     // استخدام طريقة آمنة جداً للتحقق من الثيم الداكن لتجنب أي قيم فارغة أو غير متوقعة
