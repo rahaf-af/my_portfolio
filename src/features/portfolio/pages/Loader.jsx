@@ -14,10 +14,15 @@ import {
 export default function Loader() {
     const { token } = theme.useToken();
     const mainPurple = '#9303C5';
-    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
-    // استخدام خلفية الوضع الداكن المطلوبة `#02060E`
+    // استخدام طريقة آمنة جداً للتحقق من الثيم الداكن لتجنب أي قيم فارغة أو غير متوقعة
+    const isDarkMode = Boolean(
+        token?.colorBgLayout && 
+        (token.colorBgLayout === '#02060E' || token.colorBgLayout.toLowerCase().includes('0') || token.colorBgLayout.startsWith('#0'))
+    );
+
     const layoutBackground = isDarkMode ? '#02060E' : '#f4eefb';
+    const cardBackground = isDarkMode ? '#0a0f1d' : '#ffffff'; // خلفية آمنة وصريحة للبطاقة
 
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
@@ -32,11 +37,10 @@ export default function Loader() {
                 }
                 return prev + 1;
             });
-        }, 12); // سرعة متوازنة وثابتة على كل الأجهزة
+        }, 12);
 
         return () => clearInterval(interval);
-    }, []); // <-- تم إزالة المتغير المفقود من هنا لئلا يسبب أي خطأ مراجع
-
+    }, []);
 
     const getDevLogs = () => {
         if (progress < 20) return { text: 'git init & cloning modules...', icon: <CodeOutlined /> };
@@ -65,12 +69,12 @@ export default function Loader() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    zIndex: 9999,
+                    zIndex: 99999,
                     overflow: 'hidden',
                     padding: '16px',
                 }}
             >
-                {/* خلفية ضوئية متحركة ومتعرجة (Shape of Movement) */}
+                {/* خلفية ضوئية متحركة ومتعرجة */}
                 <motion.div
                     animate={{
                         scale: [1, 1.4, 1.1, 1],
@@ -89,7 +93,7 @@ export default function Loader() {
                     }}
                 />
 
-                {/* الحاوية الرئيسية */}
+                {/* الحاوية الرئيسية (تمت تأمين خلفيتها لضمان ظهورها وعدم اندماجها مع الخلفية) */}
                 <motion.div
                     initial={{ opacity: 0, y: 40, scale: 0.85 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -97,7 +101,7 @@ export default function Loader() {
                     style={{
                         width: '100%',
                         maxWidth: '540px',
-                        background: token.colorBgContainer,
+                        background: cardBackground,
                         backdropFilter: 'blur(35px)',
                         border: `1.5px solid ${isDarkMode ? 'rgba(147, 3, 197, 0.5)' : 'rgba(147, 3, 197, 0.3)'}`,
                         borderRadius: '28px',
@@ -124,7 +128,7 @@ export default function Loader() {
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }} />
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }} />
                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />
-                            <span style={{ color: token.colorTextSecondary, fontSize: '11px', marginLeft: '6px', fontFamily: 'monospace' }}>bash</span>
+                            <span style={{ color: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '11px', marginLeft: '6px', fontFamily: 'monospace' }}>bash</span>
                         </div>
 
                         <div style={{
@@ -188,7 +192,7 @@ export default function Loader() {
                         <div style={{ color: mainPurple, fontSize: '12px', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'monospace' }}>
                             Rahaf Fallatah
                         </div>
-                        <h2 style={{ color: token.colorText, fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>
+                        <h2 style={{ color: isDarkMode ? '#ffffff' : '#0f172a', fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>
                             Compiling Workspace...
                         </h2>
                     </div>
@@ -217,7 +221,7 @@ export default function Loader() {
                         />
                     </div>
 
-                    {/* نافذة السجلات مع تأثير النبض عند اكتمال 100% */}
+                    {/* نافذة السجلات */}
                     <motion.div
                         animate={isComplete ? { scale: [1, 1.02, 1], borderColor: '#10b981' } : {}}
                         transition={{ duration: 0.4 }}
