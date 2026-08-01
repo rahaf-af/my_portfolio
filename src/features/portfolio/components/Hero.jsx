@@ -19,6 +19,16 @@ const handleOpenCv = (cvUrl) => {
     window.open(cvUrl, '_blank', 'noopener,noreferrer');
 };
 
+const handleDownloadCv = (cvUrl, fileName) => {
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
 export default function Hero() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const screens = useBreakpoint();
@@ -268,13 +278,13 @@ export default function Hero() {
                             <Button
                                 type="text"
                                 icon={<EyeOutlined style={{ fontSize: '16px' }} />}
-                                onClick={() => handleOpenCv(frontendCvPdf)}
+                                onClick={() => handleDownloadCv(frontendCvPdf , 'Rahaf_Fallatah_Frontend_developer.pdf')}
                                 style={{ color: mainPurple }}
                             />
                             <Button
                                 type="primary"
                                 icon={<DownloadOutlined />}
-                                onClick={() => handleOpenCv(frontendCvPdf)}
+                                onClick={() => handleDownloadCv(frontendCvPdf , 'Rahaf_Fallatah_Frontend_developer.pdf')}
                                 style={{ background: mainPurple, borderColor: mainPurple, borderRadius: '8px' }}
                             >
                                 Download
