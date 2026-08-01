@@ -8,13 +8,29 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2200);
+    const handleLoaded = () => {
+      // إعطاء مهلة قصيرة لضمان استقرار رسم عناصر الـ DOM بالكامل على كافة المتصفحات ومنها Safari
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2300);
+    };
 
-    return () => clearTimeout(timer);
+    if (document.readyState === 'complete') {
+      handleLoaded();
+    } else {
+      window.addEventListener('load', handleLoaded);
+      
+      // مؤقت احتياطي لضمان عمل الـ Loader وعدم تعليقه في حال تأخر حدث الـ load
+      const fallbackTimer = setTimeout(() => {
+        setIsLoading(false);
+      }, 3500);
+      
+      return () => {
+        window.removeEventListener('load', handleLoaded);
+        clearTimeout(fallbackTimer);
+      };
+    }
   }, []);
-
 
   return (
     <>
