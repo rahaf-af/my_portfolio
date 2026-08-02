@@ -23,6 +23,13 @@ export default function ContactForm() {
 
     // دالة إرسال الرسالة عبر EmailJS
     const handleSubmit = async (values) => {
+        // حماية Honeypot: حقل مخفي عن عين المستخدم الحقيقي، البوتات فقط تعبيه.
+        // لو انعبى، نتجاهل الإرسال بصمت (نوهم البوت إنه نجح) بدون ما نستهلك حصة EmailJS
+        if (values.website) {
+            form.resetFields();
+            return;
+        }
+
         setLoading(true);
 
         const templateParams = {
@@ -197,6 +204,16 @@ export default function ContactForm() {
                         onFinish={handleSubmit}
                         requiredMark={false}
                     >
+                        {/* حقل Honeypot: مخفي تماماً عن المستخدم الحقيقي، البوتات فقط تعبيه */}
+                        <Form.Item
+                            name="website"
+                            style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, overflow: 'hidden' }}
+                            tabIndex="-1"
+                            autoComplete="off"
+                        >
+                            <Input tabIndex="-1" autoComplete="off" />
+                        </Form.Item>
+
                         {/* استخدام حاوية Grid بمسافات موحدة ومتساوية (rowGap & columnGap) */}
                         <div style={{
                             display: 'grid',
@@ -207,7 +224,12 @@ export default function ContactForm() {
                         }}>
                             <Form.Item
                                 name="user_name"
-                                rules={[{ required: true, message: 'Please enter your name!' }]}
+                                rules={[
+                                    { required: true, message: 'Please enter your name!' },
+                                    { whitespace: true, message: 'Name cannot be empty spaces!' },
+                                    { min: 2, message: 'Name is too short!' },
+                                    { max: 60, message: 'Name is too long!' },
+                                ]}
                                 style={{ marginBottom: 0 }}
                             >
                                 <Input
@@ -227,7 +249,8 @@ export default function ContactForm() {
                                 name="user_email"
                                 rules={[
                                     { required: true, message: 'Please enter your email!' },
-                                    { type: 'email', message: 'Please enter a valid email!' }
+                                    { type: 'email', message: 'Please enter a valid email!' },
+                                    { max: 100, message: 'Email is too long!' },
                                 ]}
                                 style={{ marginBottom: 0 }}
                             >
@@ -247,7 +270,12 @@ export default function ContactForm() {
 
                         <Form.Item
                             name="subject"
-                            rules={[{ required: true, message: 'Please enter a subject!' }]}
+                            rules={[
+                                { required: true, message: 'Please enter a subject!' },
+                                { whitespace: true, message: 'Subject cannot be empty spaces!' },
+                                { min: 3, message: 'Subject is too short!' },
+                                { max: 120, message: 'Subject is too long!' },
+                            ]}
                             style={{ marginBottom: '16px' }}
                         >
                             <Input
@@ -265,7 +293,12 @@ export default function ContactForm() {
 
                         <Form.Item
                             name="message"
-                            rules={[{ required: true, message: 'Please enter your message!' }]}
+                            rules={[
+                                { required: true, message: 'Please enter your message!' },
+                                { whitespace: true, message: 'Message cannot be empty spaces!' },
+                                { min: 10, message: 'Message is too short, please add more details!' },
+                                { max: 1000, message: 'Message is too long!' },
+                            ]}
                             style={{ marginBottom: '24px' }}
                         >
                             <Input.TextArea
