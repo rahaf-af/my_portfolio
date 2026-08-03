@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, theme } from 'antd';
-import { CodeOutlined, CalendarOutlined, EnvironmentOutlined, ReadOutlined } from '@ant-design/icons';
+import { CodeOutlined, CalendarOutlined, EnvironmentOutlined, ReadOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 
 const { useBreakpoint } = Grid;
@@ -9,26 +9,19 @@ export default function Experience() {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
 
-    // جلب الثيم المركزي وتحديد الألوان بناءً عليه
     const { token } = theme.useToken();
-    const mainPurple = token.colorPrimary;
+    const mainColor = token.colorPrimary;
 
+    // التسلسل الزمني مع التسميات الكاملة والتعداد التقني
     const timelineData = [
         {
-            type: 'work',
-            role: 'Front-End Developer',
-            company: 'TechWin',
-            period: 'Nov 2025 - Jul 2026',
-            location: 'Makkah, Saudi Arabia • Hybrid',
-            description: 'Developed responsive production-level user interfaces by translating UI designs into React.js components.'
-        },
-        {
-            type: 'work',
-            role: 'Software Engineer',
-            company: 'Saudi Digital Academy',
-            period: 'Aug 2025 - Nov 2025',
-            location: 'Riyadh, Saudi Arabia • Remote',
-            description: 'Built and styled multiple responsive web projects using HTML, CSS, and JavaScript.'
+            type: 'education',
+            role: "Bachelor's degree, Information Systems",
+            company: 'Umm Al-Qura University',
+            period: 'Sep 2020 - Nov 2024',
+            location: 'Makkah, Saudi Arabia',
+            description: 'Graduated with a strong foundation in information systems, database management, and software principles.',
+            tag: 'Education_01'
         },
         {
             type: 'work',
@@ -36,15 +29,26 @@ export default function Experience() {
             company: 'Tuwaiq Academy',
             period: 'Feb 2025 - May 2025',
             location: 'Riyadh, Saudi Arabia • On-site',
-            description: 'Developed multiple web applications using Django, HTML, CSS, and Bootstrap as part of intensive bootcamp.'
+            description: 'Developed multiple web applications using Django, HTML, CSS, and Bootstrap as part of intensive bootcamp.',
+            tag: 'Bootcamp_01'
         },
         {
-            type: 'education',
-            role: "Bachelor's degree, Information Systems",
-            company: 'Umm Al-Qura University',
-            period: 'Sep 2020 - Nov 2024',
-            location: 'Makkah, Saudi Arabia',
-            description: 'Graduated with a strong foundation in information systems, database management, and software principles.'
+            type: 'work',
+            role: 'Software Engineer',
+            company: 'Saudi Digital Academy',
+            period: 'Aug 2025 - Nov 2025',
+            location: 'Riyadh, Saudi Arabia • Remote',
+            description: 'Built and styled multiple responsive web projects using HTML, CSS, and JavaScript.',
+            tag: 'Bootcamp_02'
+        },
+        {
+            type: 'work',
+            role: 'Front-End Developer',
+            company: 'TechWin',
+            period: 'Nov 2025 - Jul 2026',
+            location: 'Makkah, Saudi Arabia • Hybrid',
+            description: 'Developed responsive production-level user interfaces by translating UI designs into React.js components.',
+            tag: 'Experience_01'
         }
     ];
 
@@ -52,143 +56,208 @@ export default function Experience() {
         <section
             id="experience"
             style={{
-                padding: isDesktop ? '80px 24px' : '50px 16px',
+                padding: isDesktop ? '130px 24px' : '70px 16px',
                 position: 'relative',
-                maxWidth: '1050px',
-                margin: '0 auto'
+                maxWidth: '1150px',
+                margin: '0 auto',
+                overflow: 'hidden'
             }}
         >
-            {/* عنوان السكشن */}
-            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    viewport={{once:true}}
+                    viewport={{ once: true }}
                 >
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <CodeOutlined /> Career & Education
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainColor, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
+                        <ThunderboltOutlined /> Experience
                     </div>
-                    <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: '800', margin: 0 }}>
+                    <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: '800', margin: 0 }}>
                         My Journey
                     </h2>
                 </motion.div>
             </div>
-            {/* الحاوية للتايم لاين مع العمود الوسطي */}
+
+            {/* الحاوية الرئيسية */}
             <div style={{
                 position: 'relative',
-                borderLeft: isDesktop ? 'none' : `2px solid ${mainPurple}55`,
-                marginLeft: isDesktop ? '0' : '15px',
-                paddingLeft: isDesktop ? '0' : '20px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '30px'
+                gap: isDesktop ? '80px' : '50px',
+                marginTop: isDesktop ? '80px' : '50px',
             }}>
-                {/* خط المنتصف للشاشات الكبيرة */}
+                {/* خط الثعبان المتعرج الخلفي (ديسكتوب) */}
                 {isDesktop && (
+                    <svg
+                        style={{
+                            position: 'absolute',
+                            top: '50px',
+                            bottom: '50px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '260px',
+                            height: 'calc(100% - 100px)',
+                            pointerEvents: 'none',
+                            zIndex: 0
+                        }}
+                        viewBox="0 0 260 1000"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M 190 0 
+                               C 190 166, 70 166, 70 333 
+                               C 70 500, 190 500, 190 666 
+                               C 190 833, 70 833, 70 1000"
+                            fill="none"
+                            stroke={mainColor}
+                            strokeWidth="3.5"
+                            strokeDasharray="8 8"
+                            opacity="0.75"
+                        />
+                    </svg>
+                )}
+
+                {/* خط الموبايل العمودي */}
+                {!isDesktop && (
                     <div style={{
                         position: 'absolute',
-                        left: '50%',
-                        top: '0',
-                        bottom: '0',
-                        width: '2px',
-                        background: `${mainPurple}55`,
-                        transform: 'translateX(-50%)'
+                        left: '18px',
+                        top: '20px',
+                        bottom: '20px',
+                        width: '3px',
+                        background: `linear-gradient(to bottom, ${mainColor}, ${token.colorBorder})`,
+                        zIndex: 0
                     }} />
                 )}
 
                 {timelineData.map((item, index) => {
-                    const isEven = index % 2 === 0;
+                    const isLeftNode = index === 0 || index === 2;
 
                     return (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 25 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{once:true}}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: index * 0.15 }}
                             style={{
                                 position: 'relative',
                                 display: 'flex',
-                                justifyContent: isDesktop ? (isEven ? 'flex-end' : 'flex-start') : 'flex-start',
-                                width: '100%'
+                                justifyContent: isDesktop ? (isLeftNode ? 'flex-start' : 'flex-end') : 'flex-start',
+                                width: '100%',
+                                paddingLeft: isDesktop ? '0' : '45px',
+                                minHeight: '190px',
+                                alignItems: 'center',
+                                zIndex: 1
                             }}
                         >
-                            {/* نقطة التايم لاين المركزية */}
+                            {/* الأيقونة المركزية (مستقيمة تماماً وفي مكانها الصحيح) */}
                             <div style={{
                                 position: 'absolute',
-                                left: isDesktop ? '50%' : '-31px',
-                                top: '16px',
-                                width: '22px',
-                                height: '22px',
-                                borderRadius: '50%',
-                                background: token.colorBgElevated,
-                                border: `2px solid ${mainPurple}`,
+                                left: isDesktop ? (isLeftNode ? 'calc(50% - 60px)' : 'calc(50% + 60px)') : '18px',
+                                top: '50%',
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '15px',
+                                background: token.colorBgContainer,
+                                border: `2.5px solid ${mainColor}`,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                boxShadow: `0 0 10px ${mainPurple}aa`,
-                                color: mainPurple,
-                                fontSize: '10px',
-                                transform: isDesktop ? 'translateX(-50%)' : 'none',
-                                zIndex: 2
+                                boxShadow: `0 0 20px ${mainColor}50`,
+                                color: mainColor,
+                                fontSize: '18px',
+                                transform: 'translate(-50%, -50%)',
+                                zIndex: 3
                             }}>
                                 {item.type === 'work' ? <CodeOutlined /> : <ReadOutlined />}
                             </div>
 
-                            {/* كرت التفاصيل */}
+                            {/* الشكل المائل الأصلي للكرت */}
                             <div
                                 style={{
                                     background: token.colorBgContainer,
-                                    border: `1.5px solid ${mainPurple}80`,
-                                    boxShadow: `0 10px 30px ${mainPurple}40`,
-                                    width: isDesktop ? '47%' : '100%',
-                                    backdropFilter: 'blur(10px)',
-                                    WebkitBackdropFilter: 'blur(10px)',
-                                    borderRadius: '16px',
-                                    padding: '20px 24px',
-                                    transition: 'all 0.3s ease',
+                                    border: `1.5px solid ${token.colorBorder}`,
+                                    boxShadow: token.boxShadowSecondary,
+                                    width: isDesktop ? '42%' : '100%',
+                                    borderRadius: '26px 8px 26px 26px',
+                                    padding: isDesktop ? '30px' : '22px',
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-3px)';
-                                    e.currentTarget.style.borderColor = mainPurple;
-                                    e.currentTarget.style.boxShadow = `0 12px 35px ${mainPurple}44`;
+                                    if (isDesktop) {
+                                        e.currentTarget.style.transform = 'translateY(-8px) scale(1.01)';
+                                        e.currentTarget.style.borderColor = mainColor;
+                                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}20`;
+                                    }
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.borderColor = `${mainPurple}80`;
-                                    e.currentTarget.style.boxShadow = `0 10px 30px ${mainPurple}40`;
+                                    if (isDesktop) {
+                                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                        e.currentTarget.style.borderColor = token.colorBorder;
+                                        e.currentTarget.style.boxShadow = token.boxShadowSecondary;
+                                    }
                                 }}
                             >
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '8px' }}>
-                                    <h3 style={{ color: token.colorText, fontSize: '1.15rem', fontWeight: '700', margin: 0 }}>
-                                        {item.role}
-                                    </h3>
+                                {/* شارة الزاوية المائلة الأصلية */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    background: token.colorFillSecondary,
+                                    padding: '6px 14px',
+                                    borderBottomLeftRadius: '16px',
+                                    borderLeft: `1px solid ${token.colorBorder}`,
+                                    borderBottom: `1px solid ${token.colorBorder}`,
+                                    fontSize: '10px',
+                                    fontWeight: '800',
+                                    color: mainColor,
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    {item.tag}
+                                </div>
+
+                                {/* تاريخ الفترة مع مسافة أمان إضافية أكبر عن التاب في الشاشة الصغيرة */}
+                                <div style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    marginTop: isDesktop ? '0px' : '14px',
+                                    marginBottom: '14px'
+                                }}>
                                     <span style={{
-                                        background: `${mainPurple}22`,
-                                        color: mainPurple,
-                                        border: `1px solid ${mainPurple}55`,
-                                        padding: '3px 12px',
-                                        borderRadius: '20px',
-                                        fontSize: '11.5px',
-                                        fontWeight: '600',
+                                        background: token.colorFillTertiary,
+                                        color: token.colorTextHeading,
+                                        border: `1px solid ${token.colorBorder}`,
+                                        padding: '3px 10px',
+                                        borderRadius: '16px',
+                                        fontSize: '11px',
+                                        fontWeight: '700',
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        gap: '5px'
+                                        gap: '6px'
                                     }}>
-                                        <CalendarOutlined /> {item.period}
+                                        <CalendarOutlined style={{ color: mainColor }} /> {item.period}
                                     </span>
                                 </div>
 
-                                <div style={{ color: mainPurple, fontSize: '14.5px', fontWeight: '600', marginBottom: '6px' }}>
+                                {/* تفاصيل المحتوى */}
+                                <h3 style={{ color: token.colorTextHeading, fontSize: isDesktop ? '1.25rem' : '1.1rem', fontWeight: '900', margin: '0 0 6px 0', letterSpacing: '-0.3px' }}>
+                                    {item.role}
+                                </h3>
+
+                                <div style={{ color: mainColor, fontSize: '14.5px', fontWeight: '800', marginBottom: '8px' }}>
                                     {item.company}
                                 </div>
 
-                                <div style={{ color: token.colorTextSecondary, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '12px' }}>
-                                    <EnvironmentOutlined /> {item.location}
+                                <div style={{ color: token.colorTextSecondary, fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '14px', fontWeight: '600' }}>
+                                    <EnvironmentOutlined style={{ color: mainColor }} /> {item.location}
                                 </div>
 
-                                <p style={{ color: token.colorTextSecondary, fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
+                                <p style={{ color: token.colorTextSecondary, fontSize: '13px', lineHeight: '1.6', margin: 0, fontWeight: '400' }}>
                                     {item.description}
                                 </p>
                             </div>

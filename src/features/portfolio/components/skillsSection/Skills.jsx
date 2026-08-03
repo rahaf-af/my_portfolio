@@ -121,7 +121,7 @@ export default function Skills() {
                     viewport={{ once: true }}
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <CodeOutlined style={{ color: mainPurple }} /> Expertise
+                        <CodeOutlined style={{ color: mainPurple }} /> SKILLS
                     </div>
                     <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: '800', margin: '0 0 10px 0' }}>
                         Skills & Tools
