@@ -1,196 +1,262 @@
 import React from 'react';
 import { Tag, theme } from 'antd';
 import { motion } from 'framer-motion';
-import { GithubOutlined, GlobalOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { FiArrowUpRight } from "react-icons/fi";
 
-export default function DesktopProjects({ projects, mainPurple }) {
+// ── ثوابت التصميم (بدل الأرقام السايبة جوه الـ styles) ──
+const CARD_RADIUS = 32;
+const IMAGE_RADIUS = 24;
+const IMAGE_HEIGHT = 350;
+const FLOATING_ICON_SIZE = 60;
+const FLOATING_ICON_OFFSET = -22;
+const CARD_ANIMATION = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+};
+
+const styles = {
+    container: {
+        width: '100%',
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '40px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '40px',
+    },
+    card: (bg, purple) => ({
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        alignItems: 'center',
+        gap: '40px',
+        background: bg,
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${purple}35`,
+        borderRadius: `${CARD_RADIUS}px`,
+        padding: '40px',
+        position: 'relative',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+    }),
+    imageWrapper: (purple) => ({
+        borderRadius: `${IMAGE_RADIUS}px`,
+        overflow: 'hidden',
+        border: `1px solid ${purple}40`,
+        boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+        width: '100%',
+        height: `${IMAGE_HEIGHT}px`,
+        position: 'relative',
+    }),
+    floatingIcon: (bg, purple, isLeft) => ({
+        position: 'absolute',
+        top: `${FLOATING_ICON_OFFSET}px`,
+        [isLeft ? 'left' : 'right']: `${FLOATING_ICON_OFFSET}px`,
+        width: `${FLOATING_ICON_SIZE}px`,
+        height: `${FLOATING_ICON_SIZE}px`,
+        borderRadius: '20px',
+        background: bg,
+        border: `1.5px solid ${purple}60`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: purple,
+        fontSize: '24px',
+        boxShadow: `0 10px 25px ${purple}30`,
+        zIndex: 3,
+    }),
+    contentBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        textAlign: 'left',
+        direction: 'ltr',
+    },
+    number: (purple) => ({
+        fontSize: '48px',
+        fontWeight: '800',
+        color: purple,
+        lineHeight: 1,
+        letterSpacing: '-1px',
+    }),
+    divider: (purple) => ({
+        width: '1px',
+        height: '24px',
+        background: `${purple}40`,
+    }),
+    tag: (purple) => ({
+        background: `${purple}15`,
+        color: purple,
+        border: `1px solid ${purple}45`,
+        borderRadius: '6px',
+        fontSize: '11.5px',
+        padding: '3px 10px',
+        fontWeight: '600',
+        margin: 0,
+    }),
+    description: (textColor) => ({
+        color: textColor,
+        fontSize: '14.5px',
+        lineHeight: '1.6',
+        margin: 0,
+        opacity: 0.85,
+    }),
+    link: (purple) => ({
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '10px',
+        color: purple,
+        fontWeight: '700',
+        fontSize: '14.5px',
+        textDecoration: 'none',
+    }),
+    linkIconWrapper: (purple) => ({
+        width: '28px',
+        height: '28px',
+        borderRadius: '50%',
+        border: `1px solid ${purple}50`,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: `${purple}15`,
+    }),
+    title: {
+        fontSize: '26px',
+        fontWeight: '800',
+        margin: 0,
+        letterSpacing: '-0.5px',
+        lineHeight: '1.2',
+    },
+};
+
+function renderFormattedTitle(title, mainPurple, themeTextColor) {
+    if (!title) return null;
+
+    const separatorRegex = /\s*[-–]\s*/;
+    const parts = title.split(separatorRegex);
+
+    if (parts.length > 1) {
+        const firstPart = parts[0];
+        const restOfTitle = title.replace(firstPart, '');
+
+        return (
+            <h3 style={styles.title}>
+                <span style={{ color: mainPurple }}>{firstPart}</span>
+                <span style={{ color: themeTextColor }}>{restOfTitle}</span>
+            </h3>
+        );
+    }
+
+    return (
+        <h3 style={{ ...styles.title, color: mainPurple }}>
+            {title}
+        </h3>
+    );
+}
+
+function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
+    return (
+        <div style={styles.contentBox}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <span style={styles.number(mainPurple)}>0{index + 1}</span>
+                <div style={styles.divider(mainPurple)} />
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {project.tags?.map((tag, tagIdx) => (
+                        <Tag key={`tag-${index}-${tagIdx}`} style={styles.tag(mainPurple)}>
+                            {tag}
+                        </Tag>
+                    ))}
+                </div>
+            </div>
+
+            {renderFormattedTitle(project.title, mainPurple, themeTextColor)}
+
+            <p style={styles.description(themeTextColor)}>{project.description}</p>
+
+            <div style={{ marginTop: '8px' }}>
+                <a
+                    href={project.liveLink || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.link(mainPurple)}
+                >
+                    <span>View Project</span>
+                    <span style={styles.linkIconWrapper(mainPurple)}>
+                        <FiArrowUpRight style={{ fontSize: '20px' }} />
+                    </span>
+                </a>
+            </div>
+        </div>
+    );
+}
+
+function ProjectMedia({ project, isLeftIcon, mainPurple, containerBg }) {
+    return (
+        <div style={{ position: 'relative' }}>
+            <div style={styles.imageWrapper(mainPurple)}>
+                <img
+                    alt={project.title}
+                    src={project.image}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                    }}
+                />
+            </div>
+            <div style={styles.floatingIcon(containerBg, mainPurple, isLeftIcon)}>
+                {project.icon}
+            </div>
+        </div>
+    );
+}
+
+export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' }) {
     const { token } = theme.useToken();
 
     return (
-        <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto', padding: '30px 0', display: 'flex', flexDirection: 'column', gap: '80px' }}>
+        <div style={styles.container}>
             {projects.map((project, index) => {
                 const isEven = index % 2 === 0;
 
                 return (
                     <motion.div
-                        key={`cinematic-project-${project.id}-${index}`}
-                        initial={{ opacity: 0, y: 60 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1.3fr 1fr',
-                            alignItems: 'center',
-                            gap: '50px',
-                            direction: isEven ? 'ltr' : 'rtl',
-                            position: 'relative'
-                        }}
+                        key={`project-card-${project.id || index}`}
+                        {...CARD_ANIMATION}
+                        style={styles.card(token.colorBgContainer, mainPurple)}
                     >
-                        {/* إطار الصورة */}
-                        <div style={{ position: 'relative' }}>
-                            <div 
-                                style={{
-                                    position: 'absolute',
-                                    inset: '-15px',
-                                    background: `linear-gradient(135deg, ${mainPurple}50, transparent)`,
-                                    borderRadius: '32px',
-                                    filter: 'blur(25px)',
-                                    opacity: 0.3,
-                                    zIndex: 0
-                                }}
-                            />
-                            <motion.div
-                                whileHover={{ scale: 1.02, y: -4 }}
-                                transition={{ duration: 0.3, ease: 'easeOut' }}
-                                style={{
-                                    height: '360px',
-                                    borderRadius: '24px',
-                                    overflow: 'hidden',
-                                    position: 'relative',
-                                    zIndex: 1,
-                                    boxShadow: `0 20px 40px -12px rgba(0,0,0,0.22)`,
-                                    border: `1.5px solid ${mainPurple}35`
-                                }}
-                            >
-                                <img
-                                    alt={project.title}
-                                    src={project.image}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        {isEven ? (
+                            <>
+                                <ProjectMedia
+                                    project={project}
+                                    isLeftIcon={true}
+                                    mainPurple={mainPurple}
+                                    containerBg={token.colorBgContainer}
                                 />
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: '20px',
-                                        left: '20px',
-                                        background: `${token.colorBgContainer}E6`,
-                                        backdropFilter: 'blur(8px)',
-                                        color: mainPurple,
-                                        fontWeight: '900',
-                                        fontSize: '12px',
-                                        padding: '5px 14px',
-                                        borderRadius: '20px',
-                                        border: `1px solid ${mainPurple}30`
-                                    }}
-                                >
-                                    PROJECT 0{index + 1}
-                                </div>
-                            </motion.div>
-                        </div>
-
-                        {/* قسم التفاصيل */}
-                        <div 
-                            style={{ 
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                gap: '18px',
-                                direction: 'ltr',
-                                textAlign: 'left',
-                                padding: '10px 0'
-                            }}
-                        >
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                {project.tags.map((tag, tagIdx) => (
-                                    <Tag
-                                        key={`tag-${index}-${tagIdx}`}
-                                        style={{
-                                            background: `${mainPurple}15`,
-                                            color: mainPurple,
-                                            border: `1px solid ${mainPurple}40`,
-                                            borderRadius: '6px',
-                                            fontSize: '11px',
-                                            padding: '3px 9px',
-                                            fontWeight: '600'
-                                        }}
-                                    >
-                                        {tag}
-                                    </Tag>
-                                ))}
-                            </div>
-
-                            <h3 style={{ color: token.colorText, fontSize: '26px', fontWeight: '800', margin: 0, letterSpacing: '-0.5px', lineHeight: '1.2' }}>
-                                {project.title}
-                            </h3>
-
-                            <p style={{ color: token.colorTextSecondary, fontSize: '15px', lineHeight: '1.6', margin: 0 }}>
-                                {project.description}
-                            </p>
-                            {/* <div style={{ display: 'flex', gap: '14px', marginTop: '14px' }}>
-                                <motion.a
-                                    href={project.githubLink || "#"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.06, y: -3 }}
-                                    whileTap={{ scale: 0.94 }}
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '9px',
-                                        padding: '12px 12px',
-                                        borderRadius: '15px',
-                                        background: `${mainPurple}0D`,
-                                        border: `1.5px solid ${mainPurple}40`,
-                                        color: mainPurple,
-                                        fontWeight: '700',
-                                        fontSize: '13.5px',
-                                        textDecoration: 'none',
-                                        boxShadow: `0 4px 15px rgba(0,0,0,0.02)`,
-                                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.borderColor = mainPurple;
-                                        e.currentTarget.style.boxShadow = `0 8px 25px ${mainPurple}40`;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = `${mainPurple}0D`;
-                                        e.currentTarget.style.color = mainPurple;
-                                        e.currentTarget.style.borderColor = `${mainPurple}40`;
-                                        e.currentTarget.style.boxShadow = `0 4px 15px rgba(0,0,0,0.02)`;
-                                    }}
-                                >
-                                    <GithubOutlined style={{ fontSize: '18px' }} />
-                                </motion.a>
-                                <motion.a
-                                    href={project.liveLink || "#"}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.06, y: -3 }}
-                                    whileTap={{ scale: 0.94 }}
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '10px',
-                                        padding: '12px 26px',
-                                        borderRadius: '15px',
-                                        background: `linear-gradient(135deg, ${mainPurple} 0%, ${mainPurple}CC 100%)`,
-                                        border: '1.5px solid transparent',
-                                        color: '#ffffff',
-                                        fontWeight: '700',
-                                        fontSize: '13.5px',
-                                        textDecoration: 'none',
-                                        boxShadow: `0 8px 25px ${mainPurple}40`,
-                                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.boxShadow = `0 12px 30px ${mainPurple}60`;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.boxShadow = `0 8px 25px ${mainPurple}40`;
-                                    }}
-                                >
-                                    <GlobalOutlined style={{ fontSize: '18px' }} />
-                                    <span>Live Demo</span>
-                                    <motion.span
-                                        initial={{ x: 0 }}
-                                        whileHover={{ x: 4 }}
-                                        transition={{ duration: 0.2 }}
-                                        style={{ display: 'inline-flex', alignItems: 'center' }}
-                                    >
-                                        <ArrowRightOutlined style={{ fontSize: '12px' }} />
-                                    </motion.span>
-                                </motion.a>
-                            </div> */}
-                        </div>
+                                <ProjectDetails
+                                    project={project}
+                                    index={index}
+                                    mainPurple={mainPurple}
+                                    themeTextColor={token.colorText}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <ProjectDetails
+                                    project={project}
+                                    index={index}
+                                    mainPurple={mainPurple}
+                                    themeTextColor={token.colorText}
+                                />
+                                <ProjectMedia
+                                    project={project}
+                                    isLeftIcon={false}
+                                    mainPurple={mainPurple}
+                                    containerBg={token.colorBgContainer}
+                                />
+                            </>
+                        )}
                     </motion.div>
                 );
             })}

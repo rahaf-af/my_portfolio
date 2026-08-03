@@ -2,31 +2,66 @@ import { theme } from 'antd';
 
 export const getThemeConfig = (isDarkMode) => ({
     algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+
     token: {
-        colorBgLayout: isDarkMode ? '#02060E' : '#f4eefb',      
-        colorBgContainer: isDarkMode ? '#130826' : '#ffffff',   // درجة بنفسجية داكنة وعميقة ومميزة لخلفية الكاردز في الوضع الداكن
-        colorPrimary: '#9303C5',       
-        colorText: isDarkMode ? '#ffffff' : '#0f172a',          
-        colorTextSecondary: isDarkMode ? '#9ca3af' : '#64748b', 
+        // Backgrounds
+        colorBgLayout: isDarkMode ? '#02060E' : '#FAF7FC',
+        colorBgContainer: isDarkMode ? '#130826' : '#FFFFFF',
+
+        // Brand
+        colorPrimary: isDarkMode ? '#C75CFF' : '#8006AA',
+
+        // Typography
+        colorText: isDarkMode ? '#FFFFFF' : '#111827',
+        colorTextSecondary: isDarkMode ? '#D5C4E8' : '#667085',
+
+        // Borders & Fills
+        colorBorder: isDarkMode
+            ? 'rgba(199,92,255,0.20)'
+            : '#E8DDF6',
+
+        colorFillSecondary: isDarkMode
+            ? 'rgba(199,92,255,0.08)'
+            : '#F7F2FC',
+
         motionDurationMid: '0.3s',
         motionDurationSlow: '0.4s',
     },
+
     components: {
         Layout: {
-            headerBg: isDarkMode ? '#02060E' : '#ffffff',
-            bodyBg: isDarkMode ? '#02060E' : '#f4eefb',
-            footerBg: isDarkMode ? '#02060E' : '#ffffff',
+            headerBg: isDarkMode ? '#02060E' : '#FFFFFF',
+            bodyBg: isDarkMode ? '#02060E' : '#FAF7FC',
+            footerBg: isDarkMode ? '#02060E' : '#FFFFFF',
         },
+
         Card: {
-            colorBgContainer: isDarkMode ? '#130826' : '#ffffff',
+            colorBgContainer: isDarkMode ? '#130826' : '#FFFFFF',
         },
+
         Menu: {
             darkItemBg: 'transparent',
-            darkItemColor: isDarkMode ? '#9ca3af' : '#64748b',
-            darkItemSelectedColor: isDarkMode ? '#ffffff' : '#9303C5',             
-            darkItemHoverColor: '#9303C5',               
-            darkItemSelectedBg: isDarkMode ? 'rgba(147, 3, 197, 0.25)' : 'rgba(147, 3, 197, 0.1)',  
-            darkItemHoverBg: 'rgba(147, 3, 197, 0.15)',   
+
+            darkItemColor: isDarkMode
+                ? '#D5C4E8'
+                : '#667085',
+
+            darkItemSelectedColor: isDarkMode
+                ? '#FFFFFF'
+                : '#9D4EDD',
+
+            darkItemHoverColor: isDarkMode
+                ? '#D67DFF'
+                : '#AE5EF4',
+
+            darkItemSelectedBg: isDarkMode
+                ? 'rgba(199,92,255,0.18)'
+                : 'rgba(157,78,221,0.10)',
+
+            darkItemHoverBg: isDarkMode
+                ? 'rgba(199,92,255,0.10)'
+                : 'rgba(157,78,221,0.06)',
+
             itemBorderRadius: 20,
         },
     },

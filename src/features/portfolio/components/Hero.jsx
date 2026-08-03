@@ -28,7 +28,6 @@ const handleDownloadCv = (cvUrl, fileName) => {
     document.body.removeChild(link);
 };
 
-
 export default function Hero() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const screens = useBreakpoint();
@@ -36,7 +35,7 @@ export default function Hero() {
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDesktop = screens.lg;
-    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
+    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0') || token.colorBgContainer.startsWith('#1');
 
     return (
         <div
@@ -55,11 +54,11 @@ export default function Hero() {
                 padding: isDesktop ? '30px 70px' : '32px 24px',
                 margin: '15px auto',
                 background: token.colorBgContainer,
-                border: `1.5px solid ${mainPurple}80`,
-                boxShadow: isDarkMode ? `0 8px 32px ${mainPurple}33, inset 0 0 16px ${mainPurple}15` : `0 10px 30px ${mainPurple}1a`,
+                border: `1.5px solid ${mainPurple}`,
+                boxShadow: isDarkMode ? `0 8px 32px ${mainPurple}40, inset 0 0 16px ${mainPurple}20` : `0 10px 30px ${mainPurple}26`,
             }}
         >
-            {/* 1. تصميم وصورة الشاشات الكبيرة مع حركة مستقلة */}
+            {/* الشاشات الكبيرة */}
             {isDesktop && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, x: 20 }}
@@ -77,12 +76,12 @@ export default function Hero() {
                         backgroundPosition: 'center right',
                         backgroundRepeat: 'no-repeat',
                         zIndex: 1,
-                        filter: `drop-shadow(0 30px 80px ${mainPurple}59)`,
+                        filter: `drop-shadow(0 30px 80px ${mainPurple}66)`,
                     }}
                 />
             )}
 
-            {/* للشاشات الصغيرة والمتوسطة مع حركة مستقلة */}
+            {/* الشاشات الصغيرة */}
             {!isDesktop && (
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -110,13 +109,13 @@ export default function Hero() {
                             height: '100%',
                             objectFit: 'contain',
                             display: 'block',
-                            filter: `drop-shadow(0 20px 50px ${mainPurple}59)`,
+                            filter: `drop-shadow(0 20px 50px ${mainPurple}66)`,
                         }}
                     />
                 </motion.div>
             )}
 
-            {/* 2. قسم النصوص والأزرار كحزمة واحدة تتحرك معاً */}
+            {/* قسم النصوص والأزرار */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -134,7 +133,7 @@ export default function Hero() {
                     style={{
                         fontSize: 'clamp(1.8rem, 3.5vw, 3.2rem)',
                         fontWeight: '800',
-                        margin: '0 0 10px 0',
+                        margin: '0 0 5px 0',
                         color: mainPurple,
                         letterSpacing: '-1px',
                         lineHeight: '1.2',
@@ -143,22 +142,22 @@ export default function Hero() {
                     Hi, I'm Rahaf
                 </h1>
 
+                {/* المسمى الوظيفي المتحرك (Typewriter) */}
                 <div
                     style={{
-                        fontSize: 'clamp(0.85rem, 1.5vw, 1.2rem)',
-                        fontWeight: '500',
+                        fontSize: 'clamp(1rem, 1.8vw, 1.35rem)',
+                        fontWeight: '700',
                         color: token.colorText,
-                        minHeight: '38px',
-                        marginBottom: '20px',
-                        lineHeight: '1.5',
+                        marginBottom: '10px',
+                        letterSpacing: '-0.5px',
+                        minHeight: '32px',
                     }}
                 >
                     <Typewriter
                         options={{
                             strings: [
-                                'Full-Stack Developer building scalable web applications',
-                                'Frontend Developer specializing in React.js & Next.js.',
-                                'Passionate about crafting responsive interfaces and robust APIs.',
+                                'Full-Stack Developer',
+                                'Frontend Developer',
                             ],
                             autoStart: true,
                             loop: true,
@@ -166,6 +165,19 @@ export default function Hero() {
                             delay: 60,
                         }}
                     />
+                </div>
+
+                {/* الوصف الثابت */}
+                <div
+                    style={{
+                        fontSize: 'clamp(0.85rem, 1.5vw, 1.1rem)',
+                        fontWeight: '500',
+                        color: token.colorTextSecondary,
+                        marginBottom: '20px',
+                        lineHeight: '1.5',
+                    }}
+                >
+                    Building scalable web applications, modern UI/UX components, and responsive, high-performance interfaces.
                 </div>
 
                 {/* الأزرار */}
@@ -178,24 +190,19 @@ export default function Hero() {
                         width: '100%',
                     }}
                 >
-                    {/* زر View My Work */}
-                    <motion.div
-                        whileHover={{ scale: 1.06, y: -3 }}
-                        whileTap={{ scale: 0.94 }}
-                        style={{ display: 'inline-block' }}
-                    >
+                    <motion.div whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.94 }}>
                         <Button
                             type="primary"
                             style={{
                                 background: `linear-gradient(135deg, ${mainPurple} 0%, ${mainPurple}CC 100%)`,
-                                border: '1.5px solid transparent',
+                                border: `1.5px solid ${mainPurple}`,
                                 borderRadius: '15px',
                                 height: '48px',
                                 padding: '0 28px',
                                 color: '#ffffff',
                                 fontWeight: '700',
                                 fontSize: '13.5px',
-                                boxShadow: `0 8px 25px ${mainPurple}40`,
+                                boxShadow: `0 8px 25px ${mainPurple}50`,
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '8px'
@@ -207,40 +214,34 @@ export default function Hero() {
                         </Button>
                     </motion.div>
 
-                    {/* زر Download CV */}
-                    <motion.div
-                        whileHover={{ scale: 1.06, y: -3 }}
-                        whileTap={{ scale: 0.94 }}
-                        style={{ display: 'inline-block' }}
-                    >
+                    <motion.div whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.94 }}>
                         <Button
                             style={{
                                 borderRadius: '15px',
                                 height: '48px',
                                 padding: '0 28px',
-                                background: `${mainPurple}0D`,
-                                border: `1.5px solid ${mainPurple}40`,
+                                background: `${mainPurple}15`,
+                                border: `1.5px solid ${mainPurple}`,
                                 color: mainPurple,
                                 fontWeight: '700',
                                 fontSize: '13.5px',
-                                boxShadow: `0 4px 15px rgba(0,0,0,0.02)`,
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '8px'
                             }}
                             onClick={() => setIsModalOpen(true)}
                         >
-                            <DownloadOutlined style={{ fontSize: '16px' }} />
+                            <DownloadOutlined style={{ fontSize: '16px', color: mainPurple }} />
                             <span>Download CV</span>
                         </Button>
                     </motion.div>
                 </div>
             </motion.div>
 
-            {/* Modal الخاص بالسي في */}
+            {/* نافذة Modal للسي في */}
             <Modal
                 title={
-                    <div style={{ color: token.colorText, fontSize: '18px', textAlign: 'center', fontWeight: '600' }}>
+                    <div style={{ color: mainPurple, fontSize: '18px', textAlign: 'center', fontWeight: '700' }}>
                         Select CV Version
                     </div>
                 }
@@ -251,8 +252,9 @@ export default function Hero() {
                 styles={{
                     content: {
                         background: token.colorBgElevated,
-                        border: `1px solid ${mainPurple}66`,
+                        border: `1.5px solid ${mainPurple}`,
                         borderRadius: '20px',
+                        boxShadow: `0 15px 40px ${mainPurple}33`,
                     },
                     header: { background: 'transparent' },
                 }}
@@ -262,9 +264,8 @@ export default function Hero() {
                 </p>
 
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
-                    {/* Frontend CV Card */}
                     <Card
-                        style={{ background: token.colorBgContainer, borderColor: `${mainPurple}40`, borderRadius: '12px' }}
+                        style={{ background: token.colorBgContainer, borderColor: mainPurple, borderRadius: '12px' }}
                         styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }}
                     >
                         <Space align="center">
@@ -278,13 +279,13 @@ export default function Hero() {
                             <Button
                                 type="text"
                                 icon={<EyeOutlined style={{ fontSize: '16px' }} />}
-                                onClick={() => handleOpenCv(frontendCvPdf )}
+                                onClick={() => handleOpenCv(frontendCvPdf)}
                                 style={{ color: mainPurple }}
                             />
                             <Button
                                 type="primary"
                                 icon={<DownloadOutlined />}
-                                onClick={() => handleDownloadCv(frontendCvPdf , 'Rahaf_Fallatah_Frontend_developer.pdf')}
+                                onClick={() => handleDownloadCv(frontendCvPdf, 'Rahaf_Fallatah_Frontend_developer.pdf')}
                                 style={{ background: mainPurple, borderColor: mainPurple, borderRadius: '8px' }}
                             >
                                 Download
@@ -292,9 +293,8 @@ export default function Hero() {
                         </Space>
                     </Card>
 
-                    {/* Full Stack CV Card */}
                     <Card
-                        style={{ background: token.colorBgContainer, borderColor: `${mainPurple}40`, borderRadius: '12px' }}
+                        style={{ background: token.colorBgContainer, borderColor: mainPurple, borderRadius: '12px' }}
                         styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }}
                     >
                         <Space align="center">

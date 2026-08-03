@@ -10,8 +10,12 @@ import Maqas from '../../../assets/Maqas.PNG';
 import Aniverse from '../../../assets/Aniverse.PNG';
 import Lafesta from '../../../assets/Lafesta.PNG';
 import Lavendra from '../../../assets/Lavendra.PNG';
-
+import { GrGroup } from "react-icons/gr";
+import { RiShoppingBag3Line } from "react-icons/ri";
+import { IoSparklesOutline } from "react-icons/io5";
+import { GiSewingMachine } from "react-icons/gi";
 const { useBreakpoint } = Grid;
+
 
 export default function Projects() {
     const screens = useBreakpoint();
@@ -27,6 +31,7 @@ export default function Projects() {
             description: 'A full-stack dress rental web application integrated with secure checkout workflows and payment gateway redirection handling.',
             image: Lafesta,
             tags: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Django', 'Moyasar API'],
+            icon: <RiShoppingBag3Line />,
         },
         {
             id: 2,
@@ -34,6 +39,7 @@ export default function Projects() {
             description: 'A full-stack anime community platform featuring dynamic user posts, interactive discussions, and full CRUD functionality for community engagement.',
             image: Aniverse,
             tags: ['React.js', 'Django', 'PostgreSQL', 'Postman'],
+            icon: <GrGroup />,
         },
         {
             id: 3,
@@ -41,6 +47,7 @@ export default function Projects() {
             description: 'A responsive web application engineered with multiple operational screens, custom form validations, and a clean user interface tailored for management.',
             image: Maqas,
             tags: ['React.js', 'Ant Design', 'Tailwind CSS'],
+            icon: <GiSewingMachine />,
         },
         {
             id: 4,
@@ -48,6 +55,7 @@ export default function Projects() {
             description: 'A comprehensive production-level salon management system designed to streamline business operations, service tracking, and appointments.',
             image: Lavendra,
             tags: ['Next.js', 'TypeScript', 'Ant Design', 'Tailwind CSS', 'PostgreSQL', 'Prisma', 'Neon'],
+            icon: <IoSparklesOutline />,
         },
     ];
 
@@ -68,7 +76,7 @@ export default function Projects() {
                         initial={{ opacity: 0, y: -20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        viewport={{once:true}}
+                        viewport={{ once: true }}
                     >
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
                             <FolderOutlined /> My Portfolio

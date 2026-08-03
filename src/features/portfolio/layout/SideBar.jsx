@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Lottie from 'lottie-react';
-import { Layout, Menu, ConfigProvider, Grid, Button, Drawer, Switch } from 'antd';
+import { Layout, Menu, Grid, Button, Drawer, Switch, theme as antTheme } from 'antd';
 import { MenuOutlined, SunOutlined } from '@ant-design/icons';
 import { Outlet } from 'react-router-dom';
-import Butterfly from '../components/Butterfly'
+import Butterfly from '../components/Butterfly';
 import './navbar.css';
-import { getThemeConfig } from './themeConfig';
 
 const { Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
@@ -20,17 +18,14 @@ const SECTION_MAP = {
     '7': 'contact',
 };
 
-export default function SideBar() {
-    // نبدأ دائماً من '1' (Home)
+export default function SideBar({ isDarkMode, setIsDarkMode }) {
     const [activeKey, setActiveKey] = useState('1');
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(true);
 
     const screens = useBreakpoint();
     const currentYear = new Date().getFullYear();
-
-    const currentTheme = getThemeConfig(isDarkMode);
-    const mainPurple = currentTheme.token.colorPrimary;
+    const { token } = antTheme.useToken();
+    const mainPurple = token.colorPrimary;
     const isLargeScreen = screens.lg;
 
     const handleScrollToSection = (e, sectionId, key) => {
@@ -40,7 +35,6 @@ export default function SideBar() {
 
         const element = document.getElementById(sectionId);
         if (element) {
-            // حساب مكان العنصر بدقة مع مراعاة ارتفاع الهيدر (لتجنب تغطية الجزء العلوي من السكشن)
             const headerOffset = 50;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -51,25 +45,19 @@ export default function SideBar() {
             });
         }
     };
+
     useEffect(() => {
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
-
-        // إجبار الصفحة على العودة لأقصى قمة الشاشة تماماً (النقطة 0)
         window.scrollTo({
             top: 0,
             left: 0,
-            behavior: 'instant' // الانتقال يكون فورياً بدون حركة تمرير
+            behavior: 'instant'
         });
-
-        // إعادة تعيين القائمة النشطة لتكون 'Home' دائماً عند التحديث
         setActiveKey('1');
     }, []);
-    // =================================================================================
 
-
-    // مراقبة التمرير لتحديث القائمة أثناء تصفح المستخدم العادي
     useEffect(() => {
         const handleIntersect = (entries) => {
             entries.forEach((entry) => {
@@ -108,112 +96,108 @@ export default function SideBar() {
     ];
 
     return (
-        <ConfigProvider theme={currentTheme}>
-            <Layout style={{ minHeight: '100vh', background: currentTheme.token.colorBgLayout }}>
-                <Header
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: isLargeScreen ? '0 40px' : '0 20px',
-                        borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}`,
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 100,
-                        background: currentTheme.token.colorBgContainer,
-                        boxShadow: `0 10px 30px ${mainPurple}33`,
-                        '--theme-primary': mainPurple, // تمرير لون الثيم كمتغير CSS لاستخدامه في ملف الـ CSS
-                    }}
-                >
-
-                    <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
-                        <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
-                        <div
-                            className="nav-butterfly"
-                            style={{
-                                width: '30px',
-                                height: '30px',
-                                '--butterfly-color': mainPurple, // تمرير لون الثيم الأساسي مباشرة هنا
-                                marginInline: isLargeScreen ? 10 : 5
-
-                            }}
-                        >
-                            <Butterfly />
-                        </div>
+        <Layout style={{ minHeight: '100vh', background: token.colorBgLayout }}>
+            <Header
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: isLargeScreen ? '0 40px' : '0 20px',
+                    borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}`,
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 100,
+                    background: token.colorBgContainer,
+                    boxShadow: `0 10px 30px ${mainPurple}33`,
+                    '--theme-primary': mainPurple,
+                }}
+            >
+                <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
+                    <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
+                    <div
+                        className="nav-butterfly"
+                        style={{
+                            width: '30px',
+                            height: '30px',
+                             '--butterfly-color': mainPurple,
+                            marginInline: isLargeScreen ? 10 : 5
+                        }}
+                    >
+                        <Butterfly />
                     </div>
-                    {isLargeScreen && (
-                        <Menu
-                            theme={isDarkMode ? 'dark' : 'light'}
-                            mode="horizontal"
-                            selectedKeys={[activeKey]}
-                            items={items}
-                            className="custom-nav-menu"
-                            style={{
-                                flex: 1,
-                                minWidth: 0,
-                                justifyContent: 'center',
-                                background: 'transparent'
-                            }}
-                        />
-                    )}
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <Switch
-                            checked={isDarkMode}
-                            onChange={(checked) => setIsDarkMode(checked)}
-                            checkedChildren={<SunOutlined style={{ fontSize: '16px', color: mainPurple }} />}
-                            className="fancy-theme-switch"
-                            style={{
-                                backgroundColor: isDarkMode ? '#e9d5ff' : '#1e1b4b',
-                            }}
-                        />
-                        {!isLargeScreen && (
-                            <Button
-                                type="text"
-                                icon={<MenuOutlined style={{ color: currentTheme.token.colorText, fontSize: '25px' }} />}
-                                onClick={() => setOpenDrawer(true)}
-                            />
-                        )}
-                    </div>
-                </Header>
-
-                <Drawer
-                    title={
-                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                            <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
-                        </div>
-                    }
-                    placement="right"
-                    onClose={() => setOpenDrawer(false)}
-                    open={openDrawer}
-                    size={260}
-                    style={{ '--theme-primary': mainPurple }} // تمرير متغير الثيم هنا مباشرة
-                    styles={{
-                        body: { background: currentTheme.token.colorBgContainer, padding: '16px 8px' },
-                        header: { background: currentTheme.token.colorBgContainer, borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}` }
-                    }}
-                >
+                </div>
+                {isLargeScreen && (
                     <Menu
                         theme={isDarkMode ? 'dark' : 'light'}
-                        mode="inline"
+                        mode="horizontal"
                         selectedKeys={[activeKey]}
                         items={items}
                         className="custom-nav-menu"
-                        onClick={() => setOpenDrawer(false)}
-                        style={{ background: 'transparent', border: 'none' }}
+                        style={{
+                            flex: 1,
+                            minWidth: 0,
+                            justifyContent: 'center',
+                            background: 'transparent'
+                        }}
                     />
-                </Drawer>
+                )}
 
-                <Content style={{ padding: isLargeScreen ? '24px 40px' : '16px 16px' }}>
-                    <div style={{ minHeight: 280, padding: 24, borderRadius: 16 }}>
-                        <Outlet />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <Switch
+                        checked={isDarkMode}
+                        onChange={(checked) => setIsDarkMode(checked)}
+                        checkedChildren={<SunOutlined style={{ fontSize: '16px', color: mainPurple }} />}
+                        className="fancy-theme-switch"
+                        style={{
+                            backgroundColor: isDarkMode ? '#e9d5ff' : '#1e1b4b',
+                        }}
+                    />
+                    {!isLargeScreen && (
+                        <Button
+                            type="text"
+                            icon={<MenuOutlined style={{ color: token.colorText, fontSize: '25px' }} />}
+                            onClick={() => setOpenDrawer(true)}
+                        />
+                    )}
+                </div>
+            </Header>
+
+            <Drawer
+                title={
+                    <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
                     </div>
-                </Content>
+                }
+                placement="right"
+                onClose={() => setOpenDrawer(false)}
+                open={openDrawer}
+                size={260}
+                style={{ '--theme-primary': mainPurple }}
+                styles={{
+                    body: { background: token.colorBgContainer, padding: '16px 8px' },
+                    header: { background: token.colorBgContainer, borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}` }
+                }}
+            >
+                <Menu
+                    theme={isDarkMode ? 'dark' : 'light'}
+                    mode="inline"
+                    selectedKeys={[activeKey]}
+                    items={items}
+                    className="custom-nav-menu"
+                    onClick={() => setOpenDrawer(false)}
+                    style={{ background: 'transparent', border: 'none' }}
+                />
+            </Drawer>
 
-                <Footer style={{ textAlign: 'center', color: currentTheme.token.colorTextSecondary, background: currentTheme.token.colorBgLayout }}>
-                    ©{currentYear} Rahaf.Fallatah All rights reserved.
-                </Footer>
-            </Layout>
-        </ConfigProvider>
+            <Content style={{ padding: isLargeScreen ? '24px 40px' : '16px 16px' }}>
+                <div style={{ minHeight: 280, padding: 24, borderRadius: 16 }}>
+                    <Outlet />
+                </div>
+            </Content>
+
+            <Footer style={{ textAlign: 'center', color: token.colorTextSecondary, background: token.colorBgLayout }}>
+                ©{currentYear} Rahaf.Fallatah All rights reserved.
+            </Footer>
+        </Layout>
     );
 }
