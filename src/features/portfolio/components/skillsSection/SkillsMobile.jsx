@@ -262,7 +262,7 @@ export default function SkillsMobile({
                             </div>
                         </div>
 
-                        {/* Skills Grid Cards Container with Balanced Semi-Opaque MainPurple Tint */}
+                        {/* Skills Grid Cards Container with Centered Icon and Content */}
                         <div style={{
                             position: 'relative',
                             zIndex: 1
@@ -290,8 +290,10 @@ export default function SkillsMobile({
                                                 padding: '14px 12px',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                justifyContent: 'space-between',
-                                                minHeight: '125px',
+                                                alignItems: 'center',      /* تم التعديل لجعل المحتوى في المنتصف أفقياً */
+                                                justifyContent: 'center',  /* تم التعديل لجعل المحتوى في المنتصف عمودياً */
+                                                textAlign: 'center',       /* جعل النصوص في المنتصف تماماً */
+                                                minHeight: '135px',
                                                 boxShadow: isDarkMode ? '0 8px 20px rgba(0,0,0,0.3)' : `0 6px 15px ${primaryColor}08`,
                                                 position: 'relative',
                                                 overflow: 'hidden',
@@ -306,27 +308,27 @@ export default function SkillsMobile({
                                                 borderLeft: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`
                                             }} />
 
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                <div style={{ 
-                                                    fontSize: '22px', 
-                                                    padding: '6px', 
-                                                    borderRadius: '10px', 
-                                                    background: `${primaryColor}${isDarkMode ? '35' : '26'}`,
-                                                    borderTop: `1px solid ${borderColor}`,
-                                                    borderRight: `1px solid ${borderColor}`,
-                                                    borderBottom: `1px solid ${borderColor}`,
-                                                    borderLeft: `1px solid ${borderColor}`,
-                                                    display: 'flex', 
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center'
-                                                }}>
-                                                    {skill.icon}
-                                                </div>
-                                                <div style={{ color: textSecondary, fontSize: '10px', opacity: 0.5 }}>•••</div>
+                                            {/* Icon Centered */}
+                                            <div style={{ 
+                                                fontSize: '26px', 
+                                                padding: '8px', 
+                                                borderRadius: '10px', 
+                                                background: `${primaryColor}${isDarkMode ? '35' : '26'}`,
+                                                borderTop: `1px solid ${borderColor}`,
+                                                borderRight: `1px solid ${borderColor}`,
+                                                borderBottom: `1px solid ${borderColor}`,
+                                                borderLeft: `1px solid ${borderColor}`,
+                                                display: 'flex', 
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                marginBottom: '8px'
+                                            }}>
+                                                {skill.icon}
                                             </div>
 
-                                            <div>
-                                                <div style={{ color: textColor, fontSize: '13px', fontWeight: '700', marginBottom: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {/* Name and Level Centered */}
+                                            <div style={{ width: '100%' }}>
+                                                <div style={{ color: textColor, fontSize: '13px', fontWeight: '700', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                                     {skill.name}
                                                 </div>
                                                 <span style={{ 
