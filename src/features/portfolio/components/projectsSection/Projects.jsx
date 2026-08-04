@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 import DesktopProjects from './DesktopProjects';
 import MobileProjects from './MobileProjects';
 
-import Maqas from '../../../assets/Maqas.PNG';
-import Aniverse from '../../../assets/Aniverse.PNG';
-import Lafesta from '../../../assets/Lafesta.PNG';
-import Lavendra from '../../../assets/Lavendra.PNG';
+import Maqas from '../../../../assets/Maqas.PNG';
+import Aniverse from '../../../../assets/Aniverse.PNG';
+import Lafesta from '../../../../assets/Lafesta.PNG';
+import Lavendra from '../../../../assets/Lavendra.PNG';
 import { GrGroup } from "react-icons/gr";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { IoSparklesOutline } from "react-icons/io5";

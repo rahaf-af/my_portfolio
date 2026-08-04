@@ -80,7 +80,13 @@ export default function SkillsDesktop({
     const primaryColor = mainPurple || token.colorPrimary;
 
     return (
-        <div style={{ display: 'flex', gap: '32px', width: '100%', maxWidth: '1400px', margin: '0 auto', alignItems: 'stretch' }}>
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+            style={{ display: 'flex', gap: '32px', width: '100%', maxWidth: '1400px', margin: '0 auto', alignItems: 'stretch' }}
+        >
 
             {/* 1. Sidebar Categories List */}
             <div style={{
@@ -508,6 +514,6 @@ export default function SkillsDesktop({
 
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
