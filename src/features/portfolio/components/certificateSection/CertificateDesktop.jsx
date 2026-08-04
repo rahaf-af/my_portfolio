@@ -44,8 +44,8 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 gap: '14px',
                                 transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                                 boxShadow: isSelected
-                                    ? (isDarkMode ? `0 30px 60px -5px rgba(199,92,255,0.35), 0 0 0 2px ${mainPurple}` : `0 30px 60px -5px rgba(128,6,170,0.2)`)
-                                    : (isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 5px 15px rgba(0,0,0,0.05)'),
+                                    ? (isDarkMode ? `inset 0 0 25px rgba(199,92,255,0.2), 0 0 0 2px ${mainPurple}` : `inset 0 0 20px rgba(128,6,170,0.08)`)
+                                    : (isDarkMode ? 'inset 0 0 15px rgba(0,0,0,0.25)' : 'inset 0 0 15px rgba(0,0,0,0.03)'),
                                 position: 'relative',
                                 overflow: 'hidden'
                             }}

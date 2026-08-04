@@ -10,10 +10,10 @@ const IMAGE_HEIGHT = 350;
 const FLOATING_ICON_SIZE = 60;
 const FLOATING_ICON_OFFSET = -22;
 const CARD_ANIMATION = {
-    initial: { opacity: 0, y: 40 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.2 },
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    initial: { opacity: 0, y: 60, scale: 0.95 },
+    whileInView: { opacity: 1, y: 0, scale: 1 },
+    viewport: { once: true, amount: 0.15 },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
 };
 
 const styles = {
@@ -26,18 +26,16 @@ const styles = {
         flexDirection: 'column',
         gap: '40px',
     },
-    card: (bg, purple) => ({
+    card: (purple) => ({
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         alignItems: 'center',
         gap: '40px',
-        background: bg,
-        backdropFilter: 'blur(20px)',
-        border: `1px solid ${purple}35`,
+        background: 'transparent',
         borderRadius: `${CARD_RADIUS}px`,
         padding: '40px',
         position: 'relative',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        boxShadow: 'none',
     }),
     imageWrapper: (purple) => ({
         borderRadius: `${IMAGE_RADIUS}px`,
@@ -156,7 +154,13 @@ function renderFormattedTitle(title, mainPurple, themeTextColor) {
 
 function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
     return (
-        <div style={styles.contentBox}>
+        <motion.div 
+            initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            style={styles.contentBox}
+        >
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <span style={styles.number(mainPurple)}>0{index + 1}</span>
                 <div style={styles.divider(mainPurple)} />
@@ -172,8 +176,8 @@ function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
             {renderFormattedTitle(project.title, mainPurple, themeTextColor)}
 
             <p style={styles.description(themeTextColor)}>{project.description}</p>
-
-            <div style={{ marginTop: '8px' }}>
+            {/* أزارير عرض المشروع لما اجهز الريبو افتحها  */}
+            {/* <div style={{ marginTop: '8px' }}>
                 <a
                     href={project.liveLink || '#'}
                     target="_blank"
@@ -185,14 +189,20 @@ function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
                         <FiArrowUpRight style={{ fontSize: '20px' }} />
                     </span>
                 </a>
-            </div>
-        </div>
+            </div> */}
+        </motion.div>
     );
 }
 
 function ProjectMedia({ project, isLeftIcon, mainPurple, containerBg }) {
     return (
-        <div style={{ position: 'relative' }}>
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            style={{ position: 'relative' }}
+        >
             <div style={styles.imageWrapper(mainPurple)}>
                 <img
                     alt={project.title}
@@ -208,7 +218,7 @@ function ProjectMedia({ project, isLeftIcon, mainPurple, containerBg }) {
             <div style={styles.floatingIcon(containerBg, mainPurple, isLeftIcon)}>
                 {project.icon}
             </div>
-        </div>
+        </motion.div>
     );
 }
 
@@ -216,7 +226,13 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
     const { token } = theme.useToken();
 
     return (
-        <div style={styles.container}>
+        <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            style={styles.container}
+        >
             {projects.map((project, index) => {
                 const isEven = index % 2 === 0;
 
@@ -224,7 +240,7 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
                     <motion.div
                         key={`project-card-${project.id || index}`}
                         {...CARD_ANIMATION}
-                        style={styles.card(token.colorBgContainer, mainPurple)}
+                        style={styles.card(mainPurple)}
                     >
                         {isEven ? (
                             <>
@@ -260,6 +276,6 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
                     </motion.div>
                 );
             })}
-        </div>
+        </motion.div>
     );
 }

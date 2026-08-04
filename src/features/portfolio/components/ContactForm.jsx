@@ -15,6 +15,7 @@ export default function ContactForm() {
     // جلب الثيم المركزي وتحديد الألوان بناءً عليه
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
+    const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
     // قراءة البيانات من ملف الـ .env
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -180,24 +181,42 @@ export default function ContactForm() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                     style={{
-                        background: token.colorBgContainer,
-                        border: `1.5px solid ${mainPurple}80`,
-                        boxShadow: `0 15px 35px ${mainPurple}40`,
-                        backdropFilter: 'blur(10px)',
-                        WebkitBackdropFilter: 'blur(10px)',
-                        borderRadius: '20px',
-                        padding: isDesktop ? '40px' : '24px',
-                        transition: 'all 0.3s ease',
+                        background: isDarkMode 
+                            ? 'linear-gradient(145deg, rgba(20, 10, 35, 0.75) 0%, rgba(10, 5, 20, 0.9) 100%)'
+                            : 'linear-gradient(145deg, rgba(255, 255, 255, 0.9) 100%, rgba(245, 240, 255, 0.5) 0%)',
+                        border: `1.5px solid ${mainPurple}50`,
+                        boxShadow: isDarkMode 
+                            ? `0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px ${mainPurple}15`
+                            : `0 20px 45px -10px ${mainPurple}20`,
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        borderRadius: '28px',
+                        padding: isDesktop ? '45px' : '28px',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.borderColor = mainPurple;
-                        e.currentTarget.style.boxShadow = `0 18px 45px ${mainPurple}44`;
+                        e.currentTarget.style.boxShadow = isDarkMode
+                            ? `0 30px 60px rgba(0, 0, 0, 0.6), 0 0 45px ${mainPurple}25`
+                            : `0 25px 50px -10px ${mainPurple}30`;
+                        e.currentTarget.style.transform = 'translateY(-4px)';
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = `${mainPurple}80`;
-                        e.currentTarget.style.boxShadow = `0 15px 35px ${mainPurple}40`;
+                        e.currentTarget.style.borderColor = `${mainPurple}50`;
+                        e.currentTarget.style.boxShadow = isDarkMode 
+                            ? `0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px ${mainPurple}15`
+                            : `0 20px 45px -10px ${mainPurple}20`;
+                        e.currentTarget.style.transform = 'translateY(0)';
                     }}
                 >
+                    {/* توهج جمالي خلفي داخل الكارت */}
+                    <div style={{
+                        position: 'absolute', top: '-60px', right: '-60px', width: '160px', height: '160px',
+                        background: mainPurple, filter: 'blur(70px)', opacity: 0.18, pointerEvents: 'none'
+                    }} />
+
                     <Form
                         form={form}
                         layout="vertical"
@@ -235,12 +254,13 @@ export default function ContactForm() {
                                 <Input
                                     placeholder="Your Name"
                                     style={{
-                                        background: token.colorBgContainer, // مطابقة لخلفية الكارد المحيط
-                                        border: `1px solid ${mainPurple}66`,
-                                        borderRadius: '10px',
+                                        background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : token.colorBgContainer,
+                                        border: `2px solid ${mainPurple}40`,
+                                        borderRadius: '12px',
                                         color: token.colorText,
                                         padding: '14px 18px',
                                         fontSize: '15px',
+                                        transition: 'all 0.3s ease',
                                     }}
                                 />
                             </Form.Item>
@@ -257,12 +277,13 @@ export default function ContactForm() {
                                 <Input
                                     placeholder="Your Email"
                                     style={{
-                                        background: token.colorBgContainer, // مطابقة لخلفية الكارد المحيط
-                                        border: `1px solid ${mainPurple}66`,
-                                        borderRadius: '10px',
+                                        background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : token.colorBgContainer,
+                                        border: `2px solid ${mainPurple}40`,
+                                        borderRadius: '12px',
                                         color: token.colorText,
                                         padding: '14px 18px',
                                         fontSize: '15px',
+                                        transition: 'all 0.3s ease',
                                     }}
                                 />
                             </Form.Item>
@@ -281,12 +302,13 @@ export default function ContactForm() {
                             <Input
                                 placeholder="Subject"
                                 style={{
-                                    background: token.colorBgContainer, // مطابقة لخلفية الكارد المحيط
-                                    border: `1px solid ${mainPurple}66`,
-                                    borderRadius: '10px',
+                                    background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : token.colorBgContainer,
+                                    border: `2px solid ${mainPurple}40`,
+                                    borderRadius: '12px',
                                     color: token.colorText,
                                     padding: '14px 18px',
                                     fontSize: '15px',
+                                    transition: 'all 0.3s ease',
                                 }}
                             />
                         </Form.Item>
@@ -305,13 +327,14 @@ export default function ContactForm() {
                                 rows={5}
                                 placeholder="Your Message"
                                 style={{
-                                    background: token.colorBgContainer, // مطابقة لخلفية الكارد المحيط
-                                    border: `1px solid ${mainPurple}66`,
-                                    borderRadius: '10px',
+                                    background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : token.colorBgContainer,
+                                    border: `2px solid ${mainPurple}40`,
+                                    borderRadius: '12px',
                                     color: token.colorText,
                                     padding: '14px 18px',
                                     fontSize: '15px',
-                                    resize: 'none'
+                                    resize: 'none',
+                                    transition: 'all 0.3s ease',
                                 }}
                             />
                         </Form.Item>
@@ -325,16 +348,17 @@ export default function ContactForm() {
                                 width: '100%',
                                 background: mainPurple,
                                 border: 'none',
-                                borderRadius: '10px',
-                                height: '50px',
+                                borderRadius: '14px',
+                                height: '52px',
                                 fontWeight: '700',
                                 fontSize: '15.5px',
-                                boxShadow: `0 4px 20px ${mainPurple}55`,
+                                boxShadow: `0 8px 25px ${mainPurple}50`,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 gap: '8px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease'
                             }}
                         >
                             Send Message

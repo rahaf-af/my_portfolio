@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, theme } from 'antd';
-import { Calendar, Building2, Eye, ShieldCheck, Sparkles } from 'lucide-react';
+import { Calendar, Building2, Eye, ShieldCheck, Sparkles, Award } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CertificateDesktop({ credentials, selectedId, setSelectedId, currentCert }) {
@@ -50,9 +50,10 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 justifyContent: 'space-between',
                                 gap: '10px',
                                 transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                // تم تعديل الظل هنا ليصبح مضبوطاً داخل حدود الـ clip-path تماماً
                                 boxShadow: isSelected
-                                    ? (isDarkMode ? `0 20px 40px -5px rgba(199,92,255,0.3), 0 0 0 2px ${mainPurple}` : `0 20px 40px -5px rgba(128,6,170,0.15)`)
-                                    : (isDarkMode ? '0 8px 20px rgba(0,0,0,0.25)' : '0 4px 12px rgba(0,0,0,0.04)'),
+                                    ? (isDarkMode ? `inset 0 0 20px rgba(199,92,255,0.15), 0 5px 15px -5px rgba(199,92,255,0.2)` : `inset 0 0 15px rgba(128,6,170,0.06), 0 5px 15px -5px rgba(128,6,170,0.1)`)
+                                    : (isDarkMode ? 'inset 0 0 10px rgba(0,0,0,0.2)' : 'inset 0 0 10px rgba(0,0,0,0.02)'),
                                 position: 'relative',
                                 overflow: 'hidden',
                                 minHeight: '110px'
@@ -70,7 +71,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 zIndex: 2
                             }} />
 
-                            {/* Subtle background glow/shadow effect */}
+                            {/* Subtle background glow/shadow effect contained inside the card */}
                             <div style={{
                                 position: 'absolute',
                                 bottom: '-15px',
@@ -85,9 +86,12 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             }} />
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', zIndex: 1 }}>
-                                <span style={{ color: isSelected ? mainPurple : token.colorTextSecondary, fontSize: '10px', fontFamily: 'monospace', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1.2px' }}>
-                                    {item.institution}
-                                </span>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <span style={{ color: isSelected ? mainPurple : token.colorTextSecondary, fontSize: '10px', fontFamily: 'monospace', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '1.2px' }}>
+                                        {item.institution}
+                                    </span>
+                                    <Award size={13} color={isSelected ? mainPurple : token.colorTextSecondary} style={{ opacity: isSelected ? 1 : 0.5 }} />
+                                </div>
                                 <h4 style={{ color: isSelected ? token.colorTextHeading : token.colorText, fontSize: '0.9rem', fontWeight: '900', margin: 0, lineHeight: '1.3' }}>
                                     {item.title}
                                 </h4>
