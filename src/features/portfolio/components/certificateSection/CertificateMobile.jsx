@@ -56,7 +56,8 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                     : (isDarkMode ? 'inset 0 0 10px rgba(0,0,0,0.2)' : 'inset 0 0 10px rgba(0,0,0,0.02)'),
                                 position: 'relative',
                                 overflow: 'hidden',
-                                minHeight: '110px'
+                                minHeight: '110px',
+                                WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                             }}
                         >
                             {/* Corner Fold Accent */}
@@ -123,7 +124,8 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             ? `0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(199,92,255,0.12), inset 0 0 15px rgba(199,92,255,0.03)`
                             : `0 15px 35px rgba(128,6,170,0.08), inset 0 0 15px rgba(128,6,170,0.02)`,
                         position: 'relative',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                     }}
                 >
                     {/* Corner Borders */}

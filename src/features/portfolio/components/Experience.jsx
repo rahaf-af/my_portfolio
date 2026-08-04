@@ -179,7 +179,7 @@ export default function Experience() {
                                 style={{
                                     background: token.colorBgContainer,
                                     border: `1.5px solid ${token.colorBorder}`,
-                                    boxShadow: token.boxShadowSecondary,
+                                    boxShadow: `0 10px 30px ${mainColor}20`,
                                     width: isDesktop ? '42%' : '100%',
                                     borderRadius: '26px 8px 26px 26px',
                                     padding: isDesktop ? '30px' : '22px',
@@ -191,14 +191,14 @@ export default function Experience() {
                                     if (isDesktop) {
                                         e.currentTarget.style.transform = 'translateY(-8px) scale(1.01)';
                                         e.currentTarget.style.borderColor = mainColor;
-                                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}20`;
+                                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}35`;
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (isDesktop) {
                                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
                                         e.currentTarget.style.borderColor = token.colorBorder;
-                                        e.currentTarget.style.boxShadow = token.boxShadowSecondary;
+                                        e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}20`;
                                     }
                                 }}
                             >

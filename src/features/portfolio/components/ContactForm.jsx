@@ -9,23 +9,19 @@ const { useBreakpoint } = Grid;
 export default function ContactForm() {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
-    // تحديد هل الشاشة جوال صغير (أقل من md)
     const isMobile = !screens.md;
 
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
 
-    // جلب الثيم المركزي وتحديد الألوان بناءً عليه
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
-    // قراءة البيانات من ملف الـ .env
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // دالة إرسال الرسالة عبر EmailJS
     const handleSubmit = async (values) => {
         if (values.website) {
             form.resetFields();
@@ -62,10 +58,9 @@ export default function ContactForm() {
                 position: 'relative',
                 maxWidth: '1300px',
                 margin: '0 auto',
-                overflowX: 'hidden' // لمنع أي خروج للظل أو العناصر خارج حدود الشاشة
+                overflowX: 'hidden'
             }}
         >
-            {/* عنوان السكشن */}
             <motion.div
                 initial={{ opacity: 0, y: -15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -96,14 +91,12 @@ export default function ContactForm() {
                 </h2>
             </motion.div>
 
-            {/* الحاوية الرئيسية */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: isDesktop ? '1fr 1.4fr' : '1fr',
                 gap: '60px',
                 alignItems: 'center'
             }}>
-                {/* القسم الأيمن: معلومات التواصل والنبذة */}
                 <motion.div
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -112,7 +105,6 @@ export default function ContactForm() {
                 >
                     <h3 style={{
                         color: token.colorText,
-                        // حجم الخط للشاشة الصغيرة جوال صار صغير، وللتابلت والشاشة الكبيرة نفس حق الشاشة الكبيرة
                         fontSize: isMobile ? '1.6rem' : '2.5rem',
                         fontWeight: '700',
                         lineHeight: '1.3',
@@ -126,7 +118,6 @@ export default function ContactForm() {
                         I’m currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open!
                     </p>
 
-                    {/* معلومات التواصل */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', color: token.colorText, fontSize: '15.5px' }}>
                             <div style={{
@@ -177,7 +168,6 @@ export default function ContactForm() {
                     </div>
                 </motion.div>
 
-                {/* القسم الأيسر: نموذج الإرسال */}
                 <motion.div
                     initial={{ opacity: 0, x: 30 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -197,6 +187,8 @@ export default function ContactForm() {
                         padding: isDesktop ? '45px' : '28px',
                         position: 'relative',
                         overflow: 'hidden',
+                        /* الإصلاح: يجبر Safari يقص التوهج المموّه بشكل صحيح حسب حواف الكارد المدورة */
+                        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
                         width: '100%',
                         boxSizing: 'border-box',
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -216,7 +208,6 @@ export default function ContactForm() {
                         e.currentTarget.style.transform = 'translateY(0)';
                     }}
                 >
-                    {/* توهج جمالي خلفي داخل الكارت */}
                     <div style={{
                         position: 'absolute', top: '-60px', right: '-60px', width: '160px', height: '160px',
                         background: mainPurple, filter: 'blur(70px)', opacity: 0.18, pointerEvents: 'none'
@@ -228,7 +219,6 @@ export default function ContactForm() {
                         onFinish={handleSubmit}
                         requiredMark={false}
                     >
-                        {/* حقل Honeypot: مخفي تماماً عن المستخدم الحقيقي، البوتات فقط تعبيه */}
                         <Form.Item
                             name="website"
                             style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, overflow: 'hidden' }}
@@ -238,7 +228,6 @@ export default function ContactForm() {
                             <Input tabIndex="-1" autoComplete="off" />
                         </Form.Item>
 
-                        {/* استخدام حاوية Grid بمسافات موحدة ومتساوية (rowGap & columnGap) */}
                         <div style={{
                             display: 'grid',
                             gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
