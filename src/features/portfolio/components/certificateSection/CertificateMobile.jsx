@@ -172,7 +172,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             </div>
                         </div>
 
-                        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '220px', alignItems: 'center' }}>
                             {!imageLoaded && (
                                 <div style={{
                                     position: 'absolute',
@@ -180,7 +180,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                     left: 0,
                                     width: '100%',
                                     height: '100%',
-                                    minHeight: '220px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
