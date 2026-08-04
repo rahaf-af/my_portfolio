@@ -150,6 +150,7 @@ export default function MobileProjects({ projects, mainPurple }) {
                                 }
                             >
                                 <div>
+                                    {renderFormattedTitleWithIconOnly(project.title, project.icon)}
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '14px' }}>
                                         {project.tags.map((tag, tagIdx) => (
                                             <Tag
@@ -166,7 +167,6 @@ export default function MobileProjects({ projects, mainPurple }) {
                                             </Tag>
                                         ))}
                                     </div>
-                                    {renderFormattedTitleWithIconOnly(project.title, project.icon)}
                                     <p style={{ color: token.colorTextSecondary, fontSize: '12.5px', lineHeight: '1.4', marginBottom: '0px' }}>
                                         {project.description}
                                     </p>

@@ -164,16 +164,16 @@ function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <span style={styles.number(mainPurple)}>0{index + 1}</span>
                 <div style={styles.divider(mainPurple)} />
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {project.tags?.map((tag, tagIdx) => (
-                        <Tag key={`tag-${index}-${tagIdx}`} style={styles.tag(mainPurple)}>
-                            {tag}
-                        </Tag>
-                    ))}
-                </div>
+                {renderFormattedTitle(project.title, mainPurple, themeTextColor)}
             </div>
 
-            {renderFormattedTitle(project.title, mainPurple, themeTextColor)}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {project.tags?.map((tag, tagIdx) => (
+                    <Tag key={`tag-${index}-${tagIdx}`} style={styles.tag(mainPurple)}>
+                        {tag}
+                    </Tag>
+                ))}
+            </div>
 
             <p style={styles.description(themeTextColor)}>{project.description}</p>
             {/* أزارير عرض المشروع لما اجهز الريبو افتحها  */}
