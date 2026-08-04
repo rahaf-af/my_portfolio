@@ -47,7 +47,8 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                     ? (isDarkMode ? `inset 0 0 25px rgba(199,92,255,0.2), 0 0 0 2px ${mainPurple}` : `inset 0 0 20px rgba(128,6,170,0.08)`)
                                     : (isDarkMode ? 'inset 0 0 15px rgba(0,0,0,0.25)' : 'inset 0 0 15px rgba(0,0,0,0.03)'),
                                 position: 'relative',
-                                overflow: 'hidden'
+                                overflow: 'hidden',
+                                WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                             }}
                         >
                             <div style={{
@@ -155,7 +156,8 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             ? `0 30px 90px rgba(0,0,0,0.8), 0 0 50px rgba(199,92,255,0.18), inset 0 0 30px rgba(199,92,255,0.05)`
                             : `0 30px 70px rgba(128,6,170,0.12), inset 0 0 30px rgba(128,6,170,0.02)`,
                         position: 'relative',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                     }}
                 >
                     <div style={{
