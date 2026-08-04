@@ -11,6 +11,53 @@ export default function MobileProjects({ projects, mainPurple }) {
     const screens = useBreakpoint();
     const isTablet = screens.md && !screens.lg;
 
+    // دالة تنسيق العنوان مع منع الالتفاف (nowrap) ليظهر العنوان كاملاً على سطر واحد بجانب الأيقونة
+    const renderFormattedTitleWithIconOnly = (title, icon) => {
+        if (!title) return null;
+
+        const separatorRegex = /\s*[-–]\s*/;
+        const parts = title.split(separatorRegex);
+
+        let titleContent;
+        if (parts.length > 1) {
+            const firstPart = parts[0];
+            const restOfTitle = title.replace(firstPart, '');
+
+            titleContent = (
+                <span style={{ color: token.colorText, fontSize: isTablet ? '16px' : '14px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                    <span style={{ color: mainPurple }}>{firstPart}</span>
+                    <span style={{ color: token.colorText }}>{restOfTitle}</span>
+                </span>
+            );
+        } else {
+            titleContent = (
+                <span style={{ color: mainPurple, fontSize: isTablet ? '16px' : '14px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                    {title}
+                </span>
+            );
+        }
+
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '14px', gap: '8px', overflow: 'hidden' }}>
+                {icon && (
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: mainPurple,
+                        fontSize: isTablet ? '18px' : '16px',
+                        flexShrink: 0,
+                    }}>
+                        {icon}
+                    </div>
+                )}
+                <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {titleContent}
+                </h3>
+            </div>
+        );
+    };
+
     // عكس مرتبة البطاقات ليظهر تأثير التراص التصاعدي الصحيح
     const reversedProjects = [...projects].reverse();
 
@@ -103,7 +150,7 @@ export default function MobileProjects({ projects, mainPurple }) {
                                 }
                             >
                                 <div>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '8px' }}>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '14px' }}>
                                         {project.tags.map((tag, tagIdx) => (
                                             <Tag
                                                 key={tagIdx}
@@ -119,10 +166,8 @@ export default function MobileProjects({ projects, mainPurple }) {
                                             </Tag>
                                         ))}
                                     </div>
-                                    <h3 style={{ color: token.colorText, fontSize: '16px', fontWeight: '700', marginBottom: '4px' }}>
-                                        {project.title}
-                                    </h3>
-                                    <p style={{ color: token.colorTextSecondary, fontSize: '12.5px', lineHeight: '1.4', marginBottom: '8px' }}>
+                                    {renderFormattedTitleWithIconOnly(project.title, project.icon)}
+                                    <p style={{ color: token.colorTextSecondary, fontSize: '12.5px', lineHeight: '1.4', marginBottom: '0px' }}>
                                         {project.description}
                                     </p>
                                 </div>
