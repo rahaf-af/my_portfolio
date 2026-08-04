@@ -110,7 +110,7 @@ export default function ContactForm() {
                 >
                     <h3 style={{
                         color: token.colorText,
-                        fontSize: 'clamp(1.9rem, 3.2vw, 2.5rem)',
+                        fontSize: isDesktop ? '2.5rem' : (screens.md ? '2.5rem' : '1.6rem'),
                         fontWeight: '700',
                         lineHeight: '1.3',
                         marginBottom: '20px'
