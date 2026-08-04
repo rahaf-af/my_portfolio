@@ -39,7 +39,7 @@ export default function Certificate() {
             institution: 'Tuwaiq Academy',
             period: 'May 2025',
             image: Certificate3,
-            code: '02 // TWQ_REACT',
+            code: '02 // TWQ_R.J',
             skills: ['React.js', 'Dynamic UI'],
             desc: 'Program in building dynamic user interfaces.'
         },

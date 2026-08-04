@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, theme } from 'antd';
 import { Calendar, Building2, Eye, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,6 +7,13 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
+
+    // حالة التحميل عند تغيير الشهادة
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    useEffect(() => {
+        setImageLoaded(false);
+    }, [currentCert?.id]);
 
     return (
         <motion.div
@@ -161,10 +168,41 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             </div>
                         </div>
 
-                        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                            {!imageLoaded && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: token.colorBgContainer,
+                                    borderRadius: '10px',
+                                    zIndex: 2
+                                }}>
+                                    <div style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        border: `3px solid ${token.colorBorder}`,
+                                        borderTop: `3px solid ${mainPurple}`,
+                                        borderRadius: '50%',
+                                        animation: 'spin 1s linear infinite'
+                                    }} />
+                                    <style>{`
+                                        @keyframes spin {
+                                            0% { transform: rotate(0deg); }
+                                            100% { transform: rotate(360deg); }
+                                        }
+                                    `}</style>
+                                </div>
+                            )}
                             <Image
                                 src={currentCert.image}
                                 alt={currentCert.title}
+                                onLoad={() => setImageLoaded(true)}
                                 preview={{ cover: <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fff', fontSize: '11px', fontWeight: 'bold' }}><Eye size={13} /> View Full Certificate</div> }}
                                 style={{
                                     width: '100%',
