@@ -24,14 +24,14 @@ export default function MobileProjects({ projects, mainPurple }) {
             const restOfTitle = title.replace(firstPart, '');
 
             titleContent = (
-                <span style={{ color: token.colorText, fontSize: isTablet ? '16px' : '13px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                <span style={{ color: token.colorText, fontSize: isTablet ? '16px' : '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
                     <span style={{ color: mainPurple }}>{firstPart}</span>
                     <span style={{ color: token.colorText }}>{restOfTitle}</span>
                 </span>
             );
         } else {
             titleContent = (
-                <span style={{ color: mainPurple, fontSize: isTablet ? '16px' : '13px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                <span style={{ color: mainPurple, fontSize: isTablet ? '16px' : '12px', fontWeight: '700', whiteSpace: 'nowrap' }}>
                     {title}
                 </span>
             );
