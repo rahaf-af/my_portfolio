@@ -9,6 +9,9 @@ const { useBreakpoint } = Grid;
 export default function ContactForm() {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
+    // تحديد هل الشاشة جوال صغير (أقل من md)
+    const isMobile = !screens.md;
+
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
 
@@ -24,8 +27,6 @@ export default function ContactForm() {
 
     // دالة إرسال الرسالة عبر EmailJS
     const handleSubmit = async (values) => {
-        // حماية Honeypot: حقل مخفي عن عين المستخدم الحقيقي، البوتات فقط تعبيه.
-        // لو انعبى، نتجاهل الإرسال بصمت (نوهم البوت إنه نجح) بدون ما نستهلك حصة EmailJS
         if (values.website) {
             form.resetFields();
             return;
@@ -60,7 +61,8 @@ export default function ContactForm() {
                 padding: isDesktop ? '100px 32px' : '60px 16px',
                 position: 'relative',
                 maxWidth: '1300px',
-                margin: '0 auto'
+                margin: '0 auto',
+                overflowX: 'hidden' // لمنع أي خروج للظل أو العناصر خارج حدود الشاشة
             }}
         >
             {/* عنوان السكشن */}
@@ -110,7 +112,8 @@ export default function ContactForm() {
                 >
                     <h3 style={{
                         color: token.colorText,
-                        fontSize: isDesktop ? '2.5rem' : (screens.md ? '2.5rem' : '1.6rem'),
+                        // حجم الخط للشاشة الصغيرة جوال صار صغير، وللتابلت والشاشة الكبيرة نفس حق الشاشة الكبيرة
+                        fontSize: isMobile ? '1.6rem' : '2.5rem',
                         fontWeight: '700',
                         lineHeight: '1.3',
                         marginBottom: '20px'
@@ -186,28 +189,30 @@ export default function ContactForm() {
                             : 'linear-gradient(145deg, rgba(255, 255, 255, 0.9) 100%, rgba(245, 240, 255, 0.5) 0%)',
                         border: `1.5px solid ${mainPurple}50`,
                         boxShadow: isDarkMode 
-                            ? `0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px ${mainPurple}15`
-                            : `0 20px 45px -10px ${mainPurple}20`,
+                            ? `0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px ${mainPurple}10`
+                            : `0 15px 35px -10px ${mainPurple}15`,
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
                         borderRadius: '28px',
                         padding: isDesktop ? '45px' : '28px',
                         position: 'relative',
                         overflow: 'hidden',
+                        width: '100%',
+                        boxSizing: 'border-box',
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.borderColor = mainPurple;
                         e.currentTarget.style.boxShadow = isDarkMode
-                            ? `0 30px 60px rgba(0, 0, 0, 0.6), 0 0 45px ${mainPurple}25`
-                            : `0 25px 50px -10px ${mainPurple}30`;
+                            ? `0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px ${mainPurple}20`
+                            : `0 20px 40px -10px ${mainPurple}25`;
                         e.currentTarget.style.transform = 'translateY(-4px)';
                     }}
                     onMouseLeave={(e) => {
                         e.currentTarget.style.borderColor = `${mainPurple}50`;
                         e.currentTarget.style.boxShadow = isDarkMode 
-                            ? `0 25px 50px rgba(0, 0, 0, 0.5), 0 0 35px ${mainPurple}15`
-                            : `0 20px 45px -10px ${mainPurple}20`;
+                            ? `0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px ${mainPurple}10`
+                            : `0 15px 35px -10px ${mainPurple}15`;
                         e.currentTarget.style.transform = 'translateY(0)';
                     }}
                 >
