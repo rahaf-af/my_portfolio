@@ -176,6 +176,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                     left: 0,
                                     width: '100%',
                                     height: '100%',
+                                    minHeight: '220px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
