@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Card, Space, Grid, theme } from 'antd';
 import { DownloadOutlined, EyeOutlined, FilePdfOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
@@ -29,6 +29,51 @@ const handleDownloadCv = (cvUrl, fileName) => {
     document.body.removeChild(link);
 };
 
+// تأثير كتابة مخصص للعربي: يبني السلسلة كاملة بكل تحديث بدل إضافة حرف كعقدة منفصلة،
+// عشان يتفادى مشكلة تفكك الحروف العربية بمحرك WebKit (Safari و iOS)
+function useArabicTypewriter(strings, { typeSpeed = 60, deleteSpeed = 40, pauseTime = 1500 } = {}) {
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        if (!strings || strings.length === 0) return;
+
+        let stringIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let timeoutId;
+
+        const tick = () => {
+            const currentString = strings[stringIndex];
+
+            if (!isDeleting) {
+                charIndex++;
+                setText(currentString.slice(0, charIndex));
+
+                if (charIndex === currentString.length) {
+                    isDeleting = true;
+                    timeoutId = setTimeout(tick, pauseTime);
+                    return;
+                }
+            } else {
+                charIndex--;
+                setText(currentString.slice(0, charIndex));
+
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    stringIndex = (stringIndex + 1) % strings.length;
+                }
+            }
+
+            timeoutId = setTimeout(tick, isDeleting ? deleteSpeed : typeSpeed);
+        };
+
+        timeoutId = setTimeout(tick, typeSpeed);
+        return () => clearTimeout(timeoutId);
+    }, [strings, typeSpeed, deleteSpeed, pauseTime]);
+
+    return text;
+}
+
 export default function Hero({ lang = 'en' }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const screens = useBreakpoint();
@@ -37,6 +82,9 @@ export default function Hero({ lang = 'en' }) {
     const mainPurple = token.colorPrimary;
     const isDesktop = screens.lg;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0') || token.colorBgContainer.startsWith('#1');
+
+    const isAr = lang === 'ar';
+    const arabicTypedText = useArabicTypewriter(isAr ? heroConfig.roles[lang] : null, { typeSpeed: 60, deleteSpeed: 40 });
 
     return (
         <div
@@ -156,15 +204,38 @@ export default function Hero({ lang = 'en' }) {
                         unicodeBidi: 'plaintext',
                     }}
                 >
-                    <Typewriter
-                        options={{
-                            strings: heroConfig.roles[lang],
-                            autoStart: true,
-                            loop: true,
-                            deleteSpeed: 40,
-                            delay: 60,
-                        }}
-                    />
+                    {isAr ? (
+                        <span>
+                            {arabicTypedText}
+                            <span
+                                style={{
+                                    display: 'inline-block',
+                                    width: '2px',
+                                    marginInlineStart: '2px',
+                                    animation: 'blink-cursor 0.8s step-end infinite',
+                                    color: mainPurple,
+                                }}
+                            >
+                                |
+                            </span>
+                            <style>{`
+                                @keyframes blink-cursor {
+                                    0%, 100% { opacity: 1; }
+                                    50% { opacity: 0; }
+                                }
+                            `}</style>
+                        </span>
+                    ) : (
+                        <Typewriter
+                            options={{
+                                strings: heroConfig.roles[lang],
+                                autoStart: true,
+                                loop: true,
+                                deleteSpeed: 40,
+                                delay: 60,
+                            }}
+                        />
+                    )}
                 </div>
 
                 {/* الوصف الثابت */}
