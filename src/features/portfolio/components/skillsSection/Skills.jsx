@@ -34,67 +34,68 @@ import SkillsMobile from './SkillsMobile';
 
 const { useBreakpoint } = Grid;
 
-export default function Skills() {
+export default function Skills({ lang = 'en' }) {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
+    const isAr = lang === 'ar';
 
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
-    // تصنيفات المهارات المستخرجة بدقة من سيرتك الذاتية مع أيقونة مختلفة لكل قسم
+    // تعريف بيانات المهارات والكونفج مباشرة بداخلها المستويات (عربي / إنجليزي) بشكل منظّم
     const skillCategories = [
         {
             id: 'frontend-core',
-            name: 'Frontend Core',
+            name: isAr ? 'أساسيات الواجهات الأمامية' : 'Frontend Core',
             categoryIcon: <CodeOutlined />,
             skills: [
-                { name: 'JavaScript', level: 'Advanced', icon: <SiJavascript style={{ color: '#F7DF1E' }} /> },
-                { name: 'TypeScript', level: 'beginner', icon: <SiTypescript style={{ color: '#3178C6' }} /> },
-                { name: 'HTML5', level: 'Advanced', icon: <SiHtml5 style={{ color: '#E34F26' }} /> },
-                { name: 'CSS3', level: 'Advanced', icon: <BgColorsOutlined style={{ color: '#1572B6' }} /> },
+                { name: 'JavaScript', level: isAr ? 'متقدم' : 'Advanced', icon: <SiJavascript style={{ color: '#F7DF1E' }} /> },
+                { name: 'TypeScript', level: isAr ? 'مبتدئ' : 'Beginner', icon: <SiTypescript style={{ color: '#3178C6' }} /> },
+                { name: 'HTML5', level: isAr ? 'متقدم' : 'Advanced', icon: <SiHtml5 style={{ color: '#E34F26' }} /> },
+                { name: 'CSS3', level: isAr ? 'متقدم' : 'Advanced', icon: <BgColorsOutlined style={{ color: '#1572B6' }} /> },
             ]
         },
         {
             id: 'frontend-frameworks',
-            name: 'Frontend Frameworks',
+            name: isAr ? 'إطارات الواجهات الأمامية' : 'Frontend Frameworks',
             categoryIcon: <LaptopOutlined />,
             skills: [
-                { name: 'React.js', level: 'Advanced', icon: <SiReact style={{ color: '#61DAFB' }} /> },
-                { name: 'Next.js', level: 'beginner', icon: <SiNextdotjs style={{ color: isDarkMode ? '#ffffff' : '#000000' }} /> },
-                { name: 'Tailwind CSS', level: 'Advanced', icon: <SiTailwindcss style={{ color: '#06B6D4' }} /> },
-                { name: 'Ant Design', level: 'Advanced', icon: <SiAntdesign style={{ color: '#1677FF' }} /> },
-                { name: 'Bootstrap', level: 'Intermediate', icon: <SiBootstrap style={{ color: '#7952B3' }} /> },
+                { name: 'React.js', level: isAr ? 'متقدم' : 'Advanced', icon: <SiReact style={{ color: '#61DAFB' }} /> },
+                { name: 'Next.js', level: isAr ? 'مبتدئ' : 'Beginner', icon: <SiNextdotjs style={{ color: isDarkMode ? '#ffffff' : '#000000' }} /> },
+                { name: 'Tailwind CSS', level: isAr ? 'متقدم' : 'Advanced', icon: <SiTailwindcss style={{ color: '#06B6D4' }} /> },
+                { name: 'Ant Design', level: isAr ? 'متقدم' : 'Advanced', icon: <SiAntdesign style={{ color: '#1677FF' }} /> },
+                { name: 'Bootstrap', level: isAr ? 'متوسط' : 'Intermediate', icon: <SiBootstrap style={{ color: '#7952B3' }} /> },
             ]
         },
         {
             id: 'backend',
-            name: 'Backend & APIs',
+            name: isAr ? 'الواجهات الخلفية وبرمجيات APIs' : 'Backend & APIs',
             categoryIcon: <AppstoreOutlined />,
             skills: [
-                { name: 'Python', level: 'Advanced', icon: <SiPython style={{ color: '#3776AB' }} /> },
-                { name: 'Django', level: 'Advanced', icon: <SiDjango style={{ color: '#092E20' }} /> },
-                { name: 'REST APIs', level: 'Intermediate', icon: <CodeOutlined style={{ color: mainPurple }} /> },
+                { name: 'Python', level: isAr ? 'متقدم' : 'Advanced', icon: <SiPython style={{ color: '#3776AB' }} /> },
+                { name: 'Django', level: isAr ? 'متقدم' : 'Advanced', icon: <SiDjango style={{ color: '#092E20' }} /> },
+                { name: 'REST APIs', level: isAr ? 'متوسط' : 'Intermediate', icon: <CodeOutlined style={{ color: mainPurple }} /> },
             ]
         },
         {
             id: 'database',
-            name: 'Databases',
+            name: isAr ? 'قواعد البيانات' : 'Databases',
             categoryIcon: <DatabaseOutlined />,
             skills: [
-                { name: 'PostgreSQL', level: 'Intermediate', icon: <SiPostgresql style={{ color: '#4169E1' }} /> },
-                { name: 'Prisma ORM', level: 'beginner', icon: <SiPrisma style={{ color: mainPurple }} /> },
+                { name: 'PostgreSQL', level: isAr ? 'متوسط' : 'Intermediate', icon: <SiPostgresql style={{ color: '#4169E1' }} /> },
+                { name: 'Prisma ORM', level: isAr ? 'مبتدئ' : 'Beginner', icon: <SiPrisma style={{ color: mainPurple }} /> },
             ]
         },
         {
             id: 'tools',
-            name: 'Tools & DevOps',
+            name: isAr ? 'الأدوات و DevOps' : 'Tools & DevOps',
             categoryIcon: <ToolOutlined />,
             skills: [
-                { name: 'Git', level: 'Advanced', icon: <SiGit style={{ color: '#F05032' }} /> },
-                { name: 'GitHub', level: 'Advanced', icon: <SiGithub style={{ color: isDarkMode ? '#ffffff' : '#000000' }} /> },
-                { name: 'Postman', level: 'Intermediate', icon: <SiPostman style={{ color: '#FF6C37' }} /> },
-                { name: 'Netlify', level: 'Intermediate', icon: <SiNetlify style={{ color: '#00C7B7' }} /> },
+                { name: 'Git', level: isAr ? 'متقدم' : 'Advanced', icon: <SiGit style={{ color: '#F05032' }} /> },
+                { name: 'GitHub', level: isAr ? 'متقدم' : 'Advanced', icon: <SiGithub style={{ color: isDarkMode ? '#ffffff' : '#000000' }} /> },
+                { name: 'Postman', level: isAr ? 'متوسط' : 'Intermediate', icon: <SiPostman style={{ color: '#FF6C37' }} /> },
+                { name: 'Netlify', level: isAr ? 'متوسط' : 'Intermediate', icon: <SiNetlify style={{ color: '#00C7B7' }} /> },
             ]
         }
     ];
@@ -121,10 +122,10 @@ export default function Skills() {
                     viewport={{ once: true }}
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainPurple, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <CodeOutlined style={{ color: mainPurple }} /> SKILLS
+                        <CodeOutlined style={{ color: mainPurple }} /> {isAr ? 'المهارات' : 'SKILLS'}
                     </div>
                     <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: '800', margin: '0 0 10px 0' }}>
-                        Skills & Tools
+                        {isAr ? 'المهارات والأدوات' : 'Skills & Tools'}
                     </h2>
                 </motion.div>
             </div>
@@ -139,6 +140,7 @@ export default function Skills() {
                     mainPurple={mainPurple}
                     token={token}
                     isDarkMode={isDarkMode}
+                    lang={lang}
                 />
             ) : (
                 <SkillsMobile 
@@ -149,6 +151,7 @@ export default function Skills() {
                     mainPurple={mainPurple}
                     token={token}
                     isDarkMode={isDarkMode}
+                    lang={lang}
                 />
             )}
         </section>

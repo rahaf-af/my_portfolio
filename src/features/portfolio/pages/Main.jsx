@@ -6,16 +6,16 @@ import Experience from '../components/Experience'
 import ContactForm from '../components/ContactForm'
 import About from '../components/About'
 import Certificates from '../components/certificateSection/Certificates'
-export default function Main() {
+export default function Main({ lang }) {
   return (
     <>
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Experience />
-      <Certificates />
-      <ContactForm />
+      <Hero lang={lang} />
+      <About lang={lang} />
+      <Projects lang={lang} />
+      <Skills lang={lang} />
+      <Experience lang={lang} />
+      <Certificates lang={lang} />
+      <ContactForm lang={lang} />
 
     </>
   )

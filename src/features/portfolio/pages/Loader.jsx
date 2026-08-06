@@ -10,8 +10,9 @@ import {
     LaptopOutlined,
     CheckCircleOutlined
 } from '@ant-design/icons';
+import { getLoaderConfig } from '../../../config/loaderConfig';
 
-export default function Loader({ onFinished }) {
+export default function Loader({ onFinished, lang = 'en' }) {
     // بما إن Loader موجود جوا ConfigProvider بملف App.jsx، هذا الـ token يرجع
     // القيم الصحيحة تلقائياً حسب الوضع الحالي - مافيه داعي نخمّن isDarkMode بأنفسنا
     const { token } = theme.useToken();
@@ -19,6 +20,9 @@ export default function Loader({ onFinished }) {
     const [progress, setProgress] = useState(0);
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [hasMounted, setHasMounted] = useState(false);
+
+    const isAr = lang === 'ar';
+    const loaderConfig = getLoaderConfig(isAr);
 
     useEffect(() => {
         const staticLoader = document.getElementById('initial-loader');
@@ -54,12 +58,12 @@ export default function Loader({ onFinished }) {
     const isComplete = progress >= 100;
 
     const getDevLogs = () => {
-        if (progress < 20) return { text: 'git init & cloning modules...', icon: <CodeOutlined /> };
-        if (progress < 40) return { text: 'npm install react-dom framer-motion...', icon: <ApiOutlined /> };
-        if (progress < 60) return { text: 'compiling Tailwind & Ant Design styles...', icon: <LaptopOutlined /> };
-        if (progress < 80) return { text: 'running unit tests (0 bugs found)...', icon: <BugOutlined /> };
-        if (progress < 100) return { text: 'optimizing production bundle...', icon: <RocketOutlined /> };
-        return { text: 'portfolio successfully deployed!', icon: <CheckCircleOutlined /> };
+        if (progress < 20) return { text: loaderConfig.logs.step1, icon: <CodeOutlined /> };
+        if (progress < 40) return { text: loaderConfig.logs.step2, icon: <ApiOutlined /> };
+        if (progress < 60) return { text: loaderConfig.logs.step3, icon: <LaptopOutlined /> };
+        if (progress < 80) return { text: loaderConfig.logs.step4, icon: <BugOutlined /> };
+        if (progress < 100) return { text: loaderConfig.logs.step5, icon: <RocketOutlined /> };
+        return { text: loaderConfig.logs.complete, icon: <CheckCircleOutlined /> };
     };
 
     const currentLog = getDevLogs();
@@ -150,7 +154,7 @@ export default function Loader({ onFinished }) {
                         borderRadius: '6px',
                         border: `1px solid ${token.colorPrimary}30`
                     }}>
-                        ~/rahaf/portfolio-v2
+                        {loaderConfig.terminalPath}
                     </div>
                 </div>
 
@@ -197,10 +201,10 @@ export default function Loader({ onFinished }) {
 
                 <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                     <div style={{ color: token.colorPrimary, fontSize: '12px', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'monospace' }}>
-                        Rahaf Fallatah
+                        {loaderConfig.name}
                     </div>
                     <h2 style={{ color: token.colorText, fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>
-                        Compiling Workspace...
+                        {loaderConfig.title}
                     </h2>
                 </div>
 
@@ -219,17 +223,17 @@ export default function Loader({ onFinished }) {
                         style={{
                             width: `${progress}%`,
                             height: '100%',
-                            background: `linear-gradient(90deg, ${token.colorTextSecondary}, ${token.colorPrimary})`,
+                            background: `linear-gradient(90deg, ${token.colorTextSecondary}, ${isComplete ? '#10b981' : token.colorPrimary})`,
                             borderRadius: '8px',
-                            boxShadow: `0 0 16px ${token.colorPrimary}`,
-                            transition: 'width 0.1s linear',
+                            boxShadow: `0 0 16px ${isComplete ? '#10b981' : token.colorPrimary}`,
+                            transition: 'width 0.1s linear, background 0.3s ease, box-shadow 0.3s ease',
                         }}
                     />
                 </div>
 
                 <div
                     style={{
-                        background: token.colorBgLayout,
+                        background: isComplete ? 'rgba(16, 185, 129, 0.1)' : token.colorBgLayout,
                         border: `1px solid ${isComplete ? '#10b981' : `${token.colorPrimary}35`}`,
                         borderRadius: '14px',
                         padding: '14px 18px',
@@ -237,7 +241,7 @@ export default function Loader({ onFinished }) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         fontFamily: 'monospace',
-                        transition: 'border-color 0.3s ease',
+                        transition: 'border-color 0.3s ease, background-color 0.3s ease',
                     }}
                 >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>

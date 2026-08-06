@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Grid, Button, Drawer, Switch, theme as antTheme } from 'antd';
-import { MenuOutlined, SunOutlined } from '@ant-design/icons';
+import { MenuOutlined, SunOutlined, GlobalOutlined } from '@ant-design/icons';
 import { Outlet } from 'react-router-dom';
 import Butterfly from '../components/Butterfly';
+import { navbarConfig } from '../../../config/navbarConfig';
 import './navbar.css';
 
 const { Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
 
-const SECTION_MAP = {
-    '1': 'home',
-    '2': 'about',
-    '3': 'projects',
-    '4': 'skills',
-    '5': 'experience',
-    '6': 'certificates',
-    '7': 'contact',
-};
+const SECTION_MAP = Object.keys(navbarConfig.sections).reduce((acc, key) => {
+    acc[key] = navbarConfig.sections[key].id;
+    return acc;
+}, {});
 
-export default function SideBar({ isDarkMode, setIsDarkMode }) {
+export default function SideBar({ isDarkMode, setIsDarkMode, lang, setLang }) {
     const [activeKey, setActiveKey] = useState('1');
     const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -28,14 +24,17 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
     const mainPurple = token.colorPrimary;
     const isLargeScreen = screens.lg;
 
-    const handleScrollToSection = (e, sectionId, key) => {
-        e.preventDefault();
+    const toggleLanguage = () => {
+        setLang((prev) => (prev === 'en' ? 'ar' : 'en'));
+    };
+
+    const handleScrollToSection = (sectionId, key) => {
         setActiveKey(key);
         setOpenDrawer(false);
 
         const element = document.getElementById(sectionId);
         if (element) {
-            const headerOffset = 50;
+            const headerOffset = navbarConfig.offsets.headerHeight;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -83,17 +82,22 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [lang, isDarkMode]);
 
-    const items = [
-        { key: '1', label: <span onClick={(e) => handleScrollToSection(e, 'home', '1')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Home</span> },
-        { key: '2', label: <span onClick={(e) => handleScrollToSection(e, 'about', '2')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>About</span> },
-        { key: '3', label: <span onClick={(e) => handleScrollToSection(e, 'projects', '3')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Projects</span> },
-        { key: '4', label: <span onClick={(e) => handleScrollToSection(e, 'skills', '4')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Skills</span> },
-        { key: '5', label: <span onClick={(e) => handleScrollToSection(e, 'experience', '5')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Experience</span> },
-        { key: '6', label: <span onClick={(e) => handleScrollToSection(e, 'certificates', '6')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Certificates</span> },
-        { key: '7', label: <span onClick={(e) => handleScrollToSection(e, 'contact', '7')} style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}>Contact</span> },
-    ];
+    const items = Object.keys(navbarConfig.sections).map((key) => {
+        const section = navbarConfig.sections[key];
+        return {
+            key: key,
+            onClick: () => handleScrollToSection(section.id, key),
+            label: (
+                <span
+                    style={{ display: 'block', width: '100%', color: mainPurple, fontWeight: '600', fontSize: 16 }}
+                >
+                    {section.labels[lang]}
+                </span>
+            )
+        };
+    });
 
     return (
         <Layout style={{ minHeight: '100vh', background: token.colorBgLayout }}>
@@ -102,8 +106,10 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: isLargeScreen ? '0 40px' : '0 20px',
-                    borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}`,
+                    padding: isLargeScreen ? navbarConfig.offsets.desktopPadding : navbarConfig.offsets.mobilePadding,
+                    borderBottomWidth: '1px',
+                    borderBottomStyle: 'solid',
+                    borderBottomColor: isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)',
                     position: 'sticky',
                     top: 0,
                     zIndex: 100,
@@ -112,14 +118,15 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
                     '--theme-primary': mainPurple,
                 }}
             >
-                <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
-                    <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
+                {/* تم عكس اتجاه الـ flex بناءً على اللغة لضمان بقاء الفراشة في نهاية الاسم دائماً */}
+                <div style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
+                    <span style={{ color: mainPurple }}>{navbarConfig.brand.name}</span>
                     <div
                         className="nav-butterfly"
                         style={{
-                            width: '30px',
-                            height: '30px',
-                             '--butterfly-color': mainPurple,
+                            width: `${navbarConfig.brand.butterflySize}px`,
+                            height: `${navbarConfig.brand.butterflySize}px`,
+                            '--butterfly-color': mainPurple,
                             marginInline: isLargeScreen ? 10 : 5
                         }}
                     >
@@ -128,6 +135,7 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
                 </div>
                 {isLargeScreen && (
                     <Menu
+                        key={`nav-menu-${lang}-${isDarkMode}`}
                         theme={isDarkMode ? 'dark' : 'light'}
                         mode="horizontal"
                         selectedKeys={[activeKey]}
@@ -142,7 +150,35 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
                     />
                 )}
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    
+                    {/* زر اللغة بدون استخدام border عام مختلط */}
+                    <Button
+                        type="dashed"
+                        icon={<GlobalOutlined style={{ color: mainPurple, fontSize: '14px' }} />}
+                        onClick={toggleLanguage}
+                        style={{
+                            height: '26px',
+                            width: '52px',
+                            borderWidth: '1.5px',
+                            borderStyle: 'dashed',
+                            borderColor: `${mainPurple}80`,
+                            boxShadow: '0 2px 6px rgba(168, 85, 247, 0.15)',
+                            color: mainPurple,
+                            fontWeight: 'bold',
+                            fontSize: '11px',
+                            borderRadius: '13px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '3px',
+                            padding: 0,
+                            background: 'transparent'
+                        }}
+                    >
+                        {lang === 'en' ? 'AR' : 'EN'}
+                    </Button>
+
                     <Switch
                         checked={isDarkMode}
                         onChange={(checked) => setIsDarkMode(checked)}
@@ -163,22 +199,29 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
             </Header>
 
             <Drawer
+                key={`nav-drawer-${lang}`}
                 title={
                     <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        <span style={{ color: mainPurple }}>𝑅𝑎ℎ𝑎𝑓 𝐹𝑎𝑙𝑙𝑎𝑡𝑎ℎ</span>
+                        <span style={{ color: mainPurple }}>{navbarConfig.brand.name}</span>
                     </div>
                 }
-                placement="right"
+                placement={lang === 'ar' ? 'left' : 'right'}
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}
                 size={260}
                 style={{ '--theme-primary': mainPurple }}
                 styles={{
                     body: { background: token.colorBgContainer, padding: '16px 8px' },
-                    header: { background: token.colorBgContainer, borderBottom: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)'}` }
+                    header: { 
+                        background: token.colorBgContainer, 
+                        borderBottomWidth: '1px',
+                        borderBottomStyle: 'solid',
+                        borderBottomColor: isDarkMode ? 'rgba(168, 85, 247, 0.15)' : 'rgba(168, 85, 247, 0.2)' 
+                    }
                 }}
             >
                 <Menu
+                    key={`nav-drawer-menu-${lang}-${isDarkMode}`}
                     theme={isDarkMode ? 'dark' : 'light'}
                     mode="inline"
                     selectedKeys={[activeKey]}
@@ -190,13 +233,13 @@ export default function SideBar({ isDarkMode, setIsDarkMode }) {
             </Drawer>
 
             <Content style={{ padding: isLargeScreen ? '24px 40px' : '16px 16px' }}>
-                <div style={{ minHeight: 280, padding: 24, borderRadius: 16 }}>
+                <div style={{ minHeight: 280, padding: 24, borderRadius: '16px' }}>
                     <Outlet />
                 </div>
             </Content>
 
             <Footer style={{ textAlign: 'center', color: token.colorTextSecondary, background: token.colorBgLayout }}>
-                ©{currentYear} Rahaf.Fallatah All rights reserved.
+                {navbarConfig.footerText[lang](currentYear)}
             </Footer>
         </Layout>
     );

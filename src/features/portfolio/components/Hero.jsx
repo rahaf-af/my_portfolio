@@ -7,6 +7,7 @@ import Typewriter from 'typewriter-effect';
 import hero_photo2 from '../../../assets/hero_photo2.PNG';
 import frontendCvPdf from '../../../assets/Rahaf_Fallatah_Frontend_developer.pdf';
 import fullstackCvPdf from '../../../assets/Rahaf_Fallatah_Full_Stack_Developer.pdf';
+import { heroConfig } from '../../../config/heroConfig';
 
 const { useBreakpoint } = Grid;
 
@@ -28,7 +29,7 @@ const handleDownloadCv = (cvUrl, fileName) => {
     document.body.removeChild(link);
 };
 
-export default function Hero() {
+export default function Hero({ lang = 'en' }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const screens = useBreakpoint();
 
@@ -58,22 +59,22 @@ export default function Hero() {
                 boxShadow: isDarkMode ? `0 8px 32px ${mainPurple}40, inset 0 0 16px ${mainPurple}20` : `0 10px 30px ${mainPurple}26`,
             }}
         >
-            {/* الشاشات الكبيرة */}
+            {/* الشاشات الكبيرة (اللاب توب): تتوزع بشكل متناسق وتعكس مكان الصورة بحسب اتجاه اللغة الإنجليزية أو العربية */}
             {isDesktop && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95, x: 20 }}
+                    initial={{ opacity: 0, scale: 0.95, x: lang === 'ar' ? -20 : 20 }}
                     whileInView={{ opacity: 1, scale: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
                     style={{
                         position: 'absolute',
-                        right: 0,
+                        [lang === 'ar' ? 'left' : 'right']: 0,
                         top: 0,
                         width: '40%',
                         height: '100%',
                         backgroundImage: `url(${hero_photo2})`,
                         backgroundSize: 'contain',
-                        backgroundPosition: 'center right',
+                        backgroundPosition: lang === 'ar' ? 'center left' : 'center right',
                         backgroundRepeat: 'no-repeat',
                         zIndex: 1,
                         filter: `drop-shadow(0 30px 80px ${mainPurple}66)`,
@@ -115,7 +116,7 @@ export default function Hero() {
                 </motion.div>
             )}
 
-            {/* قسم النصوص والأزرار */}
+            {/* قسم النصوص والأزرار (تنعكس المحاذاة تلقائياً مع اللغة) */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -126,7 +127,7 @@ export default function Hero() {
                     width: '100%',
                     zIndex: 2,
                     position: 'relative',
-                    textAlign: isDesktop ? 'left' : 'center',
+                    textAlign: isDesktop ? (lang === 'ar' ? 'right' : 'left') : 'center',
                 }}
             >
                 <h1
@@ -139,7 +140,7 @@ export default function Hero() {
                         lineHeight: '1.2',
                     }}
                 >
-                    Hi, I'm Rahaf
+                    {heroConfig.titles[lang]}
                 </h1>
 
                 {/* المسمى الوظيفي المتحرك (Typewriter) */}
@@ -155,10 +156,7 @@ export default function Hero() {
                 >
                     <Typewriter
                         options={{
-                            strings: [
-                                'Full-Stack Developer',
-                                'Frontend Developer',
-                            ],
+                            strings: heroConfig.roles[lang],
                             autoStart: true,
                             loop: true,
                             deleteSpeed: 40,
@@ -177,7 +175,7 @@ export default function Hero() {
                         lineHeight: '1.5',
                     }}
                 >
-                    Building scalable web applications, modern UI/UX components, and responsive, high-performance interfaces.
+                    {heroConfig.descriptions[lang]}
                 </div>
 
                 {/* الأزرار */}
@@ -185,9 +183,10 @@ export default function Hero() {
                     style={{
                         display: 'flex',
                         gap: '14px',
-                        justifyContent: isDesktop ? 'flex-start' : 'center',
+                        justifyContent: isDesktop ? (lang === 'ar' ? 'flex-end' : 'flex-start') : 'center',
                         flexWrap: 'wrap',
                         width: '100%',
+                        flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
                     }}
                 >
                     <motion.div whileHover={{ scale: 1.06, y: -3 }} whileTap={{ scale: 0.94 }}>
@@ -205,11 +204,12 @@ export default function Hero() {
                                 boxShadow: `0 8px 25px ${mainPurple}50`,
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '8px',
+                                flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
                             }}
                             onClick={handleScrollToProjects}
                         >
-                            <span>View My Work</span>
+                            <span>{heroConfig.buttons.viewWork[lang]}</span>
                             <ArrowRightOutlined style={{ fontSize: '12px' }} />
                         </Button>
                     </motion.div>
@@ -227,12 +227,13 @@ export default function Hero() {
                                 fontSize: '13.5px',
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '8px',
+                                flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
                             }}
                             onClick={() => setIsModalOpen(true)}
                         >
                             <DownloadOutlined style={{ fontSize: '16px', color: mainPurple }} />
-                            <span>Download CV</span>
+                            <span>{heroConfig.buttons.downloadCv[lang]}</span>
                         </Button>
                     </motion.div>
                 </div>
@@ -242,7 +243,7 @@ export default function Hero() {
             <Modal
                 title={
                     <div style={{ color: mainPurple, fontSize: '18px', textAlign: 'center', fontWeight: '700' }}>
-                        Select CV Version
+                        {heroConfig.cvModal.title[lang]}
                     </div>
                 }
                 open={isModalOpen}
@@ -260,65 +261,65 @@ export default function Hero() {
                 }}
             >
                 <p style={{ color: token.colorTextSecondary, textAlign: 'center', marginBottom: '24px' }}>
-                    Choose the CV format that best matches the position:
+                    {heroConfig.cvModal.subtitle[lang]}
                 </p>
 
-                <Space direction="vertical" style={{ width: '100%' }} size="middle">
+                <Space orientation="vertical" style={{ width: '100%' }} size="middle">
                     <Card
                         style={{ background: token.colorBgContainer, borderColor: mainPurple, borderRadius: '12px' }}
-                        styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }}
+                        styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: lang === 'ar' ? 'row' : 'row' } }}
                     >
-                        <Space align="center">
+                        <Space align="center" orientation={lang === 'ar' ? 'horizontal' : 'horizontal'}>
                             <FilePdfOutlined style={{ fontSize: '24px', color: mainPurple }} />
-                            <div>
-                                <div style={{ color: token.colorText, fontWeight: '600' }}>Front-End Developer CV</div>
-                                <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>React, Next.js & UI Components</div>
+                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left'  , marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
+                                <div style={{ color: token.colorText, fontWeight: '600', fontSize: '12px' , whiteSpace:'nowrap' }}>{heroConfig.cvModal.frontendTitle[lang]}</div>
+                                <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>{heroConfig.cvModal.frontendDesc[lang]}</div>
                             </div>
                         </Space>
-                        <Space>
-                            <Button
-                                type="text"
-                                icon={<EyeOutlined style={{ fontSize: '16px' }} />}
-                                onClick={() => handleOpenCv(frontendCvPdf)}
-                                style={{ color: mainPurple }}
-                            />
+                        <Space orientation={lang === 'ar' ? 'horizontal-reverse' : 'horizontal'}>
                             <Button
                                 type="primary"
                                 icon={<DownloadOutlined />}
                                 onClick={() => handleDownloadCv(frontendCvPdf, 'Rahaf_Fallatah_Frontend_developer.pdf')}
                                 style={{ background: mainPurple, borderColor: mainPurple, borderRadius: '8px' }}
                             >
-                                Download
+                                {heroConfig.cvModal.downloadBtn[lang]}
                             </Button>
+                            <Button
+                                type="text"
+                                icon={<EyeOutlined style={{ fontSize: '16px' }} />}
+                                onClick={() => handleOpenCv(frontendCvPdf)}
+                                style={{ color: mainPurple }}
+                            />
                         </Space>
                     </Card>
 
                     <Card
                         style={{ background: token.colorBgContainer, borderColor: mainPurple, borderRadius: '12px' }}
-                        styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }}
+                        styles={{ body: { padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: lang === 'ar' ? 'row' : 'row' } }}
                     >
-                        <Space align="center">
+                        <Space align="center" orientation={lang === 'ar' ? 'horizontal' : 'horizontal'}>
                             <FilePdfOutlined style={{ fontSize: '24px', color: mainPurple }} />
-                            <div>
-                                <div style={{ color: token.colorText, fontWeight: '600' }}>Full Stack Developer CV</div>
-                                <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>React, Django & REST APIs</div>
+                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left' , marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
+                                <div style={{ color: token.colorText, fontWeight: '600',  fontSize: '12px' , whiteSpace:'nowrap'  }}>{heroConfig.cvModal.fullstackTitle[lang]}</div>
+                                <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>{heroConfig.cvModal.fullstackDesc[lang]}</div>
                             </div>
                         </Space>
-                        <Space>
-                            <Button
-                                type="text"
-                                icon={<EyeOutlined style={{ fontSize: '16px' }} />}
-                                onClick={() => handleOpenCv(fullstackCvPdf)}
-                                style={{ color: mainPurple }}
-                            />
+                        <Space orientation={lang === 'ar' ? 'horizontal-reverse' : 'horizontal'}>
                             <Button
                                 type="primary"
                                 icon={<DownloadOutlined />}
                                 onClick={() => handleDownloadCv(fullstackCvPdf, 'Rahaf_Fallatah_Fullstack_developer.pdf')}
                                 style={{ background: mainPurple, borderColor: mainPurple, borderRadius: '8px' }}
                             >
-                                Download
+                                {heroConfig.cvModal.downloadBtn[lang]}
                             </Button>
+                            <Button
+                                type="text"
+                                icon={<EyeOutlined style={{ fontSize: '16px' }} />}
+                                onClick={() => handleOpenCv(fullstackCvPdf)}
+                                style={{ color: mainPurple }}
+                            />
                         </Space>
                     </Card>
                 </Space>

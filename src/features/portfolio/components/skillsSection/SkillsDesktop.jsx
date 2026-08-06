@@ -9,11 +9,12 @@ export default function SkillsDesktop({
     currentCategory,
     mainPurple,
     token,
-    isDarkMode
+    isDarkMode,
+    lang = 'en'
 }) {
+    const isAr = lang === 'ar';
     const [isAutoPlay, setIsAutoPlay] = useState(false);
 
-    // إدارة الألسنة المفتوحة (Tabs)
     const [openTabs, setOpenTabs] = useState([skillCategories[0].id]);
     const MAX_VISIBLE_TABS = 3;
 
@@ -85,7 +86,7 @@ export default function SkillsDesktop({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-            style={{ display: 'flex', gap: '32px', width: '100%', maxWidth: '1400px', margin: '0 auto', alignItems: 'stretch' }}
+            style={{ display: 'flex', gap: '32px', width: '100%', maxWidth: '1400px', margin: '0 auto', alignItems: 'stretch', direction: isAr ? 'rtl' : 'ltr' }}
         >
 
             {/* 1. Sidebar Categories List */}
@@ -93,10 +94,7 @@ export default function SkillsDesktop({
                 width: '345px',
                 background: windowBgColor,
                 backdropFilter: 'blur(30px)',
-                borderTop: `1px solid ${borderColor}`,
-                borderRight: `1px solid ${borderColor}`,
-                borderBottom: `1px solid ${borderColor}`,
-                borderLeft: `1px solid ${borderColor}`,
+                border: `1px solid ${borderColor}`,
                 borderRadius: '26px',
                 padding: '24px',
                 boxShadow: isDarkMode ? `0 20px 40px rgba(0, 0, 0, 0.5)` : `0 15px 30px ${primaryColor}10`,
@@ -110,33 +108,32 @@ export default function SkillsDesktop({
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                             <FolderFilled style={{ color: primaryColor, fontSize: '20px' }} />
                             <h2 style={{ color: textColor, fontSize: '16px', fontWeight: '800', margin: 0, letterSpacing: '0.5px' }}>
-                                SKILLS <span style={{ color: primaryColor }}>EXPLORER</span>
+                                {isAr ? 'مستكشف' : 'SKILLS'} <span style={{ color: primaryColor }}>{isAr ? 'المهارات' : 'EXPLORER'}</span>
                             </h2>
                         </div>
                         <p style={{ color: textSecondary, fontSize: '11px', margin: 0 }}>
-                            Select a directory to inspect
+                            {isAr ? 'اختر مجلداً للاستعراض' : 'Select a directory to inspect'}
                         </p>
                     </div>
 
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                         <div
                             onClick={() => setIsAutoPlay(!isAutoPlay)}
-                            title={isAutoPlay ? "Pause AutoPlay" : "Play AutoPlay"}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: isAutoPlay ? `${primaryColor}30` : token.colorFillSecondary, borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer', transition: 'all 0.2s' }}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: isAutoPlay ? `${primaryColor}30` : token.colorFillSecondary, border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
                             {isAutoPlay ? <PauseCircleOutlined style={{ fontSize: '12px' }} /> : <PlayCircleOutlined style={{ fontSize: '12px' }} />}
                         </div>
                         <div
-                            onClick={handlePrev}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary, borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer', transition: 'all 0.2s' }}
+                            onClick={isAr ? handleNext : handlePrev}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary, border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
-                            <LeftOutlined style={{ fontSize: '10px' }} />
+                            {isAr ? <RightOutlined style={{ fontSize: '10px' }} /> : <LeftOutlined style={{ fontSize: '10px' }} />}
                         </div>
                         <div
-                            onClick={handleNext}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary, borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer', transition: 'all 0.2s' }}
+                            onClick={isAr ? handlePrev : handleNext}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary, border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
-                            <RightOutlined style={{ fontSize: '10px' }} />
+                            {isAr ? <LeftOutlined style={{ fontSize: '10px' }} /> : <RightOutlined style={{ fontSize: '10px' }} />}
                         </div>
                     </div>
                 </div>
@@ -145,13 +142,13 @@ export default function SkillsDesktop({
                     {skillCategories.map((cat) => {
                         const isActive = activeTab === cat.id;
                         const isOpen = openTabs.includes(cat.id);
-                        const previewSkills = cat.skills.length > 0 ? `${cat.skills[0].name} and more` : '';
+                        const previewSkills = cat.skills.length > 0 ? `${cat.skills[0].name} ${isAr ? 'والمزيد' : 'and more'}` : '';
 
                         return (
                             <motion.div
                                 key={cat.id}
                                 onClick={() => handleSelectCategory(cat.id)}
-                                whileHover={{ scale: 1.015, x: 2 }}
+                                whileHover={{ scale: 1.015, x: isAr ? -2 : 2 }}
                                 whileTap={{ scale: 0.985 }}
                                 style={{
                                     height: '64px',
@@ -165,10 +162,7 @@ export default function SkillsDesktop({
                                         : isOpen
                                             ? token.colorFillSecondary
                                             : 'transparent',
-                                    borderTop: `1px solid ${isActive ? primaryColor : isOpen ? borderColor : borderColor}`,
-                                    borderRight: `1px solid ${isActive ? primaryColor : isOpen ? borderColor : borderColor}`,
-                                    borderBottom: `1px solid ${isActive ? primaryColor : isOpen ? borderColor : borderColor}`,
-                                    borderLeft: `1px solid ${isActive ? primaryColor : isOpen ? borderColor : borderColor}`,
+                                    border: `1px solid ${isActive ? primaryColor : borderColor}`,
                                     color: isActive ? '#ffffff' : textColor,
                                     cursor: 'pointer',
                                     boxShadow: isActive ? `0 6px 20px ${primaryColor}40` : 'none',
@@ -193,12 +187,12 @@ export default function SkillsDesktop({
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '8px' }}>
+                                <div style={{ textAlign: isAr ? 'left' : 'right', flexShrink: 0, marginLeft: isAr ? 0 : '8px', marginRight: isAr ? '8px' : 0 }}>
                                     <div style={{ fontSize: '12px', fontWeight: '800', color: isActive ? '#ffffff' : textColor }}>
                                         {String(cat.skills.length).padStart(2, '0')}
                                     </div>
                                     <div style={{ fontSize: '8.5px', color: isActive ? 'rgba(255,255,255,0.75)' : textSecondary }}>
-                                        items
+                                        {isAr ? 'عناصر' : 'items'}
                                     </div>
                                 </div>
                             </motion.div>
@@ -214,7 +208,7 @@ export default function SkillsDesktop({
                 <div style={{
                     position: 'absolute',
                     top: '-36px',
-                    left: '0px',
+                    [isAr ? 'right' : 'left']: '0px',
                     display: 'flex',
                     alignItems: 'flex-end',
                     gap: '4px',
@@ -264,13 +258,7 @@ export default function SkillsDesktop({
                                 {canClose && (
                                     <CloseOutlined 
                                         onClick={(e) => handleCloseTab(e, tabId)}
-                                        style={{ 
-                                            fontSize: '10px', 
-                                            cursor: 'pointer', 
-                                            opacity: isTabActive ? 0.8 : 0.4, 
-                                            color: textSecondary, 
-                                            flexShrink: 0 
-                                        }} 
+                                        style={{ fontSize: '10px', cursor: 'pointer', opacity: isTabActive ? 0.8 : 0.4, color: textSecondary, flexShrink: 0 }} 
                                     />
                                 )}
                             </div>
@@ -283,12 +271,9 @@ export default function SkillsDesktop({
                     style={{
                         background: windowBgColor,
                         backdropFilter: 'blur(30px)',
-                        borderTop: `1px solid ${borderColor}`,
-                        borderRight: `1px solid ${borderColor}`,
-                        borderBottom: `1px solid ${borderColor}`,
-                        borderLeft: `1px solid ${borderColor}`,
+                        border: `1px solid ${borderColor}`,
                         borderRadius: '26px',
-                        borderTopLeftRadius: '4px',
+                        [isAr ? 'borderTopRightRadius' : 'borderTopLeftRadius']: '4px',
                         padding: '28px',
                         boxShadow: isDarkMode ? `0 25px 50px rgba(0, 0, 0, 0.5)` : `0 20px 35px ${primaryColor}10`,
                         display: 'flex',
@@ -301,7 +286,7 @@ export default function SkillsDesktop({
                         overflow: 'hidden'
                     }}
                 >
-                    {/* Centered Tech/Space Watermark Graphic */}
+                    {/* Watermark Graphic */}
                     <div style={{
                         position: 'absolute',
                         top: '50%',
@@ -309,7 +294,7 @@ export default function SkillsDesktop({
                         transform: 'translate(-50%, -50%)',
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItem: 'center',
+                        alignItems: 'center',
                         justifyContent: 'center',
                         pointerEvents: 'none',
                         zIndex: 0,
@@ -325,10 +310,9 @@ export default function SkillsDesktop({
                     </div>
 
                     <div style={{ position: 'relative', zIndex: 1 }}>
-                        {/* Top Control Bar inside window */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '14px', marginBottom: '22px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: textSecondary, fontSize: '12.5px', fontWeight: '600' }}>
-                                <span style={{ color: primaryColor, fontWeight: '700' }}>Directory:</span>
+                                <span style={{ color: primaryColor, fontWeight: '700' }}>{isAr ? 'المجلد:' : 'Directory:'}</span>
                                 <span style={{ color: textColor, fontWeight: '700' }}>/skills/{currentCategory.id}</span>
                             </div>
 
@@ -338,7 +322,7 @@ export default function SkillsDesktop({
                                     <UnorderedListOutlined style={{ fontSize: '15px', cursor: 'pointer', opacity: '0.4' }} />
                                 </div>
                                 <div style={{ color: textSecondary, fontSize: '12.5px', fontWeight: '600' }}>
-                                    {currentCategory.skills.length} files
+                                    {currentCategory.skills.length} {isAr ? 'ملفات' : 'files'}
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', opacity: 0.6, marginLeft: '6px' }}>
                                     <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ff5f56' }}></div>
@@ -348,7 +332,7 @@ export default function SkillsDesktop({
                             </div>
                         </div>
 
-                        {/* Skills Grid Cards with Folded Corner (الطية) & Balanced Semi-Opaque MainPurple Tint */}
+                        {/* Skills Grid Cards - مع جعل المحتوى في المنتصف تماماً */}
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeTab}
@@ -364,60 +348,53 @@ export default function SkillsDesktop({
                                         whileHover={{ y: -5, scale: 1.02 }}
                                         style={{
                                             background: `linear-gradient(145deg, ${windowBgColor}, ${primaryColor}${isDarkMode ? '30' : '1F'})`,
-                                            borderTop: `1px solid ${borderColor}`,
-                                            borderRight: `1px solid ${borderColor}`,
-                                            borderBottom: `1px solid ${borderColor}`,
-                                            borderLeft: `1px solid ${borderColor}`,
+                                            border: `1px solid ${borderColor}`,
                                             borderRadius: '18px',
                                             padding: '18px 16px',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
                                             minHeight: '145px',
                                             boxShadow: isDarkMode ? '0 10px 25px rgba(0,0,0,0.3)' : `0 8px 20px ${primaryColor}08`,
                                             position: 'relative',
                                             overflow: 'hidden',
-                                            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
+                                            clipPath: isAr 
+                                                ? 'polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px)' 
+                                                : 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
                                             transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
                                         }}
                                     >
-                                        {/* Folded Corner (طية الزاوية) */}
                                         <div style={{
-                                            position: 'absolute', top: 0, right: 0, width: '16px', height: '16px',
-                                            background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, borderBottomLeftRadius: '5px',
-                                            borderLeft: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`
+                                            position: 'absolute', top: 0, [isAr ? 'left' : 'right']: 0, width: '16px', height: '16px',
+                                            background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, 
+                                            [isAr ? 'borderBottomRightRadius' : 'borderBottomLeftRadius']: '5px',
+                                            border: `1px solid ${borderColor}`
                                         }} />
 
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <div style={{ 
-                                                fontSize: '28px', 
-                                                padding: '8px', 
-                                                borderRadius: '12px', 
-                                                background: `${primaryColor}${isDarkMode ? '35' : '26'}`,
-                                                borderTop: `1px solid ${borderColor}`,
-                                                borderRight: `1px solid ${borderColor}`,
-                                                borderBottom: `1px solid ${borderColor}`,
-                                                borderLeft: `1px solid ${borderColor}`,
-                                                display: 'flex', 
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                {skill.icon}
-                                            </div>
-                                            <div style={{ color: textSecondary, fontSize: '11px', letterSpacing: '1px', opacity: 0.5, marginRight: '4px' }}>•••</div>
+                                        <div style={{ 
+                                            fontSize: '28px', 
+                                            padding: '8px', 
+                                            borderRadius: '12px', 
+                                            background: `${primaryColor}${isDarkMode ? '35' : '26'}`,
+                                            border: `1px solid ${borderColor}`,
+                                            display: 'flex', 
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            marginBottom: '10px'
+                                        }}>
+                                            {skill.icon}
                                         </div>
 
-                                        <div>
+                                        <div style={{ width: '100%' }}>
                                             <div style={{ color: textColor, fontSize: '14px', fontWeight: '700', marginBottom: '8px' }}>{skill.name}</div>
                                             <span style={{ 
                                                 fontSize: '10px', 
                                                 fontWeight: '700', 
                                                 color: primaryColor, 
                                                 background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, 
-                                                borderTop: `1px solid ${borderColor}`,
-                                                borderRight: `1px solid ${borderColor}`,
-                                                borderBottom: `1px solid ${borderColor}`,
-                                                borderLeft: `1px solid ${borderColor}`,
+                                                border: `1px solid ${borderColor}`,
                                                 padding: '3px 10px', 
                                                 borderRadius: '6px', 
                                                 display: 'inline-block' 
@@ -442,72 +419,33 @@ export default function SkillsDesktop({
                         position: 'relative',
                         zIndex: 1
                     }}>
-                        {/* Stat Card 1 */}
-                        <div style={{ 
-                            background: token.colorFillSecondary, 
-                            padding: '14px 18px', 
-                            borderRadius: '16px', 
-                            borderTop: `1px solid ${borderColor}`,
-                            borderRight: `1px solid ${borderColor}`,
-                            borderBottom: `1px solid ${borderColor}`,
-                            borderLeft: `1px solid ${borderColor}`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '14px',
-                            boxShadow: `0 4px 15px ${primaryColor}06`,
-                        }}>
-                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0, boxShadow: `0 4px 12px ${primaryColor}40` }}>
+                        <div style={{ background: token.colorFillSecondary, padding: '14px 18px', borderRadius: '16px', border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', gap: '14px' }}>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0 }}>
                                 <RocketOutlined />
                             </div>
                             <div>
-                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800', letterSpacing: '0.3px' }}>1.5 Years</div>
-                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>Dev Experience</div>
+                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800' }}>1.5 {isAr ? 'سنوات' : 'Years'}</div>
+                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>{isAr ? 'خبرة برمجية' : 'Dev Experience'}</div>
                             </div>
                         </div>
 
-                        {/* Stat Card 2 */}
-                        <div style={{ 
-                            background: token.colorFillSecondary, 
-                            padding: '14px 18px', 
-                            borderRadius: '16px', 
-                            borderTop: `1px solid ${borderColor}`,
-                            borderRight: `1px solid ${borderColor}`,
-                            borderBottom: `1px solid ${borderColor}`,
-                            borderLeft: `1px solid ${borderColor}`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '14px',
-                            boxShadow: `0 4px 15px ${primaryColor}06`,
-                        }}>
-                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0, boxShadow: `0 4px 12px ${primaryColor}40` }}>
+                        <div style={{ background: token.colorFillSecondary, padding: '14px 18px', borderRadius: '16px', border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', gap: '14px' }}>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0 }}>
                                 <CodeOutlined />
                             </div>
                             <div>
-                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800', letterSpacing: '0.3px' }}>Clean Arch</div>
-                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>Best Practices</div>
+                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800' }}>{isAr ? 'هندسة نظيفة' : 'Clean Arch'}</div>
+                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>{isAr ? 'أفضل الممارسات' : 'Best Practices'}</div>
                             </div>
                         </div>
 
-                        {/* Stat Card 3 */}
-                        <div style={{ 
-                            background: token.colorFillSecondary, 
-                            padding: '14px 18px', 
-                            borderRadius: '16px', 
-                            borderTop: `1px solid ${borderColor}`,
-                            borderRight: `1px solid ${borderColor}`,
-                            borderBottom: `1px solid ${borderColor}`,
-                            borderLeft: `1px solid ${borderColor}`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '14px',
-                            boxShadow: `0 4px 15px ${primaryColor}06`,
-                        }}>
-                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0, boxShadow: `0 4px 12px ${primaryColor}40` }}>
+                        <div style={{ background: token.colorFillSecondary, padding: '14px 18px', borderRadius: '16px', border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', gap: '14px' }}>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}AA)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '18px', flexShrink: 0 }}>
                                 <ReadOutlined />
                             </div>
                             <div>
-                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800', letterSpacing: '0.3px' }}>Continuous</div>
-                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>Learning & Growth</div>
+                                <div style={{ color: textColor, fontSize: '15px', fontWeight: '800' }}>{isAr ? 'مستمر' : 'Continuous'}</div>
+                                <div style={{ color: primaryColor, fontSize: '10.5px', fontWeight: '700' }}>{isAr ? 'تعلم وتطور' : 'Learning & Growth'}</div>
                             </div>
                         </div>
                     </div>

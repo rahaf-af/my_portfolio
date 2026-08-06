@@ -1,9 +1,8 @@
 import React from 'react';
 import { Tag, theme } from 'antd';
 import { motion } from 'framer-motion';
-import { FiArrowUpRight } from "react-icons/fi";
 
-// ── ثوابت التصميم (بدل الأرقام السايبة جوه الـ styles) ──
+// ── ثوابت التصميم ──
 const CARD_RADIUS = 32;
 const IMAGE_RADIUS = 24;
 const IMAGE_HEIGHT = 350;
@@ -26,7 +25,7 @@ const styles = {
         flexDirection: 'column',
         gap: '40px',
     },
-    card: (purple) => ({
+    card: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         alignItems: 'center',
@@ -36,7 +35,7 @@ const styles = {
         padding: '40px',
         position: 'relative',
         boxShadow: 'none',
-    }),
+    },
     imageWrapper: (purple) => ({
         borderRadius: `${IMAGE_RADIUS}px`,
         overflow: 'hidden',
@@ -63,13 +62,13 @@ const styles = {
         boxShadow: `0 10px 25px ${purple}30`,
         zIndex: 3,
     }),
-    contentBox: {
+    contentBox: (isAr) => ({
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',
-        textAlign: 'left',
-        direction: 'ltr',
-    },
+        textAlign: isAr ? 'right' : 'left',
+        direction: isAr ? 'rtl' : 'ltr',
+    }),
     number: (purple) => ({
         fontSize: '48px',
         fontWeight: '800',
@@ -92,31 +91,13 @@ const styles = {
         fontWeight: '600',
         margin: 0,
     }),
-    description: (textColor) => ({
+    description: (textColor, isAr) => ({
         color: textColor,
         fontSize: '14.5px',
         lineHeight: '1.6',
         margin: 0,
         opacity: 0.85,
-    }),
-    link: (purple) => ({
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '10px',
-        color: purple,
-        fontWeight: '700',
-        fontSize: '14.5px',
-        textDecoration: 'none',
-    }),
-    linkIconWrapper: (purple) => ({
-        width: '28px',
-        height: '28px',
-        borderRadius: '50%',
-        border: `1px solid ${purple}50`,
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: `${purple}15`,
+        textAlign: isAr ? 'right' : 'left',
     }),
     title: {
         fontSize: '26px',
@@ -152,22 +133,36 @@ function renderFormattedTitle(title, mainPurple, themeTextColor) {
     );
 }
 
-function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
+function ProjectDetails({ project, index, mainPurple, themeTextColor, lang }) {
+    const isAr = lang === 'ar';
     return (
         <motion.div 
             initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            style={styles.contentBox}
+            style={styles.contentBox(isAr)}
         >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {/* تم ضبط صف العنوان والرقم والفاصل ليكون متناسقاً تماماً ودقيق المحاذاة في العربية والإنجليزية */}
+            <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '16px', 
+                flexDirection: isAr ? 'row-reverse' : 'row',
+                justifyContent: isAr ? 'flex-end' : 'flex-start'
+            }}>
                 <span style={styles.number(mainPurple)}>0{index + 1}</span>
                 <div style={styles.divider(mainPurple)} />
                 {renderFormattedTitle(project.title, mainPurple, themeTextColor)}
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            <div style={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                gap: '6px', 
+                flexDirection: isAr ? 'row-reverse' : 'row',
+                justifyContent: isAr ? 'flex-end' : 'flex-start'
+            }}>
                 {project.tags?.map((tag, tagIdx) => (
                     <Tag key={`tag-${index}-${tagIdx}`} style={styles.tag(mainPurple)}>
                         {tag}
@@ -175,21 +170,7 @@ function ProjectDetails({ project, index, mainPurple, themeTextColor }) {
                 ))}
             </div>
 
-            <p style={styles.description(themeTextColor)}>{project.description}</p>
-            {/* أزارير عرض المشروع لما اجهز الريبو افتحها  */}
-            {/* <div style={{ marginTop: '8px' }}>
-                <a
-                    href={project.liveLink || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={styles.link(mainPurple)}
-                >
-                    <span>View Project</span>
-                    <span style={styles.linkIconWrapper(mainPurple)}>
-                        <FiArrowUpRight style={{ fontSize: '20px' }} />
-                    </span>
-                </a>
-            </div> */}
+            <p style={styles.description(themeTextColor, isAr)}>{project.description}</p>
         </motion.div>
     );
 }
@@ -222,8 +203,9 @@ function ProjectMedia({ project, isLeftIcon, mainPurple, containerBg }) {
     );
 }
 
-export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' }) {
+export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed', lang = 'en' }) {
     const { token } = theme.useToken();
+    const isAr = lang === 'ar';
 
     return (
         <motion.div 
@@ -236,17 +218,22 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
             {projects.map((project, index) => {
                 const isEven = index % 2 === 0;
 
+                let isLeftIcon = isEven ? true : false;
+                if (isAr) {
+                    isLeftIcon = !isLeftIcon;
+                }
+
                 return (
                     <motion.div
                         key={`project-card-${project.id || index}`}
                         {...CARD_ANIMATION}
-                        style={styles.card(mainPurple)}
+                        style={styles.card}
                     >
                         {isEven ? (
                             <>
                                 <ProjectMedia
                                     project={project}
-                                    isLeftIcon={true}
+                                    isLeftIcon={isLeftIcon}
                                     mainPurple={mainPurple}
                                     containerBg={token.colorBgContainer}
                                 />
@@ -255,6 +242,7 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
                                     index={index}
                                     mainPurple={mainPurple}
                                     themeTextColor={token.colorText}
+                                    lang={lang}
                                 />
                             </>
                         ) : (
@@ -264,10 +252,11 @@ export default function DesktopProjects({ projects = [], mainPurple = '#7c3aed' 
                                     index={index}
                                     mainPurple={mainPurple}
                                     themeTextColor={token.colorText}
+                                    lang={lang}
                                 />
                                 <ProjectMedia
                                     project={project}
-                                    isLeftIcon={false}
+                                    isLeftIcon={isLeftIcon}
                                     mainPurple={mainPurple}
                                     containerBg={token.colorBgContainer}
                                 />

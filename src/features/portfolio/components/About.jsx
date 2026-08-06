@@ -1,52 +1,20 @@
 import React from 'react';
 import { Grid, theme } from 'antd';
-import { UserOutlined, CodeOutlined, DatabaseOutlined, RocketOutlined, BugOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import { getAboutConfig } from '../../../config/aboutConfig.jsx';
 
 const { useBreakpoint } = Grid;
 
-const getAboutData = (mainPurple) => ({
-    mainTitle: (
-        <>
-            Frontend Developer with a <br />
-            Passion for <span style={{ color: mainPurple }}>Full-Stack</span> Growth 🚀
-        </>
-    ),
-    descDesktop1: "Detail-oriented Frontend and Full-Stack Developer with a Bachelor's degree in Information Systems and hands-on experience designing, developing, and deploying web applications using JavaScript, Python, React.js, and Django.",
-    descDesktop2: 'Skilled in writing clean, well-structured code, integrating RESTful APIs, and collaborating within cross-functional teams across the full software development lifecycle.',
-    descMobile: "Detail-oriented Frontend and Full-Stack Developer with a Bachelor's degree in Information Systems and hands-on experience building dynamic web apps using JavaScript, Python, and React.js.",
-    tags: [
-        { label: 'Problem Solver', icon: <CodeOutlined style={{ color: mainPurple }} /> },
-        { label: 'Clean Code', icon: <span style={{ color: mainPurple, fontFamily: 'monospace', fontWeight: 'bold' }}>{`{}`}</span> },
-        { label: 'UI/UX Enthusiast', icon: <UserOutlined style={{ color: mainPurple }} /> },
-        { label: 'Bug Slayer', icon: <BugOutlined style={{ color: mainPurple }} /> },
-    ],
-    features: [
-        {
-            icon: <CodeOutlined style={{ fontSize: '18px' }} />,
-            title: 'Frontend Expertise',
-            desc: 'Specialized in building modern, dynamic user interfaces using React, Next.js, TypeScript, and Ant Design.',
-        },
-        {
-            icon: <DatabaseOutlined style={{ fontSize: '18px' }} />,
-            title: 'Full-Stack Vision',
-            desc: 'Keen understanding of backend logic, handling REST APIs, databases, and full CRUD application flows.',
-        },
-        {
-            icon: <RocketOutlined style={{ fontSize: '18px' }} />,
-            title: 'Ready for New Challenges',
-            desc: 'Actively seeking professional opportunities as a Frontend / Full-Stack Developer to build impactful apps.',
-        },
-    ],
-});
-
-export default function About() {
+export default function About({ lang = 'en' }) {
     const screens = useBreakpoint();
     const { token } = theme.useToken();
 
     const isDesktop = screens.lg;
     const mainPurple = token.colorPrimary;
-    const aboutData = getAboutData(mainPurple);
+    
+    // جلب النصوص الخاصة باللغة الحالية (إنجليزي أو عربي)
+    const aboutData = getAboutConfig(mainPurple)[lang] || getAboutConfig(mainPurple)['en'];
 
     return (
         <section
@@ -79,7 +47,7 @@ export default function About() {
                         marginBottom: '8px',
                     }}
                 >
-                    <UserOutlined /> WHO AM I
+                    <UserOutlined /> {aboutData.whoAmI}
                 </div>
                 <h2
                     style={{
@@ -89,7 +57,7 @@ export default function About() {
                         margin: 0,
                     }}
                 >
-                    About Me
+                    {aboutData.sectionTitle}
                 </h2>
             </motion.div>
 
@@ -113,7 +81,6 @@ export default function About() {
                     <h3
                         style={{
                             color: token.colorText,
-                            // تم تصغير الحد الأدنى للخط هنا (clamp) لكي لا يهرب الصاروخ لسطر جديد في شاشات الجوال
                             fontSize: 'clamp(1.4rem, 2.3vw, 1.9rem)',
                             fontWeight: '800',
                             lineHeight: '1.35',

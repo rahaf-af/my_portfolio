@@ -2,61 +2,28 @@ import React from 'react';
 import { Grid, theme } from 'antd';
 import { CodeOutlined, CalendarOutlined, EnvironmentOutlined, ReadOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import { getTimelineData } from '../../../config/experienceConfig';
 
 const { useBreakpoint } = Grid;
 
-export default function Experience() {
+export default function Experience({ lang = 'en' }) {
     const screens = useBreakpoint();
     const isDesktop = screens.lg;
+    const isTablet = screens.md && !screens.lg; // شاشة التابلت المتوسطة
+    const isDesktopOrTablet = screens.lg || screens.md;
 
     const { token } = theme.useToken();
     const mainColor = token.colorPrimary;
+    const isAr = lang === 'ar';
 
-    // التسلسل الزمني مع التسميات الكاملة والتعداد التقني
-    const timelineData = [
-        {
-            type: 'education',
-            role: "Bachelor's degree, Information Systems",
-            company: 'Umm Al-Qura University',
-            period: 'Sep 2020 - Nov 2024',
-            location: 'Makkah, Saudi Arabia',
-            description: 'Graduated with a strong foundation in information systems, database management, and software principles.',
-            tag: 'Education_01'
-        },
-        {
-            type: 'work',
-            role: 'Full-stack Developer',
-            company: 'Tuwaiq Academy',
-            period: 'Feb 2025 - May 2025',
-            location: 'Riyadh, Saudi Arabia • On-site',
-            description: 'Developed multiple web applications using Django, HTML, CSS, and Bootstrap as part of intensive bootcamp.',
-            tag: 'Bootcamp_01'
-        },
-        {
-            type: 'work',
-            role: 'Software Engineer',
-            company: 'Saudi Digital Academy',
-            period: 'Aug 2025 - Nov 2025',
-            location: 'Riyadh, Saudi Arabia • Remote',
-            description: 'Built and styled multiple responsive web projects using HTML, CSS, and JavaScript.',
-            tag: 'Bootcamp_02'
-        },
-        {
-            type: 'work',
-            role: 'Front-End Developer',
-            company: 'TechWin',
-            period: 'Nov 2025 - Jul 2026',
-            location: 'Makkah, Saudi Arabia • Hybrid',
-            description: 'Developed responsive production-level user interfaces by translating UI designs into React.js components.',
-            tag: 'Experience_01'
-        }
-    ];
+    // استدعاء البيانات من ملف التكوين المنفصل
+    const timelineData = getTimelineData(isAr);
 
     return (
         <section
             id="experience"
             style={{
-                padding: isDesktop ? '130px 24px' : '70px 16px',
+                padding: isDesktopOrTablet ? '130px 24px' : '70px 16px',
                 position: 'relative',
                 maxWidth: '1150px',
                 margin: '0 auto',
@@ -71,24 +38,27 @@ export default function Experience() {
                     viewport={{ once: true }}
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: mainColor, fontSize: '13px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                        <ThunderboltOutlined /> Experience
+                        <ThunderboltOutlined /> {isAr ? 'الخبرات والمسيرة' : 'Experience'}
                     </div>
                     <h2 style={{ color: token.colorText, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: '800', margin: 0 }}>
-                        My Journey
+                        {isAr ? 'رحلتي المهنية' : 'My Journey'}
                     </h2>
                 </motion.div>
             </div>
 
-            {/* الحاوية الرئيسية */}
-            <div style={{
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: isDesktop ? '80px' : '50px',
-                marginTop: isDesktop ? '80px' : '50px',
-            }}>
-                {/* خط الثعبان المتعرج الخلفي (ديسكتوب) */}
-                {isDesktop && (
+            {/* الحاوية الرئيسية مع تثبيت الاتجاه ltr لضمان ثبات الكروت وأيقوناتها نهائياً */}
+            <div 
+                dir="ltr"
+                style={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: isDesktopOrTablet ? '80px' : '50px',
+                    marginTop: isDesktopOrTablet ? '80px' : '50px',
+                }}
+            >
+                {/* خط الثعبان المتعرج الخلفي */}
+                {isDesktopOrTablet && (
                     <svg
                         style={{
                             position: 'absolute',
@@ -119,7 +89,7 @@ export default function Experience() {
                 )}
 
                 {/* خط الموبايل العمودي */}
-                {!isDesktop && (
+                {!isDesktopOrTablet && (
                     <div style={{
                         position: 'absolute',
                         left: '18px',
@@ -144,18 +114,22 @@ export default function Experience() {
                             style={{
                                 position: 'relative',
                                 display: 'flex',
-                                justifyContent: isDesktop ? (isLeftNode ? 'flex-start' : 'flex-end') : 'flex-start',
+                                justifyContent: isDesktopOrTablet ? (isLeftNode ? 'flex-start' : 'flex-end') : 'flex-start',
                                 width: '100%',
-                                paddingLeft: isDesktop ? '0' : '45px',
+                                paddingLeft: isDesktopOrTablet ? '0' : '45px',
                                 minHeight: '190px',
                                 alignItems: 'center',
                                 zIndex: 1
                             }}
                         >
-                            {/* الأيقونة المركزية (مستقيمة تماماً وفي مكانها الصحيح) */}
+                            {/* الأيقونة المركزية */}
                             <div style={{
                                 position: 'absolute',
-                                left: isDesktop ? (isLeftNode ? 'calc(50% - 60px)' : 'calc(50% + 60px)') : '18px',
+                                left: isDesktopOrTablet 
+                                    ? (isLeftNode 
+                                        ? (isTablet ? 'calc(50% - 35px)' : 'calc(50% - 60px)') 
+                                        : (isTablet ? 'calc(50% + 35px)' : 'calc(50% + 60px)')) 
+                                    : '18px',
                                 top: '50%',
                                 width: '44px',
                                 height: '44px',
@@ -174,35 +148,37 @@ export default function Experience() {
                                 {item.type === 'work' ? <CodeOutlined /> : <ReadOutlined />}
                             </div>
 
-                            {/* الشكل المائل الأصلي للكرت */}
+                            {/* كرت المحتوى */}
                             <div
+                                dir={isAr ? 'rtl' : 'ltr'}
                                 style={{
                                     background: token.colorBgContainer,
                                     border: `1.5px solid ${token.colorBorder}`,
                                     boxShadow: `0 10px 30px ${mainColor}20`,
-                                    width: isDesktop ? '42%' : '100%',
+                                    width: isDesktopOrTablet ? '42%' : '100%',
                                     borderRadius: '26px 8px 26px 26px',
-                                    padding: isDesktop ? '30px' : '22px',
+                                    padding: isDesktopOrTablet ? '30px' : '22px',
                                     position: 'relative',
                                     overflow: 'hidden',
+                                    textAlign: isAr ? 'right' : 'left',
                                     transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                                 }}
                                 onMouseEnter={(e) => {
-                                    if (isDesktop) {
+                                    if (isDesktopOrTablet) {
                                         e.currentTarget.style.transform = 'translateY(-8px) scale(1.01)';
                                         e.currentTarget.style.borderColor = mainColor;
                                         e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}35`;
                                     }
                                 }}
                                 onMouseLeave={(e) => {
-                                    if (isDesktop) {
+                                    if (isDesktopOrTablet) {
                                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
                                         e.currentTarget.style.borderColor = token.colorBorder;
                                         e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}20`;
                                     }
                                 }}
                             >
-                                {/* شارة الزاوية المائلة الأصلية */}
+                                {/* شارة الزاوية المائلة مثبتة دائماً في اليمين */}
                                 <div style={{
                                     position: 'absolute',
                                     top: 0,
@@ -220,12 +196,14 @@ export default function Experience() {
                                     {item.tag}
                                 </div>
 
-                                {/* تاريخ الفترة مع مسافة أمان إضافية أكبر عن التاب في الشاشة الصغيرة */}
+                                {/* تاريخ الفترة مع إضافة مسافة علوية للغة العربية أو لشاشة التابلت باللغة الإنجليزية */}
                                 <div style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '6px',
-                                    marginTop: isDesktop ? '0px' : '14px',
+                                    marginTop: isAr 
+                                        ? (isDesktopOrTablet ? '14px' : '22px') 
+                                        : (isTablet ? '14px' : (isDesktopOrTablet ? '0px' : '14px')),
                                     marginBottom: '14px'
                                 }}>
                                     <span style={{
@@ -245,7 +223,7 @@ export default function Experience() {
                                 </div>
 
                                 {/* تفاصيل المحتوى */}
-                                <h3 style={{ color: token.colorTextHeading, fontSize: isDesktop ? '1.25rem' : '1.1rem', fontWeight: '900', margin: '0 0 6px 0', letterSpacing: '-0.3px' }}>
+                                <h3 style={{ color: token.colorTextHeading, fontSize: isDesktopOrTablet ? '1.25rem' : '1.1rem', fontWeight: '900', margin: '0 0 6px 0', letterSpacing: '-0.3px' }}>
                                     {item.role}
                                 </h3>
 
@@ -253,7 +231,7 @@ export default function Experience() {
                                     {item.company}
                                 </div>
 
-                                <div style={{ color: token.colorTextSecondary, fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '14px', fontWeight: '600' }}>
+                                <div style={{ color: token.colorTextSecondary, fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '6px', marginBottom: '14px', fontWeight: '600' }}>
                                     <EnvironmentOutlined style={{ color: mainColor }} /> {item.location}
                                 </div>
 

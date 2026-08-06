@@ -3,11 +3,13 @@ import { Image, theme } from 'antd';
 import { Calendar, Building2, Eye, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function CertificateDesktop({ credentials, selectedId, setSelectedId, currentCert }) {
+export default function CertificateDesktop({ credentials = [], selectedId, setSelectedId, currentCert, certConfig }) {
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
     const sharedImageBg = isDarkMode ? 'rgba(255, 255, 255, 0.01)' : 'rgba(0, 0, 0, 0.01)';
+
+    if (!currentCert) return null;
 
     return (
         <motion.div
@@ -201,10 +203,10 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
                             </div>
                             <span style={{ color: mainPurple, fontSize: '11px', fontFamily: 'monospace', fontWeight: '900', letterSpacing: '1px' }}>
-                                {currentCert.code} // PREVIEW_MODE
+                                {`${currentCert.code} // ${certConfig.previewMode}`}
                             </span>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: token.colorTextSecondary, fontSize: '10px', fontFamily: 'monospace' }}>
-                                <ShieldCheck size={13} color={mainPurple} /> SECURE
+                                <ShieldCheck size={13} color={mainPurple} /> {certConfig.secure}
                             </div>
                         </div>
 
@@ -212,7 +214,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             <Image
                                 src={currentCert.image}
                                 alt={currentCert.title}
-                                preview={{ cover: <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fff', fontSize: '13px', fontWeight: 'bold' }}><Eye size={16} /> View Full Certificate</div> }}
+                                preview={{ cover: <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fff', fontSize: '13px', fontWeight: 'bold' }}><Eye size={16} /> {certConfig.viewFullCert}</div> }}
                                 style={{
                                     width: '100%',
                                     maxHeight: '450px',
@@ -275,7 +277,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <span style={{ color: token.colorTextSecondary, fontSize: '11px', fontFamily: 'monospace', fontWeight: '900', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
-                                // CORE_SKILLS & TECH
+                                {certConfig.coreSkills}
                             </span>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                 {currentCert.skills.map((skill, sIdx) => (
@@ -310,7 +312,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 <Sparkles size={18} color={mainPurple} />
                             </div>
                             <span style={{ color: token.colorText, fontSize: '0.9rem', fontWeight: '800', letterSpacing: '0.3px' }}>
-                                Certified and digitally verified for advanced professional standards.
+                                {certConfig.verifiedTextLarge}
                             </span>
                         </div>
                     </div>

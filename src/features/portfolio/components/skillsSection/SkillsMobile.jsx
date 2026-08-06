@@ -9,8 +9,10 @@ export default function SkillsMobile({
     currentCategory,
     mainPurple,
     token = {},
-    isDarkMode = false
+    isDarkMode = false,
+    lang = 'en'
 }) {
+    const isAr = lang === 'ar';
     const [isAutoPlay, setIsAutoPlay] = useState(false);
 
     useEffect(() => {
@@ -37,6 +39,17 @@ export default function SkillsMobile({
         setActiveTab(skillCategories[prevIndex].id);
     };
 
+    // دالة مساعدة لترجمة مستويات المهارات ديناميكياً بناءً على لغة التطبيق
+    const getLevelText = (level) => {
+        if (!isAr) return level;
+        switch (level) {
+            case 'Advanced': return 'متقدم';
+            case 'Intermediate': return 'متوسط';
+            case 'Beginner': return 'مبتدئ';
+            default: return level;
+        }
+    };
+
     const windowBgColor = token.colorBgContainer || '#ffffff';
     const borderColor = token.colorBorder || '#e8e8e8';
     const textColor = token.colorText || '#000000';
@@ -48,16 +61,13 @@ export default function SkillsMobile({
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', maxWidth: '100%', boxSizing: 'border-box', direction: isAr ? 'rtl' : 'ltr' }}>
 
-            {/* 1. Mobile Categories Selector Header (Stacked Vertical List with full, readable text) */}
+            {/* 1. Mobile Categories Selector Header */}
             <div style={{
                 background: windowBgColor,
                 backdropFilter: 'blur(30px)',
-                borderTop: `1px solid ${borderColor}`,
-                borderRight: `1px solid ${borderColor}`,
-                borderBottom: `1px solid ${borderColor}`,
-                borderLeft: `1px solid ${borderColor}`,
+                border: `1px solid ${borderColor}`,
                 borderRadius: '20px',
                 padding: '16px',
                 boxShadow: isDarkMode ? `0 15px 30px rgba(0, 0, 0, 0.4)` : `0 10px 25px ${primaryColor}10`,
@@ -69,39 +79,33 @@ export default function SkillsMobile({
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <FolderFilled style={{ color: primaryColor, fontSize: '18px' }} />
                         <h2 style={{ color: textColor, fontSize: '14px', fontWeight: '800', margin: 0, letterSpacing: '0.5px' }}>
-                            SKILLS <span style={{ color: primaryColor }}>EXPLORER</span>
+                            {isAr ? 'مستكشف' : 'SKILLS'} <span style={{ color: primaryColor }}>{isAr ? 'المهارات' : 'EXPLORER'}</span>
                         </h2>
                     </div>
 
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                         <div
                             onClick={() => setIsAutoPlay(!isAutoPlay)}
-                            title={isAutoPlay ? "Pause AutoPlay" : "Play AutoPlay"}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: isAutoPlay ? `${primaryColor}30` : (token.colorFillSecondary || '#f5f5f5'), borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: isAutoPlay ? `${primaryColor}30` : (token.colorFillSecondary || '#f5f5f5'), border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
                             {isAutoPlay ? <PauseCircleOutlined style={{ fontSize: '12px' }} /> : <PlayCircleOutlined style={{ fontSize: '12px' }} />}
                         </div>
                         <div
-                            onClick={handlePrev}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary || '#f5f5f5', borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
+                            onClick={isAr ? handleNext : handlePrev}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary || '#f5f5f5', border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
-                            <LeftOutlined style={{ fontSize: '10px' }} />
+                            {isAr ? <RightOutlined style={{ fontSize: '10px' }} /> : <LeftOutlined style={{ fontSize: '10px' }} />}
                         </div>
                         <div
-                            onClick={handleNext}
-                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary || '#f5f5f5', borderTop: `1px solid ${borderColor}`, borderRight: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`, borderLeft: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
+                            onClick={isAr ? handlePrev : handleNext}
+                            style={{ width: '26px', height: '26px', borderRadius: '50%', background: token.colorFillSecondary || '#f5f5f5', border: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: primaryColor, cursor: 'pointer' }}
                         >
-                            <RightOutlined style={{ fontSize: '10px' }} />
+                            {isAr ? <LeftOutlined style={{ fontSize: '10px' }} /> : <RightOutlined style={{ fontSize: '10px' }} />}
                         </div>
                     </div>
                 </div>
 
-                {/* Vertical Stacked Layout for Categories */}
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px'
-                }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {skillCategories.map((cat) => {
                         const isActive = activeTab === cat.id;
 
@@ -119,10 +123,7 @@ export default function SkillsMobile({
                                     background: isActive
                                         ? `linear-gradient(135deg, ${primaryColor}, ${primaryColor}CC)`
                                         : (token.colorFillSecondary || '#f5f5f5'),
-                                    borderTop: `1px solid ${isActive ? primaryColor : borderColor}`,
-                                    borderRight: `1px solid ${isActive ? primaryColor : borderColor}`,
-                                    borderBottom: `1px solid ${isActive ? primaryColor : borderColor}`,
-                                    borderLeft: `1px solid ${isActive ? primaryColor : borderColor}`,
+                                    border: `1px solid ${isActive ? primaryColor : borderColor}`,
                                     color: isActive ? '#ffffff' : textColor,
                                     cursor: 'pointer',
                                     boxShadow: isActive ? `0 6px 18px ${primaryColor}40` : 'none',
@@ -135,14 +136,7 @@ export default function SkillsMobile({
                                     <span style={{ fontSize: '18px', display: 'flex', alignItems: 'center', color: isActive ? '#ffffff' : primaryColor, flexShrink: 0 }}>
                                         {cat.categoryIcon}
                                     </span>
-                                    <span style={{ 
-                                        fontWeight: '800', 
-                                        fontSize: '13px', 
-                                        whiteSpace: 'normal', 
-                                        wordBreak: 'break-word', 
-                                        lineHeight: '1.4',
-                                        flex: 1
-                                    }}>
+                                    <span style={{ fontWeight: '800', fontSize: '13px', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.4', flex: 1 }}>
                                         {cat.name}
                                     </span>
                                 </div>
@@ -154,7 +148,7 @@ export default function SkillsMobile({
                                     background: isActive ? 'rgba(255,255,255,0.25)' : (token.colorFillDivider || 'rgba(0,0,0,0.06)'),
                                     color: isActive ? '#ffffff' : textSecondary,
                                     flexShrink: 0,
-                                    marginLeft: '10px'
+                                    [isAr ? 'marginRight' : 'marginLeft']: '10px'
                                 }}>
                                     {cat.skills?.length || 0}
                                 </span>
@@ -164,23 +158,20 @@ export default function SkillsMobile({
                 </div>
             </div>
 
-            {/* 2. Main Window Panel with Seamless External File Tab */}
+            {/* 2. Main Window Panel */}
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                 
-                {/* External File Tab aligned to the extreme left, seamlessly blending into the main card */}
                 <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
                     background: windowBgColor,
-                    borderTop: `1px solid ${borderColor}`,
-                    borderRight: `1px solid ${borderColor}`,
+                    border: `1px solid ${borderColor}`,
                     borderBottom: 'none',
-                    borderLeft: `1px solid ${borderColor}`,
                     padding: '8px 16px',
-                    borderTopLeftRadius: '16px',
-                    borderTopRightRadius: '12px',
-                    marginLeft: '0px',
+                    [isAr ? 'borderTopLeftRadius' : 'borderTopRightRadius']: '16px',
+                    [isAr ? 'borderTopRightRadius' : 'borderTopLeftRadius']: '12px',
+                    [isAr ? 'marginRight' : 'marginLeft']: '0px',
                     width: 'fit-content',
                     position: 'relative',
                     zIndex: 2
@@ -189,21 +180,19 @@ export default function SkillsMobile({
                         {currentCategory.categoryIcon}
                     </span>
                     <span style={{ color: textColor, fontSize: '12px', fontWeight: '800' }}>
-                        {currentCategory.name}.tsx
+                        {/* لسان البطاقة الكبيرة: اسم الفئة باللغة الحالية وبدون أي امتدادات أو شرطات */}
+                        {currentCategory.name}
                     </span>
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: primaryColor, marginLeft: '4px' }}></div>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: primaryColor, [isAr ? 'marginRight' : 'marginLeft']: '4px' }}></div>
                 </div>
 
                 <div
                     style={{
                         background: windowBgColor,
                         backdropFilter: 'blur(30px)',
-                        borderTop: `1px solid ${borderColor}`,
-                        borderRight: `1px solid ${borderColor}`,
-                        borderBottom: `1px solid ${borderColor}`,
-                        borderLeft: `1px solid ${borderColor}`,
+                        border: `1px solid ${borderColor}`,
                         borderRadius: '20px',
-                        borderTopLeftRadius: '4px',
+                        [isAr ? 'borderTopRightRadius' : 'borderTopLeftRadius']: '4px',
                         padding: '20px',
                         boxShadow: isDarkMode ? `0 20px 40px rgba(0, 0, 0, 0.5)` : `0 15px 30px ${primaryColor}10`,
                         display: 'flex',
@@ -216,7 +205,6 @@ export default function SkillsMobile({
                         marginTop: '-1px'
                     }}
                 >
-                    {/* Centered Tech/Space Watermark Graphic */}
                     <div style={{
                         position: 'absolute',
                         top: '50%',
@@ -243,16 +231,16 @@ export default function SkillsMobile({
                     </div>
 
                     <div style={{ position: 'relative', zIndex: 1 }}>
-                        {/* Top Control Bar inside window */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '16px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: textSecondary, fontSize: '11px', fontWeight: '600', overflow: 'hidden' }}>
-                                <span style={{ color: primaryColor, fontWeight: '700', flexShrink: 0 }}>Dir:</span>
+                                <span style={{ color: primaryColor, fontWeight: '700', flexShrink: 0 }}>{isAr ? 'المسار:' : 'Dir:'}</span>
+                                {/* مسار الكرت ثابت باللغة الإنجليزية كما طلبت */}
                                 <span style={{ color: textColor, fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>/skills/{currentCategory.id}</span>
                             </div>
 
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                                 <div style={{ color: textSecondary, fontSize: '11px', fontWeight: '600' }}>
-                                    {currentCategory.skills?.length || 0} files
+                                    {currentCategory.skills?.length || 0} {isAr ? 'ملفات' : 'files'}
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px', opacity: 0.6 }}>
                                     <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ff5f56' }}></div>
@@ -262,11 +250,8 @@ export default function SkillsMobile({
                             </div>
                         </div>
 
-                        {/* Skills Grid Cards Container with Centered Icon and Content */}
-                        <div style={{
-                            position: 'relative',
-                            zIndex: 1
-                        }}>
+                        {/* Skills Grid Cards - ممركزة تماماً */}
+                        <div style={{ position: 'relative', zIndex: 1 }}>
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={activeTab}
@@ -282,42 +267,37 @@ export default function SkillsMobile({
                                             whileTap={{ scale: 0.97 }}
                                             style={{
                                                 background: `linear-gradient(145deg, ${windowBgColor}, ${primaryColor}${isDarkMode ? '30' : '1F'})`,
-                                                borderTop: `1px solid ${borderColor}`,
-                                                borderRight: `1px solid ${borderColor}`,
-                                                borderBottom: `1px solid ${borderColor}`,
-                                                borderLeft: `1px solid ${borderColor}`,
+                                                border: `1px solid ${borderColor}`,
                                                 borderRadius: '14px',
                                                 padding: '14px 12px',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                alignItems: 'center',      /* تم التعديل لجعل المحتوى في المنتصف أفقياً */
-                                                justifyContent: 'center',  /* تم التعديل لجعل المحتوى في المنتصف عمودياً */
-                                                textAlign: 'center',       /* جعل النصوص في المنتصف تماماً */
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                textAlign: 'center',
                                                 minHeight: '135px',
                                                 boxShadow: isDarkMode ? '0 8px 20px rgba(0,0,0,0.3)' : `0 6px 15px ${primaryColor}08`,
                                                 position: 'relative',
                                                 overflow: 'hidden',
-                                                clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
+                                                clipPath: isAr 
+                                                    ? 'polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px)' 
+                                                    : 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
                                                 transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
                                             }}
                                         >
-                                            {/* Folded Corner */}
                                             <div style={{
-                                                position: 'absolute', top: 0, right: 0, width: '12px', height: '12px',
-                                                background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, borderBottomLeftRadius: '4px',
-                                                borderLeft: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}`
+                                                position: 'absolute', top: 0, [isAr ? 'left' : 'right']: 0, width: '12px', height: '12px',
+                                                background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, 
+                                                [isAr ? 'borderBottomRightRadius' : 'borderBottomLeftRadius']: '4px',
+                                                border: `1px solid ${borderColor}`
                                             }} />
 
-                                            {/* Icon Centered */}
                                             <div style={{ 
                                                 fontSize: '26px', 
                                                 padding: '8px', 
                                                 borderRadius: '10px', 
                                                 background: `${primaryColor}${isDarkMode ? '35' : '26'}`,
-                                                borderTop: `1px solid ${borderColor}`,
-                                                borderRight: `1px solid ${borderColor}`,
-                                                borderBottom: `1px solid ${borderColor}`,
-                                                borderLeft: `1px solid ${borderColor}`,
+                                                border: `1px solid ${borderColor}`,
                                                 display: 'flex', 
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
@@ -326,7 +306,6 @@ export default function SkillsMobile({
                                                 {skill.icon}
                                             </div>
 
-                                            {/* Name and Level Centered */}
                                             <div style={{ width: '100%' }}>
                                                 <div style={{ color: textColor, fontSize: '13px', fontWeight: '700', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                                     {skill.name}
@@ -336,15 +315,12 @@ export default function SkillsMobile({
                                                     fontWeight: '700', 
                                                     color: primaryColor, 
                                                     background: `${primaryColor}${isDarkMode ? '40' : '2E'}`, 
-                                                    borderTop: `1px solid ${borderColor}`,
-                                                    borderRight: `1px solid ${borderColor}`,
-                                                    borderBottom: `1px solid ${borderColor}`,
-                                                    borderLeft: `1px solid ${borderColor}`,
+                                                    border: `1px solid ${borderColor}`,
                                                     padding: '2px 8px', 
                                                     borderRadius: '5px', 
                                                     display: 'inline-block' 
                                                 }}>
-                                                    {skill.level}
+                                                    {getLevelText(skill.level)}
                                                 </span>
                                             </div>
                                         </motion.div>

@@ -15,10 +15,17 @@
     color: #9ca3af !important;
 }
 
+/* إلغاء الخط التفاعلي الافتراضي من AntD عشان ما يلوّن حد القائمة عند الـ hover */
+.custom-nav-menu .ant-menu-item::after {
+    border-bottom-color: transparent !important;
+    transition: none !important;
+}
+
 /* عند تمرير الماوس (Hover) */
 .custom-nav-menu .ant-menu-item:hover {
     color: var(--theme-primary, #c084fc) !important;
     background: transparent !important;
+    transform: translateY(-2px);
 }
 
 /* العنصر النشط المضلل (Active / Selected) */
@@ -38,7 +45,6 @@
     height: 2px !important;
     background: var(--theme-primary, #a855f7) !important;
     border-radius: 4px !important;
-    box-shadow: 0 0 10px var(--theme-primary, #a855f7), 0 0 5px var(--theme-primary, #a855f7) !important;
     border-bottom: none !important;
 }
 
@@ -62,9 +68,16 @@
         transition: all 0.2s ease !important;
     }
 
-    /* تأثير مرور الماوس الناعم */
+    /* إلغاء الخط التفاعلي الافتراضي من AntD جوا الـ Drawer عشان ما يلوّن حد العنصر عند الـ hover */
+    .ant-drawer .custom-nav-menu .ant-menu-item::after {
+        border-bottom-color: transparent !important;
+        transition: none !important;
+    }
+
+    /* تأثير مرور الماوس الناعم مع حركة بسيطة بدل تلوين الحد */
     .ant-drawer .custom-nav-menu .ant-menu-item:hover {
         background: rgba(168, 85, 247, 0.06) !important;
+        transform: translateY(-2px);
     }
 
     /* العنصر النشط مع الخط السفلي الأنيق والمتوهج بلون الثيم */
@@ -83,7 +96,6 @@
         height: 2px !important;
         background: var(--theme-primary, #a855f7) !important;
         border-radius: 4px !important;
-        box-shadow: 0 0 10px var(--theme-primary, #a855f7) !important;
         display: block !important;
     }
 
@@ -112,18 +124,15 @@
     inset-inline-start: calc(100% - 22px) !important;
 }
 
-/* تكبير وتلوين أيقونة القمر بلون الثيم الجديد مع زيادة الحجم */
+/* استخدام inset-inline-end لضمان انعكاس مكان القمر تلقائياً بين الإنجليزية والعربية */
 .fancy-theme-switch:not(.ant-switch-checked)::after {
     content: "";
     position: absolute;
-    right: 7px;
-    /* ضبط الموضع ليتناسب مع الحجم الجديد */
+    inset-inline-end: 7px;
     top: 50%;
     transform: translateY(-50%);
     width: 18px;
-    /* تم تكبير العرض من 15px إلى 18px */
     height: 18px;
-    /* تم تكبير الارتفاع من 15px إلى 18px */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C75CFF' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'%3E%3C/path%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
@@ -131,7 +140,7 @@
     z-index: 1;
 }
 
-/* تكبير وتلوين أيقونة الشمس بلون الثيم الجديد عند التفعيل */
+/* تكبير وتلوين أيقونة الشمس بلون الثيم الجديد عند التفعيل مع دعم الانعكاس */
 .fancy-theme-switch.ant-switch-checked .ant-switch-inner .anticon-sun {
     color: #9303C5 !important;
     font-size: 17px !important;
@@ -141,6 +150,7 @@
 .fancy-theme-switch .ant-switch-inner {
     display: flex !important;
     align-items: center !important;
+    justify-content: space-between !important;
     padding: 0 6px !important;
     height: 100% !important;
 }

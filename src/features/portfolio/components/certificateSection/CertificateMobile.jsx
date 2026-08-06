@@ -3,17 +3,18 @@ import { Image, theme } from 'antd';
 import { Calendar, Building2, Eye, ShieldCheck, Sparkles, Award } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function CertificateDesktop({ credentials, selectedId, setSelectedId, currentCert }) {
+export default function CertificateMobile({ credentials = [], selectedId, setSelectedId, currentCert, certConfig }) {
     const { token } = theme.useToken();
     const mainPurple = token.colorPrimary;
     const isDarkMode = token.colorBgLayout === '#02060E' || token.colorBgLayout.startsWith('#0');
 
-    // حالة التحميل عند تغيير الشهادة
     const [imageLoaded, setImageLoaded] = useState(false);
 
     useEffect(() => {
         setImageLoaded(false);
     }, [currentCert?.id]);
+
+    if (!currentCert) return null;
 
     return (
         <motion.div
@@ -22,7 +23,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
         >
-            {/* Top Section: Small Cards (2x2 grid, no images, with clip-path, title, institution, and subtle shadow) */}
+            {/* Top Section: Small Cards */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
@@ -50,7 +51,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 justifyContent: 'space-between',
                                 gap: '10px',
                                 transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                                // تم تعديل الظل هنا ليصبح مضبوطاً داخل حدود الـ clip-path تماماً
                                 boxShadow: isSelected
                                     ? (isDarkMode ? `inset 0 0 20px rgba(199,92,255,0.15), 0 5px 15px -5px rgba(199,92,255,0.2)` : `inset 0 0 15px rgba(128,6,170,0.06), 0 5px 15px -5px rgba(128,6,170,0.1)`)
                                     : (isDarkMode ? 'inset 0 0 10px rgba(0,0,0,0.2)' : 'inset 0 0 10px rgba(0,0,0,0.02)'),
@@ -60,7 +60,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                             }}
                         >
-                            {/* Corner Fold Accent */}
                             <div style={{
                                 position: 'absolute',
                                 top: 0,
@@ -72,7 +71,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 zIndex: 2
                             }} />
 
-                            {/* Subtle background glow/shadow effect contained inside the card */}
                             <div style={{
                                 position: 'absolute',
                                 bottom: '-15px',
@@ -102,7 +100,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                 })}
             </div>
 
-            {/* Bottom Section: Large Certificate Card (Compact, clean, less crowded) */}
+            {/* Bottom Section: Large Certificate Card */}
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentCert.id}
@@ -128,7 +126,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         WebkitMaskImage: '-webkit-radial-gradient(white, black)'
                     }}
                 >
-                    {/* Corner Borders */}
                     <div style={{
                         position: 'absolute', top: 0, left: 0, width: '35px', height: '35px',
                         borderTop: `2px solid ${mainPurple}`, borderLeft: `2px solid ${mainPurple}`,
@@ -140,14 +137,12 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         borderBottomRightRadius: '26px', pointerEvents: 'none', opacity: 0.8
                     }} />
 
-                    {/* Subtle glow effect for large card */}
                     <div style={{
                         position: 'absolute', top: '-25px', right: '-25px', width: '120px', height: '120px',
                         background: mainPurple, filter: 'blur(50px)', opacity: isDarkMode ? 0.2 : 0.1,
                         pointerEvents: 'none'
                     }} />
 
-                    {/* Certificate Image Box with Preview */}
                     <div style={{
                         width: '100%',
                         display: 'flex',
@@ -167,10 +162,10 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#27c93f' }} />
                             </div>
                             <span style={{ color: mainPurple, fontSize: '9px', fontFamily: 'monospace', fontWeight: '900', letterSpacing: '0.8px' }}>
-                                {currentCert.code} // PREVIEW_MODE
+                                {`${currentCert.code} // ${certConfig.previewMode}`}
                             </span>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: token.colorTextSecondary, fontSize: '8px', fontFamily: 'monospace' }}>
-                                <ShieldCheck size={10} color={mainPurple} /> SECURE
+                                <ShieldCheck size={10} color={mainPurple} /> {certConfig.secure}
                             </div>
                         </div>
 
@@ -209,7 +204,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                                 src={currentCert.image}
                                 alt={currentCert.title}
                                 onLoad={() => setImageLoaded(true)}
-                                preview={{ cover: <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fff', fontSize: '11px', fontWeight: 'bold' }}><Eye size={13} /> View Full Certificate</div> }}
+                                preview={{ cover: <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fff', fontSize: '11px', fontWeight: 'bold' }}><Eye size={13} /> {certConfig.viewFullCert}</div> }}
                                 style={{
                                     width: '100%',
                                     maxHeight: '260px',
@@ -221,7 +216,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         </div>
                     </div>
 
-                    {/* Header Info */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px', zIndex: 1 }}>
                         <div style={{
                             display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -243,7 +237,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         </div>
                     </div>
 
-                    {/* Title & Underline */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 1 }}>
                         <h3 style={{
                             color: token.colorTextHeading,
@@ -261,7 +254,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         }} />
                     </div>
 
-                    {/* Description */}
                     <p style={{
                         color: token.colorTextSecondary,
                         fontSize: '0.83rem',
@@ -273,10 +265,9 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         {currentCert.desc}
                     </p>
 
-                    {/* Skills */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 1 }}>
                         <span style={{ color: token.colorTextSecondary, fontSize: '9px', fontFamily: 'monospace', fontWeight: '900', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                            // CORE_SKILLS & TECH
+                            {certConfig.coreSkills}
                         </span>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                             {currentCert.skills.map((skill, sIdx) => (
@@ -292,7 +283,6 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                         </div>
                     </div>
 
-                    {/* Compact Verification Footer */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -311,7 +301,7 @@ export default function CertificateDesktop({ credentials, selectedId, setSelecte
                             <Sparkles size={12} color={mainPurple} />
                         </div>
                         <span style={{ color: token.colorText, fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.2px' }}>
-                            Digitally verified professional certificate.
+                            {certConfig.verifiedText}
                         </span>
                     </div>
                 </motion.div>
