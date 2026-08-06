@@ -37,7 +37,7 @@ export const getCertificateConfig = (isAr) => ({
         {
             id: 3,
             title: isAr ? 'هندسة البرمجيات' : 'Software Engineering',
-            institution: isAr ? 'الأكاديميةالرقميةالسعودية' : 'SDA & General Assembly',
+            institution: isAr ? 'SDA & General Assembly' : 'SDA & General Assembly',
             period: isAr ? 'أغسطس ٢٠٢٥ - نوفمبر ٢٠٢٥' : 'Aug 2025 - Nov 2025',
             code: '03 // SDA_SE',
             skills: ['HTML', 'CSS', 'JavaScript', 'Python', 'SQL', 'PostgreSQL', 'Postman', 'React'],

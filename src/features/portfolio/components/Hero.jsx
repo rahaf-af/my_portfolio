@@ -143,7 +143,7 @@ export default function Hero({ lang = 'en' }) {
                     {heroConfig.titles[lang]}
                 </h1>
 
-                {/* المسمى الوظيفي المتحرك (Typewriter) */}
+                {/* المسمى الوظيفي المتحرك (Typewriter) مع ضبط الاتجاه حصرياً له */}
                 <div
                     style={{
                         fontSize: 'clamp(1rem, 1.8vw, 1.35rem)',
@@ -152,6 +152,8 @@ export default function Hero({ lang = 'en' }) {
                         marginBottom: '10px',
                         letterSpacing: '-0.5px',
                         minHeight: '32px',
+                        direction: lang === 'ar' ? 'rtl' : 'ltr',
+                        unicodeBidi: 'plaintext',
                     }}
                 >
                     <Typewriter
@@ -271,8 +273,8 @@ export default function Hero({ lang = 'en' }) {
                     >
                         <Space align="center" orientation={lang === 'ar' ? 'horizontal' : 'horizontal'}>
                             <FilePdfOutlined style={{ fontSize: '24px', color: mainPurple }} />
-                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left'  , marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
-                                <div style={{ color: token.colorText, fontWeight: '600', fontSize: '12px' , whiteSpace:'nowrap' }}>{heroConfig.cvModal.frontendTitle[lang]}</div>
+                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left', marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
+                                <div style={{ color: token.colorText, fontWeight: '600', fontSize: '12px', whiteSpace: 'nowrap' }}>{heroConfig.cvModal.frontendTitle[lang]}</div>
                                 <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>{heroConfig.cvModal.frontendDesc[lang]}</div>
                             </div>
                         </Space>
@@ -300,8 +302,8 @@ export default function Hero({ lang = 'en' }) {
                     >
                         <Space align="center" orientation={lang === 'ar' ? 'horizontal' : 'horizontal'}>
                             <FilePdfOutlined style={{ fontSize: '24px', color: mainPurple }} />
-                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left' , marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
-                                <div style={{ color: token.colorText, fontWeight: '600',  fontSize: '12px' , whiteSpace:'nowrap'  }}>{heroConfig.cvModal.fullstackTitle[lang]}</div>
+                            <div style={{ textAlign: lang === 'ar' ? 'right' : 'left', marginRight: lang === 'ar' ? '0' : '10px', marginLeft: lang === 'ar' ? '8px' : '0' }}>
+                                <div style={{ color: token.colorText, fontWeight: '600', fontSize: '12px', whiteSpace: 'nowrap' }}>{heroConfig.cvModal.fullstackTitle[lang]}</div>
                                 <div style={{ color: token.colorTextSecondary, fontSize: '12px' }}>{heroConfig.cvModal.fullstackDesc[lang]}</div>
                             </div>
                         </Space>
